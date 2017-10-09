@@ -1,0 +1,11 @@
+#! /usr/bin/bash
+
+rm -f spec
+ln -sf ../../specifications/MusicXML-3.0 spec
+
+rm -f musicxml.py _xlink.py
+pyxbgen -u spec/musicxml.xsd --location-prefix-rewrite="http://www.musicxml.org/xsd/=spec/" -m musicxml &> pbxgen-log.txt
+for i in musicxml.py _xlink.py; do
+  cp $i ${i%%.py}-orig.py
+  clean-binding  $i
+done

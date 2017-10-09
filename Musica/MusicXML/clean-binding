@@ -1,0 +1,237 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+from tokenize import tokenize, INDENT, NEWLINE, NL
+
+import os
+import re
+
+####################################################################################################
+
+import argparse
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='Cleanup PyXB Binding')
+
+parser.add_argument('python_file', metavar='python_file',
+                    help='Python file')
+args = parser.parse_args()
+
+####################################################################################################
+
+source_path = os.path.dirname(os.path.realpath((__file__)))
+source_path = os.path.realpath(os.path.join(source_path, '..', '..'))
+musicxml_path = os.path.join(source_path, 'specifications', 'MusicXML-3.0')
+print(musicxml_path)
+
+####################################################################################################
+
+def match_rule(line):
+    return re.match('^#+$\n', line) is not None
+
+####################################################################################################
+
+def remove_blank_lines(filename):
+
+    print("Clean " + filename)
+
+    source = open(filename, 'rb')
+    tokenizer = tokenize(source.readline)
+    # tokenize.TokenError: ('EOF in multi-line string', (1, 0))
+
+    blank_lines = []
+    state = 0
+    for token_type, token_value, start, end, line in tokenizer:
+        if state == 0 and token_type == NEWLINE:
+            state = 1
+        elif state == 1 and token_type == NL:
+            blank_lines.append(start[0] -1)
+            state = 0
+        else:
+            state = 0
+
+    if blank_lines:
+        # source.seek(0) # Binary mode !
+        source = open(filename, 'r')
+        lines = source.readlines()
+        os.rename(filename, filename + '~~')
+        output = open(filename, 'w')
+        for line_number, line in enumerate(lines):
+            #! line = line.rstrip() # /!\
+            if line_number in blank_lines:
+                line = '\n'
+            output.write(line + '\n')
+            # output.write('|' + line[:-1] + '|\n')
+
+####################################################################################################
+
+def find_pxdb_in_line(line):
+
+    start_position = 0
+    while start_position != -1:
+        start_position = line.find('pyxb.', start_position)
+        if start_position != -1:
+            stop_position = None
+            for c in ' ,:()}':
+                position = line.find(c, start_position +1)
+                if position != -1:
+                    if stop_position == None:
+                        stop_position = position
+                    else:
+                        stop_position = min(stop_position, position)
+                if stop_position is None:
+                    stop_position = len(line)
+            # print('|'+line[start_position:stop_position]+'|', start_position, stop_position)
+            print('|'+line[start_position:stop_position]+'|')
+            start_position = stop_position
+
+def find_pxdb(filename):
+
+    with open(filename, 'r') as source:
+        for line in source:
+            line = line.strip()
+            if not line.startswith('import') and not line.startswith('from'):
+                find_pxdb_in_line(line)
+
+####################################################################################################
+
+# |pyxb.binding.basis.complexTypeDefinition|
+# |pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY|
+# |pyxb.binding.basis.complexTypeDefinition._CT_EMPTY|
+# |pyxb.binding.basis.complexTypeDefinition._CT_SIMPLE|
+# |pyxb.binding.basis.element|
+# |pyxb.binding.basis.element.AnyCreateFromDOM|
+# |pyxb.binding.basis.enumeration_mixin|
+# |pyxb.binding.basis.STD_union|
+# |pyxb.binding.content.AttributeUse|
+# |pyxb.binding.content.ElementDeclaration|
+# |pyxb.binding.content.ElementUse|
+# |pyxb.binding.datatypes.anySimpleType|
+# |pyxb.binding.datatypes.anyType|
+# |pyxb.binding.datatypes.anyURI|
+# |pyxb.binding.datatypes.date|
+# |pyxb.binding.datatypes.decimal|
+# |pyxb.binding.datatypes.ID|
+# |pyxb.binding.datatypes.IDREF|
+# |pyxb.binding.datatypes.integer|
+# |pyxb.binding.datatypes.NMTOKEN|
+# |pyxb.binding.datatypes.nonNegativeInteger|
+# |pyxb.binding.datatypes.positiveInteger|
+# |pyxb.binding.datatypes.string|
+# |pyxb.binding.datatypes.token|
+# |pyxb.binding.facets.CF_enumeration|
+# |pyxb.binding.facets.CF_maxInclusive|
+# |pyxb.binding.facets.CF_minExclusive|
+# |pyxb.binding.facets.CF_minInclusive|
+# |pyxb.binding.facets.CF_pattern|
+# |pyxb.binding.saxer.make_parser|
+# |pyxb.binding.xml_.STD_ANON_lang|
+# |pyxb.binding.xml_.STD_ANON_space|
+# |pyxb._InputEncoding|
+# |pyxb.Namespace|
+# |pyxb.namespace.CreateAbsentNamespace|
+# |pyxb.namespace.ExpandedName|
+# |pyxb.namespace.XML|
+# |pyxb.PyXBVersionError|
+# |pyxb.utils.domutils.StringToDOM|
+# |pyxb.utils.utility.Location|
+# |pyxb.utils.utility.Object|
+# |pyxb.utils.utility.UniqueIdentifier|
+# |pyxb.__version__|
+# |pyxb._XMLStyle|
+# |pyxb.XMLStyle_saxer|
+
+to_simplify = (
+    'pyxb.binding.datatypes.positiveInteger',
+    'pyxb.binding.basis.complexTypeDefinition',
+    'pyxb.binding.basis.element',
+    'pyxb.binding.basis.enumeration_mixin',
+    'pyxb.binding.content.AttributeUse',
+    'pyxb.binding.content.ElementDeclaration',
+    'pyxb.binding.content.ElementUse',
+    'pyxb.binding.datatypes.ID',
+    'pyxb.binding.datatypes.IDREF',
+    'pyxb.binding.datatypes.NMTOKEN',
+    'pyxb.binding.datatypes.anySimpleType',
+    'pyxb.binding.datatypes.anyType',
+    'pyxb.binding.datatypes.decimal',
+    'pyxb.binding.datatypes.integer',
+    'pyxb.binding.datatypes.nonNegativeInteger',
+    'pyxb.binding.datatypes.positiveInteger',
+    'pyxb.binding.datatypes.string',
+    'pyxb.binding.datatypes.token',
+    'pyxb.binding.facets.CF_enumeration',
+    'pyxb.binding.facets.CF_maxInclusive',
+    'pyxb.binding.facets.CF_minExclusive',
+    'pyxb.binding.facets.CF_minInclusive',
+    'pyxb.namespace.ExpandedName',
+    'pyxb.utils.utility.Location',
+)
+
+to_simplify_map = {item: 'p_' + item[item.rfind('.')+1:]
+                   for item in to_simplify}
+# print(to_simplify_map)
+
+####################################################################################################
+
+def clean_line(line):
+
+    new_line = line.rstrip()
+
+    # new_line = new_line.replace('\/.*\/Musica\/specifications\/MusicXML-3\.0\')
+
+    for src, dst in to_simplify_map.items():
+        new_line = new_line.replace(src, dst)
+
+    stripped_line = new_line.strip()
+    if stripped_line.startswith('_Documentation ='):
+        new_line = new_line[:new_line.find(" = ")] + " = ''"
+
+    new_line = new_line.replace(musicxml_path + '/', '')
+
+    return new_line
+
+####################################################################################################
+
+def clean(filename):
+
+    print("Clean " + filename)
+
+    os.rename(filename, filename + '~~')
+    input_file = filename + '~~'
+    source = open(input_file, 'r')
+    output = open(filename, 'w')
+
+    in_doc = False
+    for line in source:
+        # print(line)
+        new_line = clean_line(line)
+        stripped_line = new_line.strip()
+        in_doc_changed = False
+        if not in_doc and stripped_line.startswith('"""'):
+            in_doc = True
+            in_doc_changed = True
+        if not in_doc:
+            output.write(new_line + '\n')
+            if stripped_line == 'import pyxb':
+                for src, dst in to_simplify_map.items():
+                    position = src.rfind('.')
+                    module = src[:position]
+                    name = src[position+1:]
+                    output.write('from {} import {} as {}\n'.format(module, name, dst))
+        else:
+            if stripped_line.count('"""') == 2:
+                in_doc = False
+            elif not in_doc_changed and stripped_line.endswith('"""'):
+                in_doc = False
+
+####################################################################################################
+
+path = args.python_file
+path = os.path.realpath(path)
+
+# find_pxdb(path)
+# remove_blank_lines(path)
+clean(path)

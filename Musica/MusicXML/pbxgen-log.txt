@@ -1,0 +1,1115 @@
+WARNING:pyxb.binding.generate:Simple type above-below renamed to above_below
+WARNING:pyxb.binding.generate:Simple type beam-level renamed to beam_level
+WARNING:pyxb.binding.generate:Simple type comma-separated-text renamed to comma_separated_text
+WARNING:pyxb.binding.generate:Simple type css-font-size renamed to css_font_size
+WARNING:pyxb.binding.generate:Simple type enclosure-shape renamed to enclosure_shape
+WARNING:pyxb.binding.generate:Simple type fermata-shape renamed to fermata_shape
+WARNING:pyxb.binding.generate:Simple type font-style renamed to font_style
+WARNING:pyxb.binding.generate:Simple type font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Simple type left-center-right renamed to left_center_right
+WARNING:pyxb.binding.generate:Simple type left-right renamed to left_right
+WARNING:pyxb.binding.generate:Simple type line-shape renamed to line_shape
+WARNING:pyxb.binding.generate:Simple type line-type renamed to line_type
+WARNING:pyxb.binding.generate:Simple type midi-16 renamed to midi_16
+WARNING:pyxb.binding.generate:Simple type midi-128 renamed to midi_128
+WARNING:pyxb.binding.generate:Simple type midi-16384 renamed to midi_16384
+WARNING:pyxb.binding.generate:Simple type non-negative-decimal renamed to non_negative_decimal
+WARNING:pyxb.binding.generate:Simple type number-level renamed to number_level
+WARNING:pyxb.binding.generate:Simple type number-of-lines renamed to number_of_lines
+WARNING:pyxb.binding.generate:Simple type over-under renamed to over_under
+WARNING:pyxb.binding.generate:Simple type positive-decimal renamed to positive_decimal
+WARNING:pyxb.binding.generate:Simple type rotation-degrees renamed to rotation_degrees
+WARNING:pyxb.binding.generate:Simple type semi-pitched renamed to semi_pitched
+WARNING:pyxb.binding.generate:Simple type start-note renamed to start_note
+WARNING:pyxb.binding.generate:Simple type start-stop renamed to start_stop
+WARNING:pyxb.binding.generate:Simple type start-stop-continue renamed to start_stop_continue
+WARNING:pyxb.binding.generate:Simple type start-stop-single renamed to start_stop_single
+WARNING:pyxb.binding.generate:Simple type string-number renamed to string_number
+WARNING:pyxb.binding.generate:Simple type symbol-size renamed to symbol_size
+WARNING:pyxb.binding.generate:Simple type text-direction renamed to text_direction
+WARNING:pyxb.binding.generate:Simple type time-only renamed to time_only
+WARNING:pyxb.binding.generate:Simple type top-bottom renamed to top_bottom
+WARNING:pyxb.binding.generate:Simple type trill-beats renamed to trill_beats
+WARNING:pyxb.binding.generate:Simple type trill-step renamed to trill_step
+WARNING:pyxb.binding.generate:Simple type two-note-turn renamed to two_note_turn
+WARNING:pyxb.binding.generate:Simple type up-down renamed to up_down
+WARNING:pyxb.binding.generate:Simple type upright-inverted renamed to upright_inverted
+WARNING:pyxb.binding.generate:Simple type valign-image renamed to valign_image
+WARNING:pyxb.binding.generate:Simple type yes-no renamed to yes_no
+WARNING:pyxb.binding.generate:Simple type yyyy-mm-dd renamed to yyyy_mm_dd
+WARNING:pyxb.binding.generate:Simple type cancel-location renamed to cancel_location
+WARNING:pyxb.binding.generate:Simple type clef-sign renamed to clef_sign
+WARNING:pyxb.binding.generate:Simple type show-frets renamed to show_frets
+WARNING:pyxb.binding.generate:Simple type staff-line renamed to staff_line
+WARNING:pyxb.binding.generate:Simple type staff-number renamed to staff_number
+WARNING:pyxb.binding.generate:Simple type staff-type renamed to staff_type
+WARNING:pyxb.binding.generate:Simple type time-relation renamed to time_relation
+WARNING:pyxb.binding.generate:Simple type time-separator renamed to time_separator
+WARNING:pyxb.binding.generate:Simple type time-symbol renamed to time_symbol
+WARNING:pyxb.binding.generate:Simple type backward-forward renamed to backward_forward
+WARNING:pyxb.binding.generate:Simple type bar-style renamed to bar_style
+WARNING:pyxb.binding.generate:Simple type ending-number renamed to ending_number
+WARNING:pyxb.binding.generate:Simple type right-left-middle renamed to right_left_middle
+WARNING:pyxb.binding.generate:Simple type start-stop-discontinue renamed to start_stop_discontinue
+WARNING:pyxb.binding.generate:Simple type accordion-middle renamed to accordion_middle
+WARNING:pyxb.binding.generate:Simple type beater-value renamed to beater_value
+WARNING:pyxb.binding.generate:Simple type degree-symbol-value renamed to degree_symbol_value
+WARNING:pyxb.binding.generate:Simple type degree-type-value renamed to degree_type_value
+WARNING:pyxb.binding.generate:Simple type harmony-type renamed to harmony_type
+WARNING:pyxb.binding.generate:Simple type kind-value renamed to kind_value
+WARNING:pyxb.binding.generate:Simple type line-end renamed to line_end
+WARNING:pyxb.binding.generate:Simple type measure-numbering-value renamed to measure_numbering_value
+WARNING:pyxb.binding.generate:Simple type on-off renamed to on_off
+WARNING:pyxb.binding.generate:Simple type principal-voice-symbol renamed to principal_voice_symbol
+WARNING:pyxb.binding.generate:Simple type start-stop-change-continue renamed to start_stop_change_continue
+WARNING:pyxb.binding.generate:Simple type tip-direction renamed to tip_direction
+WARNING:pyxb.binding.generate:Simple type stick-location renamed to stick_location
+WARNING:pyxb.binding.generate:Simple type stick-material renamed to stick_material
+WARNING:pyxb.binding.generate:Simple type stick-type renamed to stick_type
+WARNING:pyxb.binding.generate:Simple type up-down-stop-continue renamed to up_down_stop_continue
+WARNING:pyxb.binding.generate:Simple type wedge-type renamed to wedge_type
+WARNING:pyxb.binding.generate:Simple type distance-type renamed to distance_type
+WARNING:pyxb.binding.generate:Simple type line-width-type renamed to line_width_type
+WARNING:pyxb.binding.generate:Simple type margin-type renamed to margin_type
+WARNING:pyxb.binding.generate:Simple type note-size-type renamed to note_size_type
+WARNING:pyxb.binding.generate:Simple type accidental-value renamed to accidental_value
+WARNING:pyxb.binding.generate:Simple type arrow-direction renamed to arrow_direction
+WARNING:pyxb.binding.generate:Simple type arrow-style renamed to arrow_style
+WARNING:pyxb.binding.generate:Simple type beam-value renamed to beam_value
+WARNING:pyxb.binding.generate:Simple type breath-mark-value renamed to breath_mark_value
+WARNING:pyxb.binding.generate:Simple type circular-arrow renamed to circular_arrow
+WARNING:pyxb.binding.generate:Simple type handbell-value renamed to handbell_value
+WARNING:pyxb.binding.generate:Simple type hole-closed-location renamed to hole_closed_location
+WARNING:pyxb.binding.generate:Simple type hole-closed-value renamed to hole_closed_value
+WARNING:pyxb.binding.generate:Simple type note-type-value renamed to note_type_value
+WARNING:pyxb.binding.generate:Simple type notehead-value renamed to notehead_value
+WARNING:pyxb.binding.generate:Simple type show-tuplet renamed to show_tuplet
+WARNING:pyxb.binding.generate:Simple type stem-value renamed to stem_value
+WARNING:pyxb.binding.generate:Simple type tremolo-marks renamed to tremolo_marks
+WARNING:pyxb.binding.generate:Simple type group-barline-value renamed to group_barline_value
+WARNING:pyxb.binding.generate:Simple type group-symbol-value renamed to group_symbol_value
+WARNING:pyxb.binding.generate:Simple type font-size renamed to font_size
+WARNING:pyxb.binding.generate:Simple type number-or-normal renamed to number_or_normal
+WARNING:pyxb.binding.generate:Simple type positive-divisions renamed to positive_divisions
+WARNING:pyxb.binding.generate:Simple type positive-integer-or-empty renamed to positive_integer_or_empty
+WARNING:pyxb.binding.generate:Simple type yes-no-number renamed to yes_no_number
+WARNING:pyxb.binding.generate:Complex type midi-instrument renamed to midi_instrument
+WARNING:pyxb.binding.generate:Element use midi-instrument.midi-channel renamed to midi_channel
+WARNING:pyxb.binding.generate:Element use midi-instrument.midi-name renamed to midi_name
+WARNING:pyxb.binding.generate:Element use midi-instrument.midi-bank renamed to midi_bank
+WARNING:pyxb.binding.generate:Element use midi-instrument.midi-program renamed to midi_program
+WARNING:pyxb.binding.generate:Element use midi-instrument.midi-unpitched renamed to midi_unpitched
+WARNING:pyxb.binding.generate:Complex type other-play renamed to other_play
+WARNING:pyxb.binding.generate:Element use play.semi-pitched renamed to semi_pitched
+WARNING:pyxb.binding.generate:Element use play.other-play renamed to other_play
+WARNING:pyxb.binding.generate:Complex type typed-text renamed to typed_text
+WARNING:pyxb.binding.generate:Element use attributes.part-symbol renamed to part_symbol
+WARNING:pyxb.binding.generate:Element use attributes.staff-details renamed to staff_details
+WARNING:pyxb.binding.generate:Element use attributes.measure-style renamed to measure_style
+WARNING:pyxb.binding.generate:Element use bass.bass-step renamed to bass_step
+WARNING:pyxb.binding.generate:Element use bass.bass-alter renamed to bass_alter
+WARNING:pyxb.binding.generate:Complex type direction-type renamed to direction_type
+WARNING:pyxb.binding.generate:Element use direction-type.octave-shift renamed to octave_shift
+WARNING:pyxb.binding.generate:Element use direction-type.harp-pedals renamed to harp_pedals
+WARNING:pyxb.binding.generate:Element use direction-type.damp-all renamed to damp_all
+WARNING:pyxb.binding.generate:Element use direction-type.string-mute renamed to string_mute
+WARNING:pyxb.binding.generate:Element use direction-type.principal-voice renamed to principal_voice
+WARNING:pyxb.binding.generate:Element use direction-type.accordion-registration renamed to accordion_registration
+WARNING:pyxb.binding.generate:Element use direction-type.other-direction renamed to other_direction
+WARNING:pyxb.binding.generate:Complex type frame-note renamed to frame_note
+WARNING:pyxb.binding.generate:Complex type metronome-note renamed to metronome_note
+WARNING:pyxb.binding.generate:Element use metronome-note.metronome-type renamed to metronome_type
+WARNING:pyxb.binding.generate:Element use metronome-note.metronome-dot renamed to metronome_dot
+WARNING:pyxb.binding.generate:Element use metronome-note.metronome-beam renamed to metronome_beam
+WARNING:pyxb.binding.generate:Element use metronome-note.metronome-tuplet renamed to metronome_tuplet
+WARNING:pyxb.binding.generate:Complex type pedal-tuning renamed to pedal_tuning
+WARNING:pyxb.binding.generate:Element use pedal-tuning.pedal-step renamed to pedal_step
+WARNING:pyxb.binding.generate:Element use pedal-tuning.pedal-alter renamed to pedal_alter
+WARNING:pyxb.binding.generate:Element use root.root-step renamed to root_step
+WARNING:pyxb.binding.generate:Element use root.root-alter renamed to root_alter
+WARNING:pyxb.binding.generate:Element use encoding.encoding-date renamed to encoding_date
+WARNING:pyxb.binding.generate:Element use encoding.encoding-description renamed to encoding_description
+WARNING:pyxb.binding.generate:Element use miscellaneous.miscellaneous-field renamed to miscellaneous_field
+WARNING:pyxb.binding.generate:Complex type miscellaneous-field renamed to miscellaneous_field
+WARNING:pyxb.binding.generate:Element use appearance.line-width renamed to line_width
+WARNING:pyxb.binding.generate:Element use appearance.note-size renamed to note_size
+WARNING:pyxb.binding.generate:Element use appearance.other-appearance renamed to other_appearance
+WARNING:pyxb.binding.generate:Complex type measure-layout renamed to measure_layout
+WARNING:pyxb.binding.generate:Element use measure-layout.measure-distance renamed to measure_distance
+WARNING:pyxb.binding.generate:Complex type other-appearance renamed to other_appearance
+WARNING:pyxb.binding.generate:Complex type page-layout renamed to page_layout
+WARNING:pyxb.binding.generate:Element use page-layout.page-height renamed to page_height
+WARNING:pyxb.binding.generate:Element use page-layout.page-width renamed to page_width
+WARNING:pyxb.binding.generate:Element use page-layout.page-margins renamed to page_margins
+WARNING:pyxb.binding.generate:Complex type system-dividers renamed to system_dividers
+WARNING:pyxb.binding.generate:Element use system-dividers.left-divider renamed to left_divider
+WARNING:pyxb.binding.generate:Element use system-dividers.right-divider renamed to right_divider
+WARNING:pyxb.binding.generate:Complex type system-layout renamed to system_layout
+WARNING:pyxb.binding.generate:Element use system-layout.system-margins renamed to system_margins
+WARNING:pyxb.binding.generate:Element use system-layout.system-distance renamed to system_distance
+WARNING:pyxb.binding.generate:Element use system-layout.top-system-distance renamed to top_system_distance
+WARNING:pyxb.binding.generate:Element use system-layout.system-dividers renamed to system_dividers
+WARNING:pyxb.binding.generate:Complex type system-margins renamed to system_margins
+WARNING:pyxb.binding.generate:Element use system-margins.left-margin renamed to left_margin
+WARNING:pyxb.binding.generate:Element use system-margins.right-margin renamed to right_margin
+WARNING:pyxb.binding.generate:Element use articulations.strong-accent renamed to strong_accent
+WARNING:pyxb.binding.generate:Element use articulations.detached-legato renamed to detached_legato
+WARNING:pyxb.binding.generate:Element use articulations.breath-mark renamed to breath_mark
+WARNING:pyxb.binding.generate:Element use articulations.other-articulation renamed to other_articulation
+WARNING:pyxb.binding.generate:Element use figure.figure-number renamed to figure_number
+WARNING:pyxb.binding.generate:Element use figure.extend renamed to extend_
+WARNING:pyxb.binding.generate:Complex type notehead-text renamed to notehead_text
+WARNING:pyxb.binding.generate:Element use notehead-text.display-text renamed to display_text
+WARNING:pyxb.binding.generate:Element use notehead-text.accidental-text renamed to accidental_text
+WARNING:pyxb.binding.generate:Element use ornaments.trill-mark renamed to trill_mark
+WARNING:pyxb.binding.generate:Element use ornaments.delayed-turn renamed to delayed_turn
+WARNING:pyxb.binding.generate:Element use ornaments.inverted-turn renamed to inverted_turn
+WARNING:pyxb.binding.generate:Element use ornaments.delayed-inverted-turn renamed to delayed_inverted_turn
+WARNING:pyxb.binding.generate:Element use ornaments.vertical-turn renamed to vertical_turn
+WARNING:pyxb.binding.generate:Element use ornaments.wavy-line renamed to wavy_line
+WARNING:pyxb.binding.generate:Element use ornaments.inverted-mordent renamed to inverted_mordent
+WARNING:pyxb.binding.generate:Element use ornaments.other-ornament renamed to other_ornament
+WARNING:pyxb.binding.generate:Element use ornaments.accidental-mark renamed to accidental_mark
+WARNING:pyxb.binding.generate:Element use technical.up-bow renamed to up_bow
+WARNING:pyxb.binding.generate:Element use technical.down-bow renamed to down_bow
+WARNING:pyxb.binding.generate:Element use technical.open-string renamed to open_string
+WARNING:pyxb.binding.generate:Element use technical.thumb-position renamed to thumb_position
+WARNING:pyxb.binding.generate:Element use technical.double-tongue renamed to double_tongue
+WARNING:pyxb.binding.generate:Element use technical.triple-tongue renamed to triple_tongue
+WARNING:pyxb.binding.generate:Element use technical.snap-pizzicato renamed to snap_pizzicato
+WARNING:pyxb.binding.generate:Element use technical.hammer-on renamed to hammer_on
+WARNING:pyxb.binding.generate:Element use technical.pull-off renamed to pull_off
+WARNING:pyxb.binding.generate:Element use technical.other-technical renamed to other_technical
+WARNING:pyxb.binding.generate:Complex type time-modification renamed to time_modification
+WARNING:pyxb.binding.generate:Element use time-modification.actual-notes renamed to actual_notes
+WARNING:pyxb.binding.generate:Element use time-modification.normal-notes renamed to normal_notes
+WARNING:pyxb.binding.generate:Element use time-modification.normal-type renamed to normal_type
+WARNING:pyxb.binding.generate:Element use time-modification.normal-dot renamed to normal_dot
+WARNING:pyxb.binding.generate:Complex type tuplet-portion renamed to tuplet_portion
+WARNING:pyxb.binding.generate:Element use tuplet-portion.tuplet-number renamed to tuplet_number
+WARNING:pyxb.binding.generate:Element use tuplet-portion.tuplet-type renamed to tuplet_type
+WARNING:pyxb.binding.generate:Element use tuplet-portion.tuplet-dot renamed to tuplet_dot
+WARNING:pyxb.binding.generate:Element use unpitched.display-step renamed to display_step
+WARNING:pyxb.binding.generate:Element use unpitched.display-octave renamed to display_octave
+WARNING:pyxb.binding.generate:Element use credit.credit-type renamed to credit_type
+WARNING:pyxb.binding.generate:Element use credit.credit-image renamed to credit_image
+WARNING:pyxb.binding.generate:Element use credit.credit-words renamed to credit_words
+WARNING:pyxb.binding.generate:Element use defaults.music-font renamed to music_font
+WARNING:pyxb.binding.generate:Element use defaults.word-font renamed to word_font
+WARNING:pyxb.binding.generate:Element use defaults.lyric-font renamed to lyric_font
+WARNING:pyxb.binding.generate:Element use defaults.lyric-language renamed to lyric_language
+WARNING:pyxb.binding.generate:Element use defaults.page-layout renamed to page_layout
+WARNING:pyxb.binding.generate:Element use defaults.system-layout renamed to system_layout
+WARNING:pyxb.binding.generate:Element use defaults.staff-layout renamed to staff_layout
+WARNING:pyxb.binding.generate:Complex type lyric-language renamed to lyric_language
+WARNING:pyxb.binding.generate:Complex type part-list renamed to part_list
+WARNING:pyxb.binding.generate:Element use part-list.part-group renamed to part_group
+WARNING:pyxb.binding.generate:Element use part-list.score-part renamed to score_part
+WARNING:pyxb.binding.generate:Complex type score-instrument renamed to score_instrument
+WARNING:pyxb.binding.generate:Element use score-instrument.instrument-name renamed to instrument_name
+WARNING:pyxb.binding.generate:Element use score-instrument.instrument-abbreviation renamed to instrument_abbreviation
+WARNING:pyxb.binding.generate:Element use score-instrument.instrument-sound renamed to instrument_sound
+WARNING:pyxb.binding.generate:Element use score-instrument.virtual-instrument renamed to virtual_instrument
+WARNING:pyxb.binding.generate:Complex type score-part renamed to score_part
+WARNING:pyxb.binding.generate:Element use score-part.part-name renamed to part_name
+WARNING:pyxb.binding.generate:Element use score-part.part-name-display renamed to part_name_display
+WARNING:pyxb.binding.generate:Element use score-part.part-abbreviation renamed to part_abbreviation
+WARNING:pyxb.binding.generate:Element use score-part.part-abbreviation-display renamed to part_abbreviation_display
+WARNING:pyxb.binding.generate:Element use score-part.score-instrument renamed to score_instrument
+WARNING:pyxb.binding.generate:Element use score-part.midi-device renamed to midi_device
+WARNING:pyxb.binding.generate:Element use score-part.midi-instrument renamed to midi_instrument
+WARNING:pyxb.binding.generate:Complex type virtual-instrument renamed to virtual_instrument
+WARNING:pyxb.binding.generate:Element use virtual-instrument.virtual-library renamed to virtual_library
+WARNING:pyxb.binding.generate:Element use virtual-instrument.virtual-name renamed to virtual_name
+WARNING:pyxb.binding.generate:Element use work.work-number renamed to work_number
+WARNING:pyxb.binding.generate:Element use work.work-title renamed to work_title
+WARNING:pyxb.binding.generate:Element use None.movement-number renamed to movement_number
+WARNING:pyxb.binding.generate:Element use None.movement-title renamed to movement_title
+WARNING:pyxb.binding.generate:Element use None.part-list renamed to part_list
+WARNING:pyxb.binding.generate:Element use None.movement-number renamed to movement_number
+WARNING:pyxb.binding.generate:Element use None.movement-title renamed to movement_title
+WARNING:pyxb.binding.generate:Element use None.part-list renamed to part_list
+WARNING:pyxb.binding.generate:Element use None.figured-bass renamed to figured_bass
+WARNING:pyxb.binding.generate:Element use None.print renamed to print_
+WARNING:pyxb.binding.generate:Complex type midi-device renamed to midi_device
+WARNING:pyxb.binding.generate:Complex type name-display renamed to name_display
+WARNING:pyxb.binding.generate:Element use name-display.display-text renamed to display_text
+WARNING:pyxb.binding.generate:Element use name-display.accidental-text renamed to accidental_text
+WARNING:pyxb.binding.generate:Attribute name-display.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type wavy-line renamed to wavy_line
+WARNING:pyxb.binding.generate:Attribute wavy-line.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute wavy-line.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute wavy-line.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute wavy-line.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute wavy-line.start-note renamed to start_note
+WARNING:pyxb.binding.generate:Attribute wavy-line.trill-step renamed to trill_step
+WARNING:pyxb.binding.generate:Attribute wavy-line.two-note-turn renamed to two_note_turn
+WARNING:pyxb.binding.generate:Attribute wavy-line.second-beat renamed to second_beat
+WARNING:pyxb.binding.generate:Attribute wavy-line.last-beat renamed to last_beat
+WARNING:pyxb.binding.generate:Complex type beat-repeat renamed to beat_repeat
+WARNING:pyxb.binding.generate:Element use beat-repeat.slash-type renamed to slash_type
+WARNING:pyxb.binding.generate:Element use beat-repeat.slash-dot renamed to slash_dot
+WARNING:pyxb.binding.generate:Attribute beat-repeat.use-dots renamed to use_dots
+WARNING:pyxb.binding.generate:Element use interchangeable.time-relation renamed to time_relation
+WARNING:pyxb.binding.generate:Element use interchangeable.beat-type renamed to beat_type
+WARNING:pyxb.binding.generate:Complex type key-octave renamed to key_octave
+WARNING:pyxb.binding.generate:Complex type part-symbol renamed to part_symbol
+WARNING:pyxb.binding.generate:Attribute part-symbol.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute part-symbol.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute part-symbol.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute part-symbol.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute part-symbol.top-staff renamed to top_staff
+WARNING:pyxb.binding.generate:Attribute part-symbol.bottom-staff renamed to bottom_staff
+WARNING:pyxb.binding.generate:Element use slash.slash-type renamed to slash_type
+WARNING:pyxb.binding.generate:Element use slash.slash-dot renamed to slash_dot
+WARNING:pyxb.binding.generate:Attribute slash.use-dots renamed to use_dots
+WARNING:pyxb.binding.generate:Attribute slash.use-stems renamed to use_stems
+WARNING:pyxb.binding.generate:Complex type staff-details renamed to staff_details
+WARNING:pyxb.binding.generate:Element use staff-details.staff-type renamed to staff_type
+WARNING:pyxb.binding.generate:Element use staff-details.staff-lines renamed to staff_lines
+WARNING:pyxb.binding.generate:Element use staff-details.staff-tuning renamed to staff_tuning
+WARNING:pyxb.binding.generate:Element use staff-details.staff-size renamed to staff_size
+WARNING:pyxb.binding.generate:Attribute staff-details.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute staff-details.print-spacing renamed to print_spacing
+WARNING:pyxb.binding.generate:Attribute staff-details.show-frets renamed to show_frets
+WARNING:pyxb.binding.generate:Complex type staff-tuning renamed to staff_tuning
+WARNING:pyxb.binding.generate:Element use staff-tuning.tuning-step renamed to tuning_step
+WARNING:pyxb.binding.generate:Element use staff-tuning.tuning-alter renamed to tuning_alter
+WARNING:pyxb.binding.generate:Element use staff-tuning.tuning-octave renamed to tuning_octave
+WARNING:pyxb.binding.generate:Element use transpose.octave-change renamed to octave_change
+WARNING:pyxb.binding.generate:Complex type bar-style-color renamed to bar_style_color
+WARNING:pyxb.binding.generate:Element use barline.bar-style renamed to bar_style
+WARNING:pyxb.binding.generate:Element use barline.wavy-line renamed to wavy_line
+WARNING:pyxb.binding.generate:Attribute barline.segno renamed to segno_
+WARNING:pyxb.binding.generate:Attribute barline.coda renamed to coda_
+WARNING:pyxb.binding.generate:Element use accord.tuning-step renamed to tuning_step
+WARNING:pyxb.binding.generate:Element use accord.tuning-alter renamed to tuning_alter
+WARNING:pyxb.binding.generate:Element use accord.tuning-octave renamed to tuning_octave
+WARNING:pyxb.binding.generate:Attribute bracket.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute bracket.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute bracket.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute bracket.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute bracket.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute bracket.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute bracket.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute bracket.line-end renamed to line_end
+WARNING:pyxb.binding.generate:Attribute bracket.end-length renamed to end_length
+WARNING:pyxb.binding.generate:Attribute dashes.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute dashes.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute dashes.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute dashes.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute dashes.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute dashes.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use degree.degree-value renamed to degree_value
+WARNING:pyxb.binding.generate:Element use degree.degree-alter renamed to degree_alter
+WARNING:pyxb.binding.generate:Element use degree.degree-type renamed to degree_type
+WARNING:pyxb.binding.generate:Attribute degree.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Element use direction.direction-type renamed to direction_type
+WARNING:pyxb.binding.generate:Complex type first-fret renamed to first_fret
+WARNING:pyxb.binding.generate:Element use frame.frame-strings renamed to frame_strings
+WARNING:pyxb.binding.generate:Element use frame.frame-frets renamed to frame_frets
+WARNING:pyxb.binding.generate:Element use frame.first-fret renamed to first_fret
+WARNING:pyxb.binding.generate:Element use frame.frame-note renamed to frame_note
+WARNING:pyxb.binding.generate:Attribute frame.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute frame.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute frame.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute frame.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute grouping.member-of renamed to member_of
+WARNING:pyxb.binding.generate:Attribute image.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute image.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute image.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute image.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type metronome-beam renamed to metronome_beam
+WARNING:pyxb.binding.generate:Complex type metronome-tuplet renamed to metronome_tuplet
+WARNING:pyxb.binding.generate:Attribute metronome-tuplet.show-number renamed to show_number
+WARNING:pyxb.binding.generate:Complex type print renamed to print_
+WARNING:pyxb.binding.generate:Element use print.measure-layout renamed to measure_layout
+WARNING:pyxb.binding.generate:Element use print.measure-numbering renamed to measure_numbering
+WARNING:pyxb.binding.generate:Element use print.part-name-display renamed to part_name_display
+WARNING:pyxb.binding.generate:Element use print.part-abbreviation-display renamed to part_abbreviation_display
+WARNING:pyxb.binding.generate:Element use print.page-layout renamed to page_layout
+WARNING:pyxb.binding.generate:Element use print.system-layout renamed to system_layout
+WARNING:pyxb.binding.generate:Element use print.staff-layout renamed to staff_layout
+WARNING:pyxb.binding.generate:Attribute print.staff-spacing renamed to staff_spacing
+WARNING:pyxb.binding.generate:Attribute print.new-system renamed to new_system
+WARNING:pyxb.binding.generate:Attribute print.new-page renamed to new_page
+WARNING:pyxb.binding.generate:Attribute print.blank-page renamed to blank_page
+WARNING:pyxb.binding.generate:Attribute print.page-number renamed to page_number
+WARNING:pyxb.binding.generate:Element use stick.stick-type renamed to stick_type
+WARNING:pyxb.binding.generate:Element use stick.stick-material renamed to stick_material
+WARNING:pyxb.binding.generate:Attribute wedge.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute wedge.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute wedge.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute wedge.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute wedge.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute wedge.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute wedge.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute supports.value renamed to value_
+WARNING:pyxb.binding.generate:Complex type line-width renamed to line_width
+WARNING:pyxb.binding.generate:Complex type note-size renamed to note_size
+WARNING:pyxb.binding.generate:Complex type page-margins renamed to page_margins
+WARNING:pyxb.binding.generate:Element use page-margins.top-margin renamed to top_margin
+WARNING:pyxb.binding.generate:Element use page-margins.bottom-margin renamed to bottom_margin
+WARNING:pyxb.binding.generate:Element use page-margins.left-margin renamed to left_margin
+WARNING:pyxb.binding.generate:Element use page-margins.right-margin renamed to right_margin
+WARNING:pyxb.binding.generate:Complex type staff-layout renamed to staff_layout
+WARNING:pyxb.binding.generate:Element use staff-layout.staff-distance renamed to staff_distance
+WARNING:pyxb.binding.generate:Attribute link.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute link.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute link.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute link.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute arpeggiate.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute arpeggiate.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute arpeggiate.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute arpeggiate.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute grace.steal-time-previous renamed to steal_time_previous
+WARNING:pyxb.binding.generate:Attribute grace.steal-time-following renamed to steal_time_following
+WARNING:pyxb.binding.generate:Attribute grace.make-time renamed to make_time
+WARNING:pyxb.binding.generate:Complex type hole-closed renamed to hole_closed
+WARNING:pyxb.binding.generate:Element use lyric.extend renamed to extend_
+WARNING:pyxb.binding.generate:Element use lyric.end-line renamed to end_line
+WARNING:pyxb.binding.generate:Element use lyric.end-paragraph renamed to end_paragraph
+WARNING:pyxb.binding.generate:Attribute lyric.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute lyric.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute lyric.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute lyric.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute lyric.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type non-arpeggiate renamed to non_arpeggiate
+WARNING:pyxb.binding.generate:Attribute non-arpeggiate.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute non-arpeggiate.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute non-arpeggiate.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute non-arpeggiate.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use notations.non-arpeggiate renamed to non_arpeggiate
+WARNING:pyxb.binding.generate:Element use notations.accidental-mark renamed to accidental_mark
+WARNING:pyxb.binding.generate:Element use notations.other-notation renamed to other_notation
+WARNING:pyxb.binding.generate:Attribute notations.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type note-type renamed to note_type
+WARNING:pyxb.binding.generate:Element use rest.display-step renamed to display_step
+WARNING:pyxb.binding.generate:Element use rest.display-octave renamed to display_octave
+WARNING:pyxb.binding.generate:Attribute slur.bezier-offset renamed to bezier_offset
+WARNING:pyxb.binding.generate:Attribute slur.bezier-offset2 renamed to bezier_offset2
+WARNING:pyxb.binding.generate:Attribute slur.bezier-x renamed to bezier_x
+WARNING:pyxb.binding.generate:Attribute slur.bezier-y renamed to bezier_y
+WARNING:pyxb.binding.generate:Attribute slur.bezier-x2 renamed to bezier_x2
+WARNING:pyxb.binding.generate:Attribute slur.bezier-y2 renamed to bezier_y2
+WARNING:pyxb.binding.generate:Attribute slur.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute slur.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute slur.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute slur.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute slur.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute slur.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute slur.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute stem.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute stem.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute stem.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute stem.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute tie.time-only renamed to time_only
+WARNING:pyxb.binding.generate:Attribute tied.bezier-offset renamed to bezier_offset
+WARNING:pyxb.binding.generate:Attribute tied.bezier-offset2 renamed to bezier_offset2
+WARNING:pyxb.binding.generate:Attribute tied.bezier-x renamed to bezier_x
+WARNING:pyxb.binding.generate:Attribute tied.bezier-y renamed to bezier_y
+WARNING:pyxb.binding.generate:Attribute tied.bezier-x2 renamed to bezier_x2
+WARNING:pyxb.binding.generate:Attribute tied.bezier-y2 renamed to bezier_y2
+WARNING:pyxb.binding.generate:Attribute tied.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute tied.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute tied.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute tied.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute tied.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute tied.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute tied.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use tuplet.tuplet-actual renamed to tuplet_actual
+WARNING:pyxb.binding.generate:Element use tuplet.tuplet-normal renamed to tuplet_normal
+WARNING:pyxb.binding.generate:Attribute tuplet.line-shape renamed to line_shape
+WARNING:pyxb.binding.generate:Attribute tuplet.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute tuplet.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute tuplet.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute tuplet.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute tuplet.show-number renamed to show_number
+WARNING:pyxb.binding.generate:Attribute tuplet.show-type renamed to show_type
+WARNING:pyxb.binding.generate:Complex type group-barline renamed to group_barline
+WARNING:pyxb.binding.generate:Complex type group-symbol renamed to group_symbol
+WARNING:pyxb.binding.generate:Attribute group-symbol.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute group-symbol.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute group-symbol.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute group-symbol.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type part-group renamed to part_group
+WARNING:pyxb.binding.generate:Element use part-group.group-name renamed to group_name
+WARNING:pyxb.binding.generate:Element use part-group.group-name-display renamed to group_name_display
+WARNING:pyxb.binding.generate:Element use part-group.group-abbreviation renamed to group_abbreviation
+WARNING:pyxb.binding.generate:Element use part-group.group-abbreviation-display renamed to group_abbreviation_display
+WARNING:pyxb.binding.generate:Element use part-group.group-symbol renamed to group_symbol
+WARNING:pyxb.binding.generate:Element use part-group.group-barline renamed to group_barline
+WARNING:pyxb.binding.generate:Element use part-group.group-time renamed to group_time
+WARNING:pyxb.binding.generate:Element use None.figured-bass renamed to figured_bass
+WARNING:pyxb.binding.generate:Element use None.print renamed to print_
+WARNING:pyxb.binding.generate:Attribute None.non-controlling renamed to non_controlling
+WARNING:pyxb.binding.generate:Attribute None.non-controlling renamed to non_controlling
+WARNING:pyxb.binding.generate:Complex type accidental-text renamed to accidental_text
+WARNING:pyxb.binding.generate:Attribute accidental-text.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute accidental-text.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute accidental-text.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute accidental-text.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute accidental-text.letter-spacing renamed to letter_spacing
+WARNING:pyxb.binding.generate:Attribute accidental-text.line-height renamed to line_height
+WARNING:pyxb.binding.generate:Attribute accidental-text.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute accidental-text.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute accidental-text.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute accidental-text.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute accidental-text.line-through renamed to line_through
+WARNING:pyxb.binding.generate:Element use dynamics.other-dynamics renamed to other_dynamics
+WARNING:pyxb.binding.generate:Attribute dynamics.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute dynamics.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute dynamics.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute dynamics.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute dynamics.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute dynamics.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute dynamics.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute dynamics.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute dynamics.line-through renamed to line_through
+WARNING:pyxb.binding.generate:Complex type empty-placement renamed to empty_placement
+WARNING:pyxb.binding.generate:Attribute empty-placement.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-placement.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-placement.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-placement.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute empty-placement.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute empty-placement.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute empty-placement.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute empty-placement.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type empty-print-style renamed to empty_print_style
+WARNING:pyxb.binding.generate:Attribute empty-print-style.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-print-style.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-print-style.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-print-style.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute empty-print-style.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute empty-print-style.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute empty-print-style.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute empty-print-style.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type empty-print-style-align renamed to empty_print_style_align
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute empty-print-style-align.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type empty-print-object-style-align renamed to empty_print_object_style_align
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute empty-print-object-style-align.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type empty-trill-sound renamed to empty_trill_sound
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.start-note renamed to start_note
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.trill-step renamed to trill_step
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.two-note-turn renamed to two_note_turn
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.second-beat renamed to second_beat
+WARNING:pyxb.binding.generate:Attribute empty-trill-sound.last-beat renamed to last_beat
+WARNING:pyxb.binding.generate:Complex type horizontal-turn renamed to horizontal_turn
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.start-note renamed to start_note
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.trill-step renamed to trill_step
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.two-note-turn renamed to two_note_turn
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.second-beat renamed to second_beat
+WARNING:pyxb.binding.generate:Attribute horizontal-turn.last-beat renamed to last_beat
+WARNING:pyxb.binding.generate:Attribute fermata.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute fermata.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute fermata.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute fermata.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute fermata.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute fermata.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute fermata.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute fermata.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute fingering.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute fingering.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute fingering.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute fingering.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute fingering.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute fingering.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute fingering.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute fingering.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type formatted-text renamed to formatted_text
+WARNING:pyxb.binding.generate:Attribute formatted-text.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute formatted-text.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute formatted-text.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute formatted-text.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute formatted-text.letter-spacing renamed to letter_spacing
+WARNING:pyxb.binding.generate:Attribute formatted-text.line-height renamed to line_height
+WARNING:pyxb.binding.generate:Attribute formatted-text.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute formatted-text.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute formatted-text.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute formatted-text.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute formatted-text.line-through renamed to line_through
+WARNING:pyxb.binding.generate:Attribute fret.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute fret.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute fret.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute fret.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute string.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute string.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute string.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute string.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute string.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute string.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute string.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute string.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute None.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute None.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute None.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute None.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute None.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute None.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute None.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute None.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use clef.clef-octave-change renamed to clef_octave_change
+WARNING:pyxb.binding.generate:Attribute clef.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute clef.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute clef.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute clef.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute clef.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute clef.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute clef.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute clef.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute clef.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute clef.after-barline renamed to after_barline
+WARNING:pyxb.binding.generate:Element use key.key-octave renamed to key_octave
+WARNING:pyxb.binding.generate:Element use key.key-step renamed to key_step
+WARNING:pyxb.binding.generate:Element use key.key-alter renamed to key_alter
+WARNING:pyxb.binding.generate:Element use key.key-accidental renamed to key_accidental
+WARNING:pyxb.binding.generate:Attribute key.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute key.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute key.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute key.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute key.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute key.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute key.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute key.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute key.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type measure-repeat renamed to measure_repeat
+WARNING:pyxb.binding.generate:Complex type measure-style renamed to measure_style
+WARNING:pyxb.binding.generate:Element use measure-style.multiple-rest renamed to multiple_rest
+WARNING:pyxb.binding.generate:Element use measure-style.measure-repeat renamed to measure_repeat
+WARNING:pyxb.binding.generate:Element use measure-style.beat-repeat renamed to beat_repeat
+WARNING:pyxb.binding.generate:Attribute measure-style.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute measure-style.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute measure-style.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute measure-style.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type multiple-rest renamed to multiple_rest
+WARNING:pyxb.binding.generate:Attribute multiple-rest.use-symbols renamed to use_symbols
+WARNING:pyxb.binding.generate:Element use time.senza-misura renamed to senza_misura
+WARNING:pyxb.binding.generate:Element use time.beat-type renamed to beat_type
+WARNING:pyxb.binding.generate:Attribute time.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute time.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute time.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute time.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute time.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute time.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute time.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute time.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute time.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute ending.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute ending.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute ending.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute ending.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute ending.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute ending.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute ending.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute ending.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute ending.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute ending.end-length renamed to end_length
+WARNING:pyxb.binding.generate:Attribute ending.text-x renamed to text_x
+WARNING:pyxb.binding.generate:Attribute ending.text-y renamed to text_y
+WARNING:pyxb.binding.generate:Complex type accordion-registration renamed to accordion_registration
+WARNING:pyxb.binding.generate:Element use accordion-registration.accordion-high renamed to accordion_high
+WARNING:pyxb.binding.generate:Element use accordion-registration.accordion-middle renamed to accordion_middle
+WARNING:pyxb.binding.generate:Element use accordion-registration.accordion-low renamed to accordion_low
+WARNING:pyxb.binding.generate:Attribute accordion-registration.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute accordion-registration.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute accordion-registration.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute accordion-registration.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute accordion-registration.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute accordion-registration.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute accordion-registration.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute accordion-registration.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type bass-alter renamed to bass_alter
+WARNING:pyxb.binding.generate:Attribute bass-alter.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute bass-alter.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute bass-alter.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute bass-alter.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute bass-alter.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute bass-alter.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute bass-alter.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute bass-alter.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute bass-alter.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type bass-step renamed to bass_step
+WARNING:pyxb.binding.generate:Attribute bass-step.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute bass-step.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute bass-step.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute bass-step.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute bass-step.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute bass-step.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute bass-step.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute bass-step.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type degree-alter renamed to degree_alter
+WARNING:pyxb.binding.generate:Attribute degree-alter.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute degree-alter.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute degree-alter.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute degree-alter.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute degree-alter.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute degree-alter.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute degree-alter.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute degree-alter.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute degree-alter.plus-minus renamed to plus_minus
+WARNING:pyxb.binding.generate:Complex type degree-type renamed to degree_type
+WARNING:pyxb.binding.generate:Attribute degree-type.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute degree-type.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute degree-type.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute degree-type.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute degree-type.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute degree-type.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute degree-type.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute degree-type.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type degree-value renamed to degree_value
+WARNING:pyxb.binding.generate:Attribute degree-value.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute degree-value.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute degree-value.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute degree-value.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute degree-value.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute degree-value.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute degree-value.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute degree-value.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute harmony.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute harmony.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute harmony.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute harmony.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute harmony.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute harmony.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute harmony.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute harmony.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute harmony.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute harmony.print-frame renamed to print_frame
+WARNING:pyxb.binding.generate:Complex type harp-pedals renamed to harp_pedals
+WARNING:pyxb.binding.generate:Element use harp-pedals.pedal-tuning renamed to pedal_tuning
+WARNING:pyxb.binding.generate:Attribute harp-pedals.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute harp-pedals.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute harp-pedals.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute harp-pedals.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute harp-pedals.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute harp-pedals.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute harp-pedals.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute harp-pedals.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute inversion.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute inversion.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute inversion.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute inversion.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute inversion.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute inversion.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute inversion.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute inversion.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute kind.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute kind.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute kind.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute kind.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute kind.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute kind.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute kind.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute kind.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute kind.use-symbols renamed to use_symbols
+WARNING:pyxb.binding.generate:Attribute kind.stack-degrees renamed to stack_degrees
+WARNING:pyxb.binding.generate:Attribute kind.parentheses-degrees renamed to parentheses_degrees
+WARNING:pyxb.binding.generate:Attribute kind.bracket-degrees renamed to bracket_degrees
+WARNING:pyxb.binding.generate:Complex type measure-numbering renamed to measure_numbering
+WARNING:pyxb.binding.generate:Attribute measure-numbering.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute measure-numbering.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute measure-numbering.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute measure-numbering.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute measure-numbering.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute measure-numbering.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute measure-numbering.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute measure-numbering.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use metronome.per-minute renamed to per_minute
+WARNING:pyxb.binding.generate:Element use metronome.metronome-note renamed to metronome_note
+WARNING:pyxb.binding.generate:Element use metronome.metronome-relation renamed to metronome_relation
+WARNING:pyxb.binding.generate:Element use metronome.beat-unit renamed to beat_unit
+WARNING:pyxb.binding.generate:Element use metronome.beat-unit-dot renamed to beat_unit_dot
+WARNING:pyxb.binding.generate:Attribute metronome.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute metronome.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute metronome.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute metronome.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute metronome.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute metronome.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute metronome.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute metronome.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type octave-shift renamed to octave_shift
+WARNING:pyxb.binding.generate:Attribute octave-shift.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute octave-shift.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute octave-shift.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute octave-shift.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute octave-shift.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute octave-shift.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute octave-shift.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute octave-shift.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute octave-shift.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute octave-shift.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type other-direction renamed to other_direction
+WARNING:pyxb.binding.generate:Attribute other-direction.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute other-direction.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute other-direction.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute other-direction.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute other-direction.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute other-direction.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute other-direction.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute other-direction.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute other-direction.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute pedal.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute pedal.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute pedal.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute pedal.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute pedal.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute pedal.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute pedal.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute pedal.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type per-minute renamed to per_minute
+WARNING:pyxb.binding.generate:Attribute per-minute.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute per-minute.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute per-minute.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute per-minute.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Element use percussion.stick-location renamed to stick_location
+WARNING:pyxb.binding.generate:Element use percussion.other-percussion renamed to other_percussion
+WARNING:pyxb.binding.generate:Attribute percussion.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute percussion.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute percussion.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute percussion.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute percussion.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute percussion.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute percussion.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute percussion.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type principal-voice renamed to principal_voice
+WARNING:pyxb.binding.generate:Attribute principal-voice.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute principal-voice.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute principal-voice.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute principal-voice.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute principal-voice.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute principal-voice.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute principal-voice.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute principal-voice.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type root-alter renamed to root_alter
+WARNING:pyxb.binding.generate:Attribute root-alter.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute root-alter.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute root-alter.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute root-alter.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute root-alter.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute root-alter.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute root-alter.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute root-alter.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute root-alter.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type root-step renamed to root_step
+WARNING:pyxb.binding.generate:Attribute root-step.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute root-step.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute root-step.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute root-step.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute root-step.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute root-step.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute root-step.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute root-step.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use sound.midi-device renamed to midi_device
+WARNING:pyxb.binding.generate:Element use sound.midi-instrument renamed to midi_instrument
+WARNING:pyxb.binding.generate:Attribute sound.forward-repeat renamed to forward_repeat
+WARNING:pyxb.binding.generate:Attribute sound.time-only renamed to time_only
+WARNING:pyxb.binding.generate:Attribute sound.damper-pedal renamed to damper_pedal
+WARNING:pyxb.binding.generate:Attribute sound.soft-pedal renamed to soft_pedal
+WARNING:pyxb.binding.generate:Attribute sound.sostenuto-pedal renamed to sostenuto_pedal
+WARNING:pyxb.binding.generate:Complex type string-mute renamed to string_mute
+WARNING:pyxb.binding.generate:Attribute string-mute.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute string-mute.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute string-mute.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute string-mute.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute string-mute.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute string-mute.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute string-mute.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute string-mute.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute accidental.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute accidental.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute accidental.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute accidental.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute accidental.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute accidental.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute accidental.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute accidental.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type accidental-mark renamed to accidental_mark
+WARNING:pyxb.binding.generate:Attribute accidental-mark.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute accidental-mark.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute accidental-mark.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute accidental-mark.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute accidental-mark.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute accidental-mark.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute accidental-mark.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute accidental-mark.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use arrow.arrow-direction renamed to arrow_direction
+WARNING:pyxb.binding.generate:Element use arrow.arrow-style renamed to arrow_style
+WARNING:pyxb.binding.generate:Element use arrow.circular-arrow renamed to circular_arrow
+WARNING:pyxb.binding.generate:Attribute arrow.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute arrow.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute arrow.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute arrow.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute arrow.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute arrow.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute arrow.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute arrow.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use bend.bend-alter renamed to bend_alter
+WARNING:pyxb.binding.generate:Element use bend.pre-bend renamed to pre_bend
+WARNING:pyxb.binding.generate:Element use bend.with-bar renamed to with_bar
+WARNING:pyxb.binding.generate:Attribute bend.first-beat renamed to first_beat
+WARNING:pyxb.binding.generate:Attribute bend.last-beat renamed to last_beat
+WARNING:pyxb.binding.generate:Attribute bend.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute bend.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute bend.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute bend.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute bend.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute bend.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute bend.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute bend.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type breath-mark renamed to breath_mark
+WARNING:pyxb.binding.generate:Attribute breath-mark.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute breath-mark.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute breath-mark.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute breath-mark.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute breath-mark.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute breath-mark.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute breath-mark.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute breath-mark.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type empty-line renamed to empty_line
+WARNING:pyxb.binding.generate:Attribute empty-line.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute empty-line.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute empty-line.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-line.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-line.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-line.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute empty-line.line-shape renamed to line_shape
+WARNING:pyxb.binding.generate:Attribute empty-line.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute empty-line.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute empty-line.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute empty-line.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute empty-line.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute extend.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute extend.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute extend.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute extend.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute extend.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute extend.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute extend.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute extend.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type figured-bass renamed to figured_bass
+WARNING:pyxb.binding.generate:Attribute figured-bass.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute figured-bass.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute figured-bass.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute figured-bass.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute figured-bass.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute figured-bass.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute figured-bass.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute figured-bass.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute figured-bass.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute figured-bass.print-spacing renamed to print_spacing
+WARNING:pyxb.binding.generate:Attribute figured-bass.print-dot renamed to print_dot
+WARNING:pyxb.binding.generate:Attribute figured-bass.print-lyric renamed to print_lyric
+WARNING:pyxb.binding.generate:Attribute glissando.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute glissando.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute glissando.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute glissando.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute glissando.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute glissando.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute glissando.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute glissando.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute glissando.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute glissando.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute glissando.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type hammer-on-pull-off renamed to hammer_on_pull_off
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute hammer-on-pull-off.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute handbell.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute handbell.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute handbell.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute handbell.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute handbell.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute handbell.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute handbell.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute handbell.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use harmonic.base-pitch renamed to base_pitch
+WARNING:pyxb.binding.generate:Element use harmonic.touching-pitch renamed to touching_pitch
+WARNING:pyxb.binding.generate:Element use harmonic.sounding-pitch renamed to sounding_pitch
+WARNING:pyxb.binding.generate:Attribute harmonic.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute harmonic.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute harmonic.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute harmonic.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute harmonic.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute harmonic.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute harmonic.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute harmonic.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute harmonic.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Element use hole.hole-type renamed to hole_type
+WARNING:pyxb.binding.generate:Element use hole.hole-closed renamed to hole_closed
+WARNING:pyxb.binding.generate:Element use hole.hole-shape renamed to hole_shape
+WARNING:pyxb.binding.generate:Attribute hole.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute hole.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute hole.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute hole.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute hole.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute hole.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute hole.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute hole.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Element use note.time-modification renamed to time_modification
+WARNING:pyxb.binding.generate:Element use note.notehead-text renamed to notehead_text
+WARNING:pyxb.binding.generate:Attribute note.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute note.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute note.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute note.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute note.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Attribute note.print-spacing renamed to print_spacing
+WARNING:pyxb.binding.generate:Attribute note.print-dot renamed to print_dot
+WARNING:pyxb.binding.generate:Attribute note.print-lyric renamed to print_lyric
+WARNING:pyxb.binding.generate:Attribute note.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute note.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute note.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute note.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute note.end-dynamics renamed to end_dynamics
+WARNING:pyxb.binding.generate:Attribute note.time-only renamed to time_only
+WARNING:pyxb.binding.generate:Attribute notehead.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute notehead.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute notehead.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute notehead.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type other-notation renamed to other_notation
+WARNING:pyxb.binding.generate:Attribute other-notation.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute other-notation.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute other-notation.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute other-notation.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute other-notation.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute other-notation.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute other-notation.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute other-notation.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute other-notation.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type placement-text renamed to placement_text
+WARNING:pyxb.binding.generate:Attribute placement-text.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute placement-text.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute placement-text.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute placement-text.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute placement-text.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute placement-text.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute placement-text.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute placement-text.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute slide.first-beat renamed to first_beat
+WARNING:pyxb.binding.generate:Attribute slide.last-beat renamed to last_beat
+WARNING:pyxb.binding.generate:Attribute slide.dash-length renamed to dash_length
+WARNING:pyxb.binding.generate:Attribute slide.space-length renamed to space_length
+WARNING:pyxb.binding.generate:Attribute slide.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute slide.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute slide.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute slide.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute slide.line-type renamed to line_type
+WARNING:pyxb.binding.generate:Attribute slide.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute slide.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute slide.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute slide.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type style-text renamed to style_text
+WARNING:pyxb.binding.generate:Attribute style-text.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute style-text.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute style-text.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute style-text.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute style-text.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute style-text.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute style-text.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute style-text.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type text-element-data renamed to text_element_data
+WARNING:pyxb.binding.generate:Attribute text-element-data.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute text-element-data.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute text-element-data.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute text-element-data.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute text-element-data.letter-spacing renamed to letter_spacing
+WARNING:pyxb.binding.generate:Attribute text-element-data.line-through renamed to line_through
+WARNING:pyxb.binding.generate:Complex type text-font-color renamed to text_font_color
+WARNING:pyxb.binding.generate:Attribute text-font-color.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute text-font-color.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute text-font-color.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute text-font-color.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute text-font-color.letter-spacing renamed to letter_spacing
+WARNING:pyxb.binding.generate:Attribute text-font-color.line-through renamed to line_through
+WARNING:pyxb.binding.generate:Attribute tremolo.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute tremolo.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute tremolo.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute tremolo.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute tremolo.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute tremolo.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute tremolo.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute tremolo.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type tuplet-dot renamed to tuplet_dot
+WARNING:pyxb.binding.generate:Attribute tuplet-dot.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute tuplet-dot.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute tuplet-dot.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute tuplet-dot.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type tuplet-number renamed to tuplet_number
+WARNING:pyxb.binding.generate:Attribute tuplet-number.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute tuplet-number.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute tuplet-number.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute tuplet-number.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type tuplet-type renamed to tuplet_type
+WARNING:pyxb.binding.generate:Attribute tuplet-type.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute tuplet-type.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute tuplet-type.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute tuplet-type.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type empty-font renamed to empty_font
+WARNING:pyxb.binding.generate:Attribute empty-font.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute empty-font.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute empty-font.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute empty-font.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type group-name renamed to group_name
+WARNING:pyxb.binding.generate:Attribute group-name.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute group-name.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute group-name.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute group-name.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute group-name.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute group-name.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute group-name.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute group-name.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Complex type lyric-font renamed to lyric_font
+WARNING:pyxb.binding.generate:Attribute lyric-font.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute lyric-font.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute lyric-font.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute lyric-font.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Complex type part-name renamed to part_name
+WARNING:pyxb.binding.generate:Attribute part-name.font-family renamed to font_family
+WARNING:pyxb.binding.generate:Attribute part-name.font-style renamed to font_style
+WARNING:pyxb.binding.generate:Attribute part-name.font-size renamed to font_size
+WARNING:pyxb.binding.generate:Attribute part-name.font-weight renamed to font_weight
+WARNING:pyxb.binding.generate:Attribute part-name.default-x renamed to default_x
+WARNING:pyxb.binding.generate:Attribute part-name.default-y renamed to default_y
+WARNING:pyxb.binding.generate:Attribute part-name.relative-x renamed to relative_x
+WARNING:pyxb.binding.generate:Attribute part-name.relative-y renamed to relative_y
+WARNING:pyxb.binding.generate:Attribute part-name.print-object renamed to print_object
+WARNING:pyxb.binding.generate:Complex type heel-toe renamed to heel_toe
+WARNING:pyxb.binding.generate:Complex type strong-accent renamed to strong_accent
+WARNING:pyxb.binding.generate:Element score-partwise renamed to score_partwise
+WARNING:pyxb.binding.generate:Element score-timewise renamed to score_timewise
+Python for AbsentNamespace0 requires 2 modules
