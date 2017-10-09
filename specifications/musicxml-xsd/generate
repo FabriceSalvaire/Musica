@@ -1,0 +1,11 @@
+#! /usr/bin/bash
+
+# --location-map http://www.musicxml.org/xsd/xml.xsd=xml.xsd
+
+option="--std c++11 --generate-serialization"
+
+xsdcxx cxx-tree ${options} musicxml.xsd
+# xsdcxx cxx-parser ${options} musicxml.xsd
+
+# musicxml.xsd: warning T004: generating parsing functions for 2 global elements
+# musicxml.xsd: info: use --root-element-* options to specify document root(s)
