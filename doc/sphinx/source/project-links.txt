@@ -1,0 +1,52 @@
+.. -*- Mode: rst -*-
+
+..
+   |MusicaUrl|
+   |MusicaHomePage|_
+   |MusicaDoc|_
+   |Musica@github|_
+   |Musica@readthedocs|_
+   |Musica@readthedocs-badge|
+   |Musica@pypi|_
+
+.. |ohloh| image:: https://www.openhub.net/accounts/230426/widgets/account_tiny.gif
+   :target: https://www.openhub.net/accounts/fabricesalvaire
+   :alt: Fabrice Salvaire's Ohloh profile
+   :height: 15px
+   :width:  80px
+
+.. |MusicaUrl| replace:: https://musica.fabrice-salvaire.fr
+
+.. |MusicaHomePage| replace:: Musica Home Page
+.. _MusicaHomePage: https://musica.fabrice-salvaire.fr
+
+.. |Musica@readthedocs-badge| image:: https://readthedocs.org/projects/musica/badge/?version=latest
+   :target: http://musica.readthedocs.org/en/latest
+
+.. |Musica@github| replace:: https://github.com/FabriceSalvaire/Musica
+.. .. _Musica@github: https://github.com/FabriceSalvaire/Musica
+
+.. |Musica@pypi| replace:: https://pypi.python.org/pypi/Musica
+.. .. _Musica@pypi: https://pypi.python.org/pypi/Musica
+
+.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Musica.svg?branch=master
+   :target: https://travis-ci.org/FabriceSalvaire/Musica
+   :alt: Musica build status @travis-ci.org
+
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/Musica.svg
+   :target: https://pypi.python.org/pypi/Musica
+   :alt: Musica last version
+
+.. |Pypi License| image:: https://img.shields.io/pypi/l/Musica.svg
+   :target: https://pypi.python.org/pypi/Musica
+   :alt: Musica license
+
+.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Musica.svg
+   :target: https://pypi.python.org/pypi/Musica
+   :alt: Musica python version
+
+..  coverage test
+..  https://img.shields.io/pypi/status/Django.svg
+..  https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star
+
+.. End

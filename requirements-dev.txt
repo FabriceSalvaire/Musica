@@ -1,0 +1,4 @@
+PyXB
+PyYAML>=3.10
+sphinx
+sphinxcontrib-getthecode
