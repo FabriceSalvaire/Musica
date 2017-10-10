@@ -35,16 +35,19 @@ class TestPitch(unittest.TestCase):
     def _test_pitch_parser(self, name, answer):
 
         step, accidental, octave = Pitch.parse_pitch(name)
-        self.assertTupleEqual((step, accidental.accidental, octave), answer)
+        if accidental is not None:
+            self.assertTupleEqual((step, accidental.alteration, octave), answer)
+        else:
+            self.assertTupleEqual((step, None, octave), answer)
 
     ##############################################
 
     # @unittest.skip('')
     def test_et12(self):
 
-        self.assertAlmostEqual(ET12.fundamental, 32.70, 2)
-        self.assertAlmostEqual(ET12.frequency(octave_number=4, interval_number=10), 440)
-        self.assertAlmostEqual(ET12.frequency(octave_number=8, interval_number=12), 7902.13, 2)
+        self.assertAlmostEqual(ET12.fundamental, 16.352, 3)
+        self.assertAlmostEqual(ET12.frequency(octave_number=4, step_number=9), 440)
+        self.assertAlmostEqual(ET12.frequency(octave_number=8, step_number=11), 7902.13, 2)
 
         self.assertEqual(Accidental.reduce_accidental(''), 0)
         self.assertEqual(Accidental.reduce_accidental('#'), 1)
@@ -54,7 +57,7 @@ class TestPitch(unittest.TestCase):
         self.assertEqual(Accidental.reduce_accidental('-#-'), -1)
         self.assertEqual(Accidental.reduce_accidental('-##-'), 0)
 
-        self._test_pitch_parser('A', ('A', 0, None))
+        self._test_pitch_parser('A', ('A', None, None))
         self._test_pitch_parser('A#', ('A', 1, None))
         self._test_pitch_parser('A#4', ('A', 1, 4))
         self._test_pitch_parser('a#4', ('A', 1, 4))
