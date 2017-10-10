@@ -1,0 +1,52 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+import argparse
+import os
+import subprocess
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='Make Translation.')
+parser.add_argument('--init', action='store_true')
+parser.add_argument('--update', action='store_true')
+parser.add_argument('--compile', action='store_true')
+
+args = parser.parse_args()
+
+####################################################################################################
+
+source_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+locale_dir = os.path.join(source_path, 'Musica', 'locale')
+babel_cfg_path = os.path.join(locale_dir, 'babel.cfg')
+message_pot_path = os.path.join(locale_dir, 'messages.pot')
+
+####################################################################################################
+
+if args.update:
+    subprocess.call(('pybabel', 'extract',
+                     '-F', babel_cfg_path,
+                     '-k', 'lazy_gettext',
+                     '-o', message_pot_path,
+                     source_path))
+
+    if args.init:
+        subprocess.call(('pybabel', 'init',
+                         '-i', message_pot_path,
+                         '-d', locale_dir,
+                         '-l', 'en'))
+        subprocess.call(('pybabel', 'init',
+                         '-i', message_pot_path,
+                         '-d', locale_dir,
+                         '-l', 'fr'))
+
+    subprocess.call(('pybabel', 'update',
+                     '-i', message_pot_path,
+                     '-d', locale_dir))
+
+if args.compile:
+    subprocess.call(('pybabel', 'compile',
+                     '-d', locale_dir))
+
+# poedit
