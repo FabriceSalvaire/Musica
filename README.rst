@@ -54,20 +54,20 @@
 .. End
 .. -*- Mode: rst -*-
 
-.. |Python| replace:: Python
-.. _Python: http://python.org
-
-.. |PyPI| replace:: PyPI
-.. _PyPI: https://pypi.python.org/pypi
+.. |IPython| replace:: IPython
+.. _IPython: http://ipython.org
 
 .. |Numpy| replace:: Numpy
 .. _Numpy: http://www.numpy.org
 
-.. |IPython| replace:: IPython
-.. _IPython: http://ipython.org
-
 .. |Sphinx| replace:: Sphinx
 .. _Sphinx: http://sphinx-doc.org
+
+.. |PyPI| replace:: PyPI
+.. _PyPI: https://pypi.python.org/pypi
+
+.. |Python| replace:: Python
+.. _Python: http://python.org
 
 .. End
 
@@ -99,7 +99,7 @@ The documentation is available on the |MusicaHomePage|_.
 What are the main features ?
 ----------------------------
 
-* ...
+* `MusiXML <http://www.musicxml.com/>`_ Reader/Writer automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>_`)
 
 How to install it ?
 -------------------
