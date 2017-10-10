@@ -1,6 +1,6 @@
 ####################################################################################################
 #
-# Musica - A Unit Package for Python
+# Musica - A Music Theory Package for Python
 # Copyright (C) 2014 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
