@@ -20,14 +20,55 @@
 
 ####################################################################################################
 
-import gettext
-import os
+__all__ = [
+    'INTERVAL_NAMES',
+    'ACCIDENTAL_NAMES'
+    ]
 
 ####################################################################################################
 
-# https://docs.python.org/3/library/gettext.html
-# http://babel.pocoo.org/en/latest/index.html
-# https://www.mattlayman.com/2015/i18n.html
+GENERAL = (
+    _('pitch'),
+    _('semitone'), # half step or a half tone
+    _('tone'),
+)
 
-_locale_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
-gettext.install('Musica', _locale_path)
+INTERVAL_NAMES = (
+    _('Unison'),
+    _('Minor second'),
+    _('Major second'),
+    _('Minor third'),
+    _('Major third'),
+    _('Perfect fourth'),
+    _('Tritone'),
+    _('Perfect fifth'),
+    _('Minor sixth'),
+    _('Major sixth'),
+    _('Minor seventh'),
+    _('Major seventh'),
+    _('Octave'),
+)
+
+ACCIDENTAL_NAMES = (
+    _('double-flat'),
+    _('flat'), # ♭
+    _('natural'), # ♮
+    _('sharp'), # ♯
+    _('double-sharp'),
+)
+
+OCTAVE_NAMES = (
+    _('octocontra'), # C-2
+    _('subsubcontra'), # C-1
+    _('subcontra'), # C0
+    _('contra'), # C1
+    _('great'),
+    _('small'),
+    _('one-lined'),
+    _('two-lined'),
+    _('three-lined'),
+    _('four-lined'),
+    _('five-lined'),
+    _('six-lined'),
+    _('seven-lined'), # C10
+)

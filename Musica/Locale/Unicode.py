@@ -20,14 +20,23 @@
 
 ####################################################################################################
 
-import gettext
-import os
+__all__ = [
+    to_unicode,
+    ]
 
 ####################################################################################################
 
-# https://docs.python.org/3/library/gettext.html
-# http://babel.pocoo.org/en/latest/index.html
-# https://www.mattlayman.com/2015/i18n.html
+# Note: use chr for emacs rendering issue
+__map__ = {
+    # Accidentals
+    'double-flat': chr(0x1D12B), # U+1D12B &#119082;
+    'flat': '♭', # U+266D &#9837;
+    'natural': '♮', # U+266E &#9838;
+    'sharp':  '♯', # U+266F &#9839;
+    'double-sharp': chr(0x1D12A), # U+1D12A &#119082;
+}
 
-_locale_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
-gettext.install('Musica', _locale_path)
+####################################################################################################
+
+def to_unicode(name):
+    return __map__.get(name, name)
