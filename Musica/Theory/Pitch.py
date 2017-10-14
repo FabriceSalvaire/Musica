@@ -37,6 +37,9 @@ __all__ = [
 
 import re
 
+from Musica.Locale.Note import translate_et12_note
+from Musica.Locale.Unicode import to_unicode
+
 ####################################################################################################
 
 class PitchStandard:
@@ -48,12 +51,12 @@ class PitchStandard:
     To define A440 use :code:`PitchStandard(name='A440', frequency=440, octave_number=4, step_number=9)`
     """
 
-    def __init__(self, name, frequency, octave_number, step_number):
+    def __init__(self, name, frequency, octave, step_number):
 
         self._name = name
         self._frequency = frequency
-        self._octave_number = octave_number
-        self._step_number = step_number
+        self._octave = octave
+        self._step_number = step_number # Fixme: pitch class ?
 
     ##############################################
 
@@ -66,8 +69,8 @@ class PitchStandard:
         return self._frequency
 
     @property
-    def octave_number(self):
-        return self._octave_number
+    def octave(self):
+        return self._octave
 
     @property
     def step_number(self):
@@ -78,7 +81,7 @@ class PitchStandard:
 #: A440 or A4, also known as the Stuttgart pitch, which has a frequency of 440 Hz,
 #  is the musical note of A above middle C
 #  and serves as a general tuning standard for musical pitch.
-A440 = PitchStandard(name='A440', frequency=440, octave_number=4, step_number=9)
+A440 = PitchStandard(name='A440', frequency=440, octave=4, step_number=9)
 
 ####################################################################################################
 
@@ -115,9 +118,9 @@ class EqualTemperament:
 
     ##############################################
 
-    def _compute_scale(self, octave_number, step_number):
+    def _compute_scale(self, octave, step_number):
 
-        octave_factor = 2 ** octave_number
+        octave_factor = 2 ** octave
         interval_factor = 2 ** (step_number / self._number_of_steps)
         return octave_factor * interval_factor
 
@@ -125,13 +128,13 @@ class EqualTemperament:
 
     def _compute_fundamental(self):
 
-        denominator = self._compute_scale(self._pitch_standard.octave_number,
+        denominator = self._compute_scale(self._pitch_standard.octave,
                                           self._pitch_standard.step_number)
         return self._pitch_standard.frequency / denominator
 
     ##############################################
 
-    def frequency(self, octave_number, step_number):
+    def frequency(self, octave, step_number):
 
         """Return the frequency for an octave using the scientific pitch notation and an step number
         ranging from 0 to 11.
@@ -140,17 +143,77 @@ class EqualTemperament:
 
         """
 
-        return self._fundamental * self._compute_scale(octave_number, step_number)
+        return self._fundamental * self._compute_scale(octave, step_number)
 
 ####################################################################################################
 
-class TwelveToneEqualTemperament(EqualTemperament):
+class UsualEqualTemperament(EqualTemperament):
 
-    """Twelve-tone equal temperament, also known as 12 equal temperament, 12-TET, or 12-ET"""
+    """Base class factory to build for example a twelve-tone equal temperament.
+    """
 
-    __step_names__ = ('A', 'B', 'C', 'D', 'E', 'F', 'G')
+    ##############################################
 
-    __step_name_to_number__ = {
+    def __init__(self, number_of_steps, pitch_standard, step_name_to_number, translator):
+
+        super().__init__(number_of_steps, pitch_standard)
+
+        self._translator = translator
+
+        self._step_name_to_number = step_name_to_number
+        self._step_names = list(step_name_to_number.keys())
+
+        # accidental steps are set to None
+        self._step_number_to_name = [None]*number_of_steps
+        for name, step_number in step_name_to_number.items():
+            self._step_number_to_name[step_number] = name
+
+        # Add accidentals
+        for i in range(number_of_steps):
+            if self._step_number_to_name[i] is None:
+                if i > 0:
+                    self._step_name_to_number[self._step_number_to_name[i-1] + '#'] = i
+                if i < 11:
+                    self._step_name_to_number[self._step_number_to_name[i+1] + '-'] = i
+
+    ##############################################
+
+    @property
+    def step_names(self):
+        return self._step_names
+
+    ##############################################
+
+    def translator(self, *args, **kwargs):
+        return self._translator(*args, **kwargs)
+
+    ##############################################
+
+    def is_valid_step_name(self, name):
+        return name in self._step_names
+
+    ##############################################
+
+    def is_valid_step_number(self, number):
+        return 0 < number < self._number_of_steps
+
+    ##############################################
+
+    def name_to_number(self, name):
+        return self._step_name_to_number[name]
+
+    ##############################################
+
+    def number_to_name(self, name):
+        return self._step_number_to_name[name]
+
+####################################################################################################
+
+#: Twelve-tone equal temperament, also known as 12 equal temperament, 12-TET, or 12-ET
+ET12 = UsualEqualTemperament(
+    number_of_steps=12,
+    pitch_standard=A440,
+    step_name_to_number={
         'C' : 0,
         'D' : 2,
         'E' : 4,
@@ -158,16 +221,9 @@ class TwelveToneEqualTemperament(EqualTemperament):
         'G' : 7,
         'A' : 9,
         'B' : 11,
-    }
-
-    ##############################################
-
-    def __init__(self):
-
-        super().__init__(number_of_steps=12, pitch_standard=A440)
-
-#: Twelve-tone equal temperament alias
-ET12 = TwelveToneEqualTemperament()
+    },
+    translator=translate_et12_note,
+)
 
 ####################################################################################################
 
@@ -177,47 +233,80 @@ class Accidental:
     pitch deviation from a pitch name (e.g. C).
     """
 
-    __accidental_regexp__ = re.compile('[#-]*')
+    __modifier_regexp__ = re.compile('[#-]*') # Fixme: ~`
 
-    # __accidental_name_to_modifier__ = {
-    #     'natural': '',
-    #     'sharp': '#',
-    #     'double-sharp': '##',
-    #     'triple-sharp': '###',
-    #     'quadruple-sharp': '####',
-    #     'flat': '-',
-    #     'double-flat': '--',
-    #     'triple-flat': '---',
-    #     'quadruple-flat': '----',
-    #     'half-sharp': '~',
-    #     'one-and-a-half-sharp': '#~',
-    #     'half-flat': '`',
-    #     'one-and-a-half-flat': '-`',
-    # }
+    __name_to_alteration__ = {
+        'natural': 0,
+        #
+        'sharp': 1,
+        'double-sharp': 2,
+        'triple-sharp': 3,
+        'quadruple-sharp': 4,
+        #
+        'flat': -1,
+        'double-flat': -2,
+        'triple-flat': -3,
+        'quadruple-flat': -4,
+        #
+        'half-sharp': .5,
+        'one-and-a-half-sharp': 1.5,
+        'half-flat': .5,
+        'one-and-a-half-flat': -1.5,
+    }
+
+    __name_to_modifier__ = {
+        'natural': '',
+        #
+        'sharp': '#',
+        'double-sharp': '##',
+        'triple-sharp': '###',
+        'quadruple-sharp': '####',
+        #
+        'flat': '-',
+        'double-flat': '--',
+        'triple-flat': '---',
+        'quadruple-flat': '----',
+        #
+        'half-sharp': '~',
+        'one-and-a-half-sharp': '#~',
+        'half-flat': '`',
+        'one-and-a-half-flat': '-`',
+    }
 
     ##############################################
 
     @classmethod
-    def reduce_accidental(cls, value):
+    def parse_accidental(cls, value):
+
+        """Return an alteration from a :class:`Alteration` instance, an alteration name or a modifier
+        string.
+
+        """
+
+        # Fixme: ~`
 
         if isinstance(value, cls):
-            return value.accidental
+            return value.alteration
         else:
-            value = str(value)
-            if not value:
-                return 0
-            elif cls.__accidental_regexp__.match(value) is not None:
-                number_of_flat = value.count('-')
-                number_of_sharp = value.count('#')
-                return number_of_sharp - number_of_flat
-            else:
-                raise ValueError("Invalid accidental {}".format(value))
+            try:
+                return cls.__name_to_alteration__[value]
+            except KeyError:
+                value = str(value)
+                if not value:
+                    return 0
+                elif cls.__modifier_regexp__.match(value) is not None:
+                    number_of_flat = value.count('-')
+                    number_of_sharp = value.count('#')
+                    return number_of_sharp - number_of_flat
+                else:
+                    raise ValueError("Invalid accidental {}".format(value))
 
     ##############################################
 
-    def __init__(self, accidental_string):
+    def __init__(self, accidental_value):
 
-        self.alteration = accidental_string
+        # Fixme: don't keep modifer string
+        self.alteration = accidental_value
 
     ##############################################
 
@@ -233,7 +322,7 @@ class Accidental:
 
     @alteration.setter
     def alteration(self, value):
-        self._alteration = self.reduce_accidental(value)
+        self._alteration = self.parse_accidental(value)
 
     ##############################################
 
@@ -251,9 +340,28 @@ class Accidental:
 
     ##############################################
 
+    @property
+    def name(self):
+        return self.__alteration_to_name__[self._alteration]
+
+    @property
+    def unicode_name(self):
+        return to_unicode(self.name)
+
+    @property
+    def modifier(self):
+        return self.__name_to_modifier__[self.name]
+
+    def __str__(self):
+        return self.modifier
+
+    ##############################################
+
     def __eq__(self, other):
 
         return self._alteration == other.alteration
+
+Accidental.__alteration_to_name__ = {alteration:name for name, alteration in Accidental.__name_to_alteration__.items()}
 
 ####################################################################################################
 
@@ -276,7 +384,8 @@ class Pitch:
     @classmethod
     def parse_pitch(cls, name, return_dict=False):
 
-        match = cls.__pitch_regexp__.match(name.lower())
+        _name = str(name).lower()
+        match = cls.__pitch_regexp__.match(_name)
         if match is not None:
             note = match['note'].upper()
             accidental = match['accidental']
@@ -292,18 +401,73 @@ class Pitch:
 
     ##############################################
 
-    def __init__(self, name):
+    def __init__(self, name=None, **kwargs):
 
-         # Fixme. type(self) vs self.__class__
-        if isinstance(name, Pitch):
-            self._step = name._step
-            self.accidental = name._accidental
-            self._octave = name._octave
+        self._spelling_is_inferred = False
+
+        if name is not None:
+            # Fixme. type(self) vs self.__class__
+            if isinstance(name, Pitch):
+                self._init_from_clone(name)
+            else:
+                try:
+                    step_number = int(name)
+                except ValueError:
+                    step_number = None
+                if step_number is not None:
+                    self._init_from_number(step_number)
+                else:
+                    self._init_from_string(name)
         else:
-            step, accidental, octave = self.parse_pitch(name)
-            self._step = step
-            self._accidental = accidental
-            self._octave = octave
+            self._init_from_kwargs(kwargs)
+
+    ##############################################
+
+    def _init_from_clone(self, other):
+
+        self._step = name._step
+        self.accidental = name._accidental
+        self._octave = name._octave
+
+    ##############################################
+
+    def _init_from_string(self, name):
+
+        step, accidental, octave = self.parse_pitch(name)
+        self._step = step
+        self._accidental = accidental
+        self._octave = octave
+
+    ##############################################
+
+    def _init_from_number(self, step_number):
+
+        try:
+            name = self.__temperament__.number_to_name(step_number)
+        except KeyError:
+            raise ValueError('Invalid pitch number {}'.format(name))
+
+        if name is None: # alteration
+            self._step = self.__temperament__.number_to_name(step_number -1)
+            self._accidental = Accidental('#')
+            self._spelling_is_inferred = True
+        else:
+            self._step = name
+            self._accidental = None
+
+        self._octave = None
+
+    ##############################################
+
+    def _init_from_kwargs(self, kwargs):
+
+        self.step = kwargs['step']
+        accidental = kwargs.get('accidental', None)
+        if accidental is not None:
+            self.accidental = Accidental(accidental)
+        else:
+            self._accidental = None
+        self._octave = kwargs.get('octave', None)
 
     ##############################################
 
@@ -313,18 +477,41 @@ class Pitch:
 
     ##############################################
 
+    def __repr__(self):
+
+        return '{} {}'.format(self.__class__.__name__, str(self))
+
+    ##############################################
+
+    @property
+    def pitch_class(self):
+        """Returns the integer value for the pitch, between 0 and 11, where C=0, C#=1, D=2, ... B=11.
+        """
+        return self.__temperament__.name_to_number(self._step)
+
+    @pitch_class.setter
+    def pitch_class(self, value):
+        self._init_from_number(value) # Fixme: reset octave !
+
+    ##############################################
+
     @property
     def step(self):
+        """The diatonic name of the note; i.e. it does not give the accidental and octave."""
         return self._step
 
     @step.setter
     def step(self, value):
 
         _value = value.upper()
-        if _value in self.__temperament__.__step_names__:
+        if self.__temperament__.is_valid_step_name(_value):
             self._step = _value
         else:
             raise ValueError("Invalid step {}".format(value))
+
+    @property
+    def spelling_is_inferred(self):
+        return self._spelling_is_inferred
 
     ##############################################
 
@@ -339,6 +526,13 @@ class Pitch:
             self._accidental = Accidental(value)
         else:
             self._accidental = None
+
+    @property
+    def alteration(self):
+        if self._accidental is not None:
+            return self._accidental.alteration
+        else:
+            return 0
 
     ##############################################
 
@@ -361,7 +555,57 @@ class Pitch:
 
     ##############################################
 
+    def _to_string(self, unicode=False, octave=False):
+        name = self._step
+        if self._accidental is not None:
+            name += str(self._accidental)
+        if octave and self._octave is not None:
+            name += str(self._octave)
+        return name
+
+    @property
+    def full_name(self):
+        name = self._step
+        if self._accidental is not None:
+            name += str(self._accidental)
+        if self._octave is not None:
+            name += str(self._octave)
+        return name
+
+    @property
+    def unicode_name(self):
+        name = self._step
+        if self._accidental is not None:
+            name += self._accidental.unicode_name
+        if self._octave is not None:
+            name += str(self._octave)
+        return name
+
+    # @property
+    # def unicode_name_with_octave(self): # Fixme: full_name
+
+    def __str__(self):
+        return self.full_name
+
+    ##############################################
+
+    @property
+    def locale(self):
+        # Return :class:`Musica.Locale.Note.NoteName`
+        return self.__temperament__.translator(self._step)
+
+    ##############################################
+
+    @property
+    def french_locale(self):
+        # Return :class:`Musica.Locale.Note.NoteNameTranslation`
+        return self.locale['français']
+
+    ##############################################
+
     def __eq__(self, other):
+
+        # By default, __ne__() delegates to __eq__() and inverts the result
 
         return (self._pitch == other.pitch and
                 self._accidental == other.accidental and
@@ -369,15 +613,18 @@ class Pitch:
 
     ##############################################
 
-    def __float__(self):
+    def _compute_float_value(self, octave):
 
-        value = (self.implicit_octave + 1) * self.__temperament__.number_of_steps
-        value += self.__temperament__.__step_name_to_number__[self._step]
+        value = (octave + 1) * self.__temperament__.number_of_steps
+        value += self.__temperament__.name_to_number(self._step)
         if self._accidental is not None:
             value += self._accidental.alteration
         # if self.microtone is not None:
         #     value += self.microtone.alter
         return float(value)
+
+    def __float__(self):
+        return float(self._compute_float_value(self.implicit_octave))
 
     @property
     def midi_float(self):
@@ -397,3 +644,65 @@ class Pitch:
         """
 
         return int(round(float(self)))
+
+    ##############################################
+
+    def __lt__(self, other):
+        return float(self) < float(other)
+
+    def __le__(self, other):
+       return float(self) <= float(other)
+
+    def __gt__(self, other):
+        return float(self) > float(other)
+
+    def __te__(self, other):
+       return float(self) >= float(other)
+
+    ##############################################
+
+    @property
+    def frequency(self):
+
+        return self.__temperament__.frequency(self.implicit_octave, self.pitch_class)
+
+    ##############################################
+
+    def is_enharmonic(self, other):
+
+        # Fixme: _compute_float_value, same __temperament__
+        bool1 = self.octave is not None
+        bool2 = other.octave is not None
+        if bool1 and bool2:
+            ps1 = float(self)
+            ps2 = float(octave)
+        elif bool1 and not bool2:
+            ps1 = float(other)
+            ps2 = self._compute_float_value(self.octave)
+        elif not bool1 and bool2:
+            ps1 = self._compute_float_value(other.octave)
+            ps2 = float(other)
+        else:
+            # use __implicit_octave__ for both
+            ps1 = float(self)
+            ps2 = float(octave)
+
+        return ps1 == ps2 and self.alteration != other.alteration
+
+    ##############################################
+
+    # get_enharmonic(*, in_place=False)
+
+    # Returns a new Pitch that is the(/an) enharmonic equivalent of this Pitch. Can be thought of as flipEnharmonic or something like that.
+    #
+    # N.B.: n1.name == getEnharmonic(getEnharmonic(n1)).name is not necessarily true. For instance:
+    #
+    #     getEnharmonic(E##) => F# getEnharmonic(F#) => G- getEnharmonic(A–) => G getEnharmonic(G) => F##
+    #
+    # However, for all cases not involving double sharps or flats (and even many that do), getEnharmonic(getEnharmonic(n)) = n
+    #
+    # For the most ambiguous cases, it’s good to know that these are the enharmonics:
+    #
+    #     C <-> B#, D <-> C##, E <-> F-; F <-> E#, G <-> F##, A <-> B–, B <-> C-
+    #
+    # However, isEnharmonic() for A## and B certainly returns True.

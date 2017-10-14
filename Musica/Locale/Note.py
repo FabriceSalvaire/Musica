@@ -21,8 +21,8 @@
 ####################################################################################################
 
 __all__ = [
-    'NOTE_NAMES',
-    'NOTE_NAMES_MAP',
+    'ET12_NOTE_NAMES',
+    'translate_et12_note'
     ]
 
 ####################################################################################################
@@ -31,12 +31,12 @@ class NoteNameTranslation:
 
     ##############################################
 
-    def __init__(self, number,
+    def __init__(self, step,
                  name, unicode_name=None,
                  flat_name=None, unicode_flat_name=None,
                  sharp_name=None, unicode_sharp_name=None):
 
-        self._number = number
+        self._step = step
         self._name = name
         self._unicode_name = unicode_name
         self._flat_name = flat_name
@@ -47,8 +47,8 @@ class NoteNameTranslation:
     ##############################################
 
     @property
-    def number(self):
-        return self._number
+    def step(self):
+        return self._step
 
     @property
     def name(self):
@@ -81,7 +81,7 @@ class NoteNameTranslation:
 ####################################################################################################
 
 # Names of notes in various languages and countries for the 12-tone chromatic scale
-__note_name_translations__ = {
+__et12_note_name_translations__ = {
     'english': (
         dict(name='C', sharp_name='B sharp', unicode_sharp_name='B♯'),
  	dict(name='C sharp', unicode_name='C♯', flat_name='D flat', unicode_flat_name='D♭'),
@@ -170,9 +170,10 @@ __note_name_translations__ = {
 
 ####################################################################################################
 
-for language, data in __note_name_translations__.items():
+# Convert dict to NoteNameTranslation
+for language, data in __et12_note_name_translations__.items():
     new_data = [NoteNameTranslation(i, **kwargs) for i, kwargs in enumerate(data)]
-    __note_name_translations__[language] = tuple(new_data)
+    __et12_note_name_translations__[language] = tuple(new_data)
 
 ####################################################################################################
 
@@ -180,22 +181,22 @@ class NoteName:
 
     ##############################################
 
-    def __init__(self, number):
+    def __init__(self, step):
 
-        self._number = number
+        self._step = step
         self._translations = dict()
 
     ##############################################
 
     def __repr__(self):
 
-        return 'Note #{0._number}'.format(self)
+        return 'Note #{0._step}'.format(self)
 
     ##############################################
 
     @property
-    def number(self):
-        return self._number
+    def step(self):
+        return self._step
 
     ##############################################
 
@@ -218,18 +219,22 @@ class NoteName:
 
 ####################################################################################################
 
-NOTE_NAMES = [NoteName(number) for number in range(1, 13)]
-for language, data in __note_name_translations__.items():
-    for note in NOTE_NAMES:
-        note.add_language(language, data[note.number -1])
+#: List of NoteName for 12-TET
+ET12_NOTE_NAMES = [NoteName(step) for step in range(1, 13)]
+for language, data in __et12_note_name_translations__.items():
+    for note in ET12_NOTE_NAMES:
+        note.add_language(language, data[note.step -1])
 
-NOTE_NAMES_MAP = {}
-for note in NOTE_NAMES:
+_et12_note_names_map = {}
+for note in ET12_NOTE_NAMES:
     for language in note.languages:
         note_translation = note[language]
         for attribute in ('name', 'unicode_name',
                           'flat_name', 'unicode_flat_name',
                           'sharp_name', 'unicode_sharp_name'):
             name = getattr(note_translation, attribute)
-            if name is not None and name not in NOTE_NAMES_MAP:
-                NOTE_NAMES_MAP[name] = note
+            if name is not None and name not in _et12_note_names_map:
+                _et12_note_names_map[name] = note
+
+def translate_et12_note(name):
+    return _et12_note_names_map[name]

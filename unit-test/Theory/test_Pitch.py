@@ -49,13 +49,13 @@ class TestPitch(unittest.TestCase):
         self.assertAlmostEqual(ET12.frequency(octave_number=4, step_number=9), 440)
         self.assertAlmostEqual(ET12.frequency(octave_number=8, step_number=11), 7902.13, 2)
 
-        self.assertEqual(Accidental.reduce_accidental(''), 0)
-        self.assertEqual(Accidental.reduce_accidental('#'), 1)
-        self.assertEqual(Accidental.reduce_accidental('###'), 3)
-        self.assertEqual(Accidental.reduce_accidental('-'), -1)
-        self.assertEqual(Accidental.reduce_accidental('---'), -3)
-        self.assertEqual(Accidental.reduce_accidental('-#-'), -1)
-        self.assertEqual(Accidental.reduce_accidental('-##-'), 0)
+        self.assertEqual(Accidental.parse_accidental(''), 0)
+        self.assertEqual(Accidental.parse_accidental('#'), 1)
+        self.assertEqual(Accidental.parse_accidental('###'), 3)
+        self.assertEqual(Accidental.parse_accidental('-'), -1)
+        self.assertEqual(Accidental.parse_accidental('---'), -3)
+        self.assertEqual(Accidental.parse_accidental('-#-'), -1)
+        self.assertEqual(Accidental.parse_accidental('-##-'), 0)
 
         self._test_pitch_parser('A', ('A', None, None))
         self._test_pitch_parser('A#', ('A', 1, None))
@@ -73,8 +73,60 @@ class TestPitch(unittest.TestCase):
         self.assertEqual(pitch.octave, 4)
         self.assertEqual(float(pitch), 61)
 
+        pitch = Pitch(step='C')
+        self.assertEqual(pitch.step, 'C')
+        self.assertIsNone(pitch.accidental)
+        self.assertIsNone(pitch.octave)
+
+        pitch = Pitch(step='C', accidental='#', octave=4)
+        self.assertEqual(pitch.step, 'C')
+        self.assertEqual(pitch.accidental, Accidental('#'))
+        self.assertEqual(pitch.octave, 4)
+
+        step_name_to_number = {
+            'C' : 0,
+            'D' : 2,
+            'E' : 4,
+            'F' : 5,
+            'G' : 7,
+            'A' : 9,
+            'B' : 11,
+        }
+
+        for name, number in step_name_to_number.items():
+            pitch = Pitch(number)
+            self.assertEqual(pitch.step, name)
+            self.assertIsNone(pitch.accidental)
+            self.assertIsNone(pitch.octave)
+            self.assertFalse(pitch.spelling_is_inferred)
+
+        pitch = Pitch(1)
+        self.assertEqual(pitch.step, 'C')
+        self.assertEqual(pitch.accidental, Accidental('#'))
+        self.assertIsNone(pitch.octave)
+        self.assertTrue(pitch.spelling_is_inferred)
+
         self.assertEqual(float(Pitch('D4')), 62)
         self.assertEqual(float(Pitch('B###3')), 62)
+
+        pitch = Pitch('C')
+        self.assertEqual(str(pitch), 'C')
+
+        pitch = Pitch('C-')
+        self.assertEqual(str(pitch), 'C-')
+
+        pitch = Pitch('C#')
+        self.assertEqual(str(pitch), 'C#')
+
+        pitch = Pitch('C4')
+        self.assertEqual(str(pitch), 'C4')
+
+        pitch = Pitch('C#4')
+        self.assertEqual(str(pitch), 'C#4')
+        # print(pitch.unicode_name)
+
+        pitch = Pitch('A4')
+        self.assertAlmostEqual(pitch.frequency, 440)
 
 ####################################################################################################
 

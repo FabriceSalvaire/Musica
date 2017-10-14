@@ -34,6 +34,16 @@ __map__ = {
     'natural': '♮', # U+266E &#9838;
     'sharp':  '♯', # U+266F &#9839;
     'double-sharp': chr(0x1D12A), # U+1D12A &#119082;
+
+    # '####', chr(0x1d12a) + chr(0x1d12a),
+    # '###', '\u266f' + chr(0x1d12a),
+    # '##', chr(0x1d12a), # note that this must be expressed as a surrogate pair
+    # '#~', '\u266f' + chr(0x1d132), # 1D132
+    # '~', chr(0x1d132)
+    # '----', chr(0x1d12b) + chr(0x1d12b),
+    # '---', '\u266D',
+    # '-`', '\u266D' + chr(0x1d132),
+    # '`', chr(0x1d132), # 1D132 # raised flat: 1D12C
 }
 
 ####################################################################################################
