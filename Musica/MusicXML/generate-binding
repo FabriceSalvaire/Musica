@@ -9,3 +9,6 @@ for i in musicxml.py _xlink.py; do
   cp $i ${i%%.py}-orig.py
   clean-binding  $i
 done
+
+mv musicxml.py __init__.py
+sed -e 's/import _xlink/from . import _xlink/' -i __init__.py

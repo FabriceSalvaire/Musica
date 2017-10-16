@@ -52,7 +52,7 @@ _module_typeBindings = pyxb.utils.utility.Object()
 # Import bindings for namespaces imported into schema
 import pyxb.binding.datatypes
 import pyxb.binding.xml_
-import _xlink as _ImportedBinding__xlink
+from .  import _xlink as _ImportedBinding__xlink
 
 # NOTE: All namespace declarations are reserved within the binding
 Namespace = pyxb.namespace.CreateAbsentNamespace()
