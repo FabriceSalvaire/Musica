@@ -59,14 +59,14 @@ tex_document.packages.add(Package('geometry',
                                   # footskip='1cm',
 ))
 
-tex_document.preambule.append(r'''
+tex_document.append_preambule(r'''
 \RequirePackage{luatex85} % for geometry
 ''')
 
-tex_document.content.empty_page_style()
+tex_document.empty_page_style()
 
 figure = figure_class()
-tex_document.content.append(figure)
+tex_document.append(figure)
 
-# print(str(tex_document))
-tex_document.generate(args.output)
+print(str(tex_document))
+#tex_document.generate(args.output)

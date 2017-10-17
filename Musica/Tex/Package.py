@@ -38,7 +38,7 @@ class Package:
 
     def clone(self):
 
-        obj = Package(self._name)
+        obj = self.__class__(self._name)
         obj._options = dict(self._options)
         return obj
 
@@ -112,7 +112,6 @@ class Package:
 
 ####################################################################################################
 
-
 class Packages:
 
     ##############################################
@@ -125,7 +124,7 @@ class Packages:
 
     def clone(self):
 
-        obj = Packages()
+        obj = self.__class__()
         obj._packages = {package.name:package.clone() for package in self._packages.values()}
         return obj
 

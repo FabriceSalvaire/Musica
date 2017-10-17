@@ -20,11 +20,11 @@
 
 ####################################################################################################
 
-from .Buffer import Buffer
+from .Buffer import TexContent
 
 ####################################################################################################
 
-class Environment(Buffer):
+class Environment(TexContent):
 
     ##############################################
 
@@ -33,26 +33,31 @@ class Environment(Buffer):
         super().__init__()
 
         self._name = name
-        # self._options = options
-
-        self._begin_buffer = Buffer()
-        self._end_buffer = Buffer()
-
-        if options:
-            _options = '[' + options + ']'
-        else:
-            _options = ''
-        self._begin_buffer.append(r'\begin{%s}%s' % (self._name, _options))
-        self._end_buffer.append(r'\end{%s}' % (self._name))
+        self._options = options
 
     ##############################################
 
-    def __str__(self):
+    def _content_to_string(self):
 
-        source = str(self._begin_buffer)
-        source += super(Environment, self).__str__()
-        source += str(self._end_buffer)
+        if self._options:
+            options = '[' + self._options + ']'
+        else:
+            options = ''
+
+        source = r'\begin{%s}%s' % (self._name, options) + '\n'
+        source += super().to_string('content')
+        source += r'\end{%s}' % (self._name) + '\n'
+
         return source
+
+    ##############################################
+
+    def to_string(self, context):
+
+        if context == 'content':
+            return self._content_to_string()
+        else:
+            return super().to_string(context)
 
 ####################################################################################################
 

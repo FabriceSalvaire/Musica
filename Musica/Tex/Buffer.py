@@ -30,47 +30,29 @@ class Buffer:
 
     ##############################################
 
-    @staticmethod
-    def format(pattern, *args, **kwargs):
-
-        pattern = pattern.replace('{', '{{')
-        pattern = pattern.replace('}', '}}')
-        pattern = pattern.replace('«', '{')
-        pattern = pattern.replace('»', '}')
-        return pattern.format(*args, **kwargs)
-
-    ##############################################
-
     def __init__(self):
 
-        self._packages = Packages()
         self._content = []
         self.clear()
 
     ##############################################
 
-    def __str__(self):
+    def __iter__(self):
+
+        return iter(self._content)
+
+    ##############################################
+
+    def to_string(self, context):
 
         source = ''
         for item in self._content:
-            source += str(item)
+            if isinstance(item, str):
+                source += item
+            else:
+                source += item.to_string(context)
+
         return source
-
-    ##############################################
-
-    @property
-    def packages(self):
-        return self._packages
-
-    ##############################################
-
-    def collect_packages(self):
-
-        packages = self._packages.clone()
-        for item in self._content:
-            if isinstance(item, Buffer):
-                packages.merge(item.packages)
-        return packages
 
     ##############################################
 
@@ -101,6 +83,21 @@ class Buffer:
         # if isinstance(data, str) or isinstance(data, Buffer):
         self._content.append(data)
 
+####################################################################################################
+
+class BasicCommandMixin:
+
+    ##############################################
+
+    @staticmethod
+    def format(pattern, *args, **kwargs):
+
+        pattern = pattern.replace('{', '{{')
+        pattern = pattern.replace('}', '}}')
+        pattern = pattern.replace('«', '{')
+        pattern = pattern.replace('»', '}')
+        return pattern.format(*args, **kwargs)
+
     ##############################################
 
     def define(self, name, value, unit=''):
@@ -113,6 +110,25 @@ class Buffer:
     def new_command(self, name, number_of_parameters, code):
 
         self.append(self.format(r'\newcommand{\«0»}[«1»]{«2»}', name, number_of_parameters, code))
+
+    ##############################################
+
+    def set_main_font(self, name):
+
+        self.append(self.format(r'\setmainfont[Ligatures=TeX]{}{«0»}', name))
+
+    ##############################################
+
+    def font_size(self, font_size, base_line_skip=None):
+
+        if base_line_skip is None:
+            base_line_skip = 1.2 * font_size
+
+        self.append(self.format(r'\fontsize{«0»}{«1:.2f»}', font_size, base_line_skip))
+
+####################################################################################################
+
+class ContentCommandMixin:
 
     ##############################################
 
@@ -130,19 +146,71 @@ class Buffer:
 
     def new_page(self):
 
-        self._content.append(r'\newpage')
+        self.append(r'\newpage')
+
+####################################################################################################
+
+class PreambuleBuffer(Buffer, BasicCommandMixin):
+    pass
+
+####################################################################################################
+
+class TexContent(BasicCommandMixin, ContentCommandMixin):
+
+    #######################################
+
+    def __init__(self):
+
+        self._packages = Packages()
+        self._preambule = PreambuleBuffer()
+        self._content = Buffer()
 
     ##############################################
 
-    def set_main_font(self, name):
+    @property
+    def packages(self):
+        return self._packages
 
-        self.append(self.format(r'\setmainfont[Ligatures=TeX]{}{«0»}', name))
+    @property
+    def preambule(self):
+        return self._preambule
+
+    @property
+    def content(self):
+        return self._content
 
     ##############################################
 
-    def font_size(self, font_size, base_line_skip=None):
+    def collect_packages(self):
 
-        if base_line_skip is None:
-            base_line_skip = 1.2 * font_size
+        packages = self._packages.clone()
+        for item in self._content:
+            if isinstance(item, TexContent):
+                packages.merge(item.packages)
+        return packages
 
-        self.append(self.format(r'\fontsize{«0»}{«1:.2f»}', font_size, base_line_skip))
+    ##############################################
+
+    def to_string(self, context):
+
+        if context not in ('preambule', 'content'):
+            raise ValueError("Invalid context {}".format(context))
+
+        if context == 'preambule':
+            obj = self._preambule
+        else:
+            obj = self._content
+
+        return obj.to_string(context)
+
+    ##############################################
+
+    def append_preambule(self, data, deepcopy=False, newline=True):
+
+        self._preambule.append(data, deepcopy, newline)
+
+    ##############################################
+
+    def append(self, data, deepcopy=False, newline=True):
+
+        self._content.append(data, deepcopy, newline)

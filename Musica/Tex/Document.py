@@ -26,7 +26,7 @@ import shutil
 import subprocess
 import tempfile
 
-from .Buffer import Buffer
+from .Buffer import TexContent
 from .Environment import Environment
 from .Package import Package
 
@@ -40,7 +40,7 @@ LINE_BREAK = r'\\'
 
 ####################################################################################################
 
-class Document(object):
+class Document(TexContent):
 
     _logger = _module_logger.getChild('Document')
 
@@ -48,40 +48,30 @@ class Document(object):
 
     def __init__(self, class_name, class_options=()):
 
+        super().__init__()
+
         self._class_name = class_name
         self._class_options = class_options
 
-        self._preambule = Buffer()
-        self._content = Environment(name='document')
-
-        self._preambule.packages.add(Package('fontspec'))
-
-    ##############################################
-
-    @property
-    def preambule(self):
-        return self._preambule
-
-    @property
-    def content(self):
-        return self._content
-
-    @property
-    def packages(self):
-        return self._preambule.packages
+        self.packages.add(Package('fontspec'))
 
     ##############################################
 
     def __str__(self):
 
         class_options = ', '.join(self._class_options)
-        source = Buffer.format(r'\documentclass[«1»]{«0._class_name»}', self, class_options) + '\n'
-        packages = self._preambule.collect_packages()
-        packages.merge(self._content.collect_packages())
+        source = self.format(r'\documentclass[«1»]{«0._class_name»}', self, class_options) + '\n'
+
+        packages = self.collect_packages()
         for package in packages:
             source += str(package) + '\n'
-        source += str(self._preambule)
-        source += str(self._content)
+
+        source += self.to_string('preambule')
+
+        source += r'\begin{document}' + '\n'
+        source += self.to_string('content')
+        source += r'\end{document}' + '\n'
+
         return source
 
     ##############################################
