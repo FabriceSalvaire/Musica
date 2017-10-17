@@ -1,0 +1,72 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Musica - A Music Theory Package for Python
+# Copyright (C) 2017 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import Musica.Logging.Logging as Logging
+logger = Logging.setup_logging()
+
+####################################################################################################
+
+import argparse
+import importlib
+
+from Musica.Tex.Document import Document
+from Musica.Tex.Package import Package
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='Make Figure.')
+parser.add_argument('module', metavar='Module',
+                   help='Figure Module')
+parser.add_argument('output', metavar='OutputFile',
+                   help='output filename')
+
+args = parser.parse_args()
+
+####################################################################################################
+
+parts = args.module.split('.')
+figure_module = importlib.import_module('.'.join(parts[:-1]))
+figure_class = getattr(figure_module, parts[-1])
+
+tex_document = Document(class_name='article', class_options=('a4paper',))
+
+tex_document.packages.add(Package('geometry',
+                                  'includeheadfoot',
+                                  paper='a4paper',
+                                  margin='1cm',
+                                  # headsep='1cm',
+                                  # footskip='1cm',
+))
+
+tex_document.preambule.append(r'''
+\RequirePackage{luatex85} % for geometry
+''')
+
+tex_document.content.empty_page_style()
+
+figure = figure_class()
+tex_document.content.append(figure)
+
+# print(str(tex_document))
+tex_document.generate(args.output)

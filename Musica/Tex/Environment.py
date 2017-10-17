@@ -20,41 +20,42 @@
 
 ####################################################################################################
 
-from . import Buffer
+from .Buffer import Buffer
 
 ####################################################################################################
 
 class Environment(Buffer):
 
-    #######################################
+    ##############################################
 
-    def __init__(self, name):
+    def __init__(self, name, options=''):
 
-        super(Environment, self).__init__()
+        super().__init__()
 
         self._name = name
+        # self._options = options
 
-        self.begin_buffer = Buffer()
-        self.end_buffer = Buffer()
+        self._begin_buffer = Buffer()
+        self._end_buffer = Buffer()
 
-    #######################################
+        if options:
+            _options = '[' + options + ']'
+        else:
+            _options = ''
+        self._begin_buffer.append(r'\begin{%s}%s' % (self._name, _options))
+        self._end_buffer.append(r'\end{%s}' % (self._name))
 
-    def set_begin(self):
+    ##############################################
 
-        self.begin_buffer.push(r'\begin{%s}' % (self._name) + '\n')
+    def __str__(self):
 
-    #######################################
+        source = str(self._begin_buffer)
+        source += super(Environment, self).__str__()
+        source += str(self._end_buffer)
+        return source
 
-    def set_end(self):
+####################################################################################################
 
-        self.end_buffer.push(r'\end{%s}' % (self._name) + '\n')
-
-    #######################################
-
-    def write(self, stream):
-
-        self.set_begin()
-        self.begin_buffer.write(stream)
-        super(Environment, self).write(stream)
-        self.set_end()
-        self.end_buffer.write(stream)
+class Center(Environment):
+    def __init__(self):
+        Environment.__init__(self, 'center')

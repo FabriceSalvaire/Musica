@@ -1,0 +1,148 @@
+####################################################################################################
+#
+# Musica - A Music Theory Package for Python
+# Copyright (C) 2017 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import copy
+
+from .Package import Packages
+
+####################################################################################################
+
+class Buffer:
+
+    ##############################################
+
+    @staticmethod
+    def format(pattern, *args, **kwargs):
+
+        pattern = pattern.replace('{', '{{')
+        pattern = pattern.replace('}', '}}')
+        pattern = pattern.replace('«', '{')
+        pattern = pattern.replace('»', '}')
+        return pattern.format(*args, **kwargs)
+
+    ##############################################
+
+    def __init__(self):
+
+        self._packages = Packages()
+        self._content = []
+        self.clear()
+
+    ##############################################
+
+    def __str__(self):
+
+        source = ''
+        for item in self._content:
+            source += str(item)
+        return source
+
+    ##############################################
+
+    @property
+    def packages(self):
+        return self._packages
+
+    ##############################################
+
+    def collect_packages(self):
+
+        packages = self._packages.clone()
+        for item in self._content:
+            if isinstance(item, Buffer):
+                packages.merge(item.packages)
+        return packages
+
+    ##############################################
+
+    def clear(self):
+
+        self._content.clear()
+
+    ##############################################
+
+    def append(self, data, deepcopy=False, newline=True):
+
+        if isinstance(data, list):
+            for item in data:
+                self._append(item, deepcopy)
+        else:
+            self._append(data, deepcopy)
+        if newline:
+            self._append('\n')
+
+        return self
+
+    ##############################################
+
+    def _append(self, data, deepcopy=False):
+
+        if deepcopy:
+            data = copy.deepcopy(data)
+        # if isinstance(data, str) or isinstance(data, Buffer):
+        self._content.append(data)
+
+    ##############################################
+
+    def define(self, name, value, unit=''):
+
+        value = str(value) + unit
+        self.append(self.format(r'\def\«0»{«1»}', name, value))
+
+    ##############################################
+
+    def new_command(self, name, number_of_parameters, code):
+
+        self.append(self.format(r'\newcommand{\«0»}[«1»]{«2»}', name, number_of_parameters, code))
+
+    ##############################################
+
+    def page_style(self, style):
+
+        self.append(r'\pagestyle{%s}' % style)
+
+    ##############################################
+
+    def empty_page_style(self):
+
+        self.page_style('empty')
+
+    ##############################################
+
+    def new_page(self):
+
+        self._content.append(r'\newpage')
+
+    ##############################################
+
+    def set_main_font(self, name):
+
+        self.append(self.format(r'\setmainfont[Ligatures=TeX]{}{«0»}', name))
+
+    ##############################################
+
+    def font_size(self, font_size, base_line_skip=None):
+
+        if base_line_skip is None:
+            base_line_skip = 1.2 * font_size
+
+        self.append(self.format(r'\fontsize{«0»}{«1:.2f»}', font_size, base_line_skip))

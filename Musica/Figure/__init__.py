@@ -20,52 +20,14 @@
 
 ####################################################################################################
 
-import copy
+import gettext
+import os
 
 ####################################################################################################
 
-class Buffer(object):
+# https://docs.python.org/3/library/gettext.html
+# http://babel.pocoo.org/en/latest/index.html
+# https://www.mattlayman.com/2015/i18n.html
 
-    #######################################
-
-    def __init__(self):
-
-        self._content = list()
-        self.clear()
-
-    #######################################
-
-    def clear(self):
-
-        del self._content[:]
-
-    #######################################
-
-    def push(self, data, deepcopy=False):
-
-        if isinstance(data, list):
-            for item in data:
-                self.push_internal(item, deepcopy)
-        else:
-            self.push_internal(data, deepcopy)
-
-        return self
-
-    #######################################
-
-    def push_internal(self, data, deepcopy=False):
-
-        if deepcopy:
-            data = copy.deepcopy(data)
-        if isinstance(data, (str, unicode)) or isinstance(data, Buffer):
-            self._content.append(data)
-
-    #######################################
-
-    def write(self, stream):
-
-        for item in self._content:
-            if isinstance(item, Buffer):
-                item.write(stream)
-            else:
-                stream.write(item)
+_locale_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
+gettext.install('Musica', _locale_path)

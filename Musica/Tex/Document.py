@@ -1,0 +1,139 @@
+####################################################################################################
+#
+# Musica - A Music Theory Package for Python
+# Copyright (C) 2017 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import logging
+import os
+import shutil
+import subprocess
+import tempfile
+
+from .Buffer import Buffer
+from .Environment import Environment
+from .Package import Package
+
+####################################################################################################
+
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
+LINE_BREAK = r'\\'
+
+####################################################################################################
+
+class Document(object):
+
+    _logger = _module_logger.getChild('Document')
+
+    #######################################
+
+    def __init__(self, class_name, class_options=()):
+
+        self._class_name = class_name
+        self._class_options = class_options
+
+        self._preambule = Buffer()
+        self._content = Environment(name='document')
+
+        self._preambule.packages.add(Package('fontspec'))
+
+    ##############################################
+
+    @property
+    def preambule(self):
+        return self._preambule
+
+    @property
+    def content(self):
+        return self._content
+
+    @property
+    def packages(self):
+        return self._preambule.packages
+
+    ##############################################
+
+    def __str__(self):
+
+        class_options = ', '.join(self._class_options)
+        source = Buffer.format(r'\documentclass[«1»]{«0._class_name»}', self, class_options) + '\n'
+        packages = self._preambule.collect_packages()
+        packages.merge(self._content.collect_packages())
+        for package in packages:
+            source += str(package) + '\n'
+        source += str(self._preambule)
+        source += str(self._content)
+        return source
+
+    ##############################################
+
+    @staticmethod
+    def _make_filename(path, filename, extension):
+
+        return os.path.join(path, filename + '.' + extension)
+
+    #######################################
+
+    __latex_command__ = '/usr/bin/lualatex'
+    __svg_command__ = '/usr/bin/pdf2svg'
+
+    def generate(self, output_path):
+
+        output_path = os.path.abspath(output_path)
+        base, extension = os.path.splitext(output_path)
+        extension = extension[1:]
+        output_dir = os.path.dirname(base)
+        filename = os.path.basename(base)
+        self._logger.info("Output is {} {} {}".format(output_dir, filename, extension))
+
+        if not os.path.exists(output_dir):
+            raise NameError("Output directory {} don't exists".format(output_dir))
+
+        tmp_dir = tempfile.mkdtemp()
+
+        if extension == 'tex':
+            tex_path = self._make_filename(output_dir, filename, 'tex')
+            self._logger.info('Write {}'.format(tex_path))
+        else:
+            tex_path = self._make_filename(tmp_dir, 'out', 'tex')
+        with open(tex_path, 'w') as fd:
+            fd.write(str(self))
+
+        if extension in ('pdf', 'svg'):
+            pdf_path = self._make_filename(tmp_dir, 'out', 'pdf')
+
+            command = [
+                self.__latex_command__,
+                '--interaction=batchmode',
+                '--output-directory={}'.format(tmp_dir), # self.output_directory
+                tex_path,
+            ]
+            subprocess.call(command)
+
+            if os.path.exists(pdf_path):
+                if extension == 'pdf':
+                    dst_path = self._make_filename(output_dir, filename, 'pdf')
+                    # os.rename(pdf_path, dst_path)
+                    shutil.copyfile(pdf_path, dst_path)
+                elif extension == 'svg':
+                    dst_path = self._make_filename(output_dir, filename, 'svg')
+                    subprocess.call((self.__svg_command__, pdf_path, dst_path))
