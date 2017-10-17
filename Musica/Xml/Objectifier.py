@@ -18,6 +18,10 @@
 #
 ####################################################################################################
 
+# Fixme:
+#   improve formater
+#   code dumper, register class
+
 ####################################################################################################
 
 import logging
@@ -150,7 +154,7 @@ class {}({}):
 
     def __repr__(self):
 
-        return '{} {}'.fomat(self.__class__.__name__, self.id)
+        return '{} {}'.format(self.__class__.__name__, self.instance_id)
 
     ##############################################
 
@@ -223,6 +227,7 @@ class XmlObjectifierNode(XmlObjectifierAbc):
         if name not in cls.__child_names__:
             cls.__child_names__.add(name)
             # cls._add_getter(name)
+            # Fixme: getter name
             setattr(cls, name, property(lambda self: self._get_child_by_name(name)))
 
     ##############################################
@@ -334,7 +339,8 @@ class XmlObjectifierLeaf(XmlObjectifierAbc):
     def to_dom(self):
 
         element = super().to_dom()
-        element.text = str(self._text)
+        if self._text is not None:
+            element.text = str(self._text)
 
         return element
 
@@ -343,14 +349,19 @@ class XmlObjectifierLeaf(XmlObjectifierAbc):
     def to_python(self, anonymous=False):
 
         # py_code = super().to_python()
-        text = str(self._text)
-        if not isinstance(self._text, (int, float)):
-            text = "'" + text + "'"
-        # py_code += '{}.text = {}\n'.format(self.instance_id, text)
-        args = [text]
+
+        args = []
+        if self._text is not None:
+            text = str(self._text)
+            if not isinstance(self._text, (int, float)):
+                text = "'" + text + "'"
+            # py_code += '{}.text = {}\n'.format(self.instance_id, text)
+            args.append(text)
+
         attributes = self.attributes_to_python()
         if attributes:
             args.append(attributes)
+
         py_source = '{}({})'.format(self.class_name, ', '.join(args))
 
         if anonymous:
