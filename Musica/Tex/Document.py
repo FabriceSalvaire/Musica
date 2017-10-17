@@ -84,9 +84,10 @@ class Document(TexContent):
     #######################################
 
     __latex_command__ = '/usr/bin/lualatex'
+    __pdfcrop_command__ = '/usr/bin/pdfcrop'
     __svg_command__ = '/usr/bin/pdf2svg'
 
-    def generate(self, output_path):
+    def generate(self, output_path, crop=False, margin=10):
 
         output_path = os.path.abspath(output_path)
         base, extension = os.path.splitext(output_path)
@@ -98,32 +99,39 @@ class Document(TexContent):
         if not os.path.exists(output_dir):
             raise NameError("Output directory {} don't exists".format(output_dir))
 
-        tmp_dir = tempfile.mkdtemp()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            self._logger.info("Temporary directory is {}".format(tmp_dir))
 
-        if extension == 'tex':
-            tex_path = self._make_filename(output_dir, filename, 'tex')
-            self._logger.info('Write {}'.format(tex_path))
-        else:
-            tex_path = self._make_filename(tmp_dir, 'out', 'tex')
-        with open(tex_path, 'w') as fd:
-            fd.write(str(self))
+            if extension == 'tex':
+                tex_path = self._make_filename(output_dir, filename, 'tex')
+                self._logger.info('Write {}'.format(tex_path))
+            else:
+                tex_path = self._make_filename(tmp_dir, 'out', 'tex')
+            with open(tex_path, 'w') as fd:
+                fd.write(str(self))
 
-        if extension in ('pdf', 'svg'):
-            pdf_path = self._make_filename(tmp_dir, 'out', 'pdf')
+            if extension in ('pdf', 'svg'):
+                pdf_path = self._make_filename(tmp_dir, 'out', 'pdf')
 
-            command = [
+                command = [
                 self.__latex_command__,
-                '--interaction=batchmode',
-                '--output-directory={}'.format(tmp_dir), # self.output_directory
-                tex_path,
-            ]
-            subprocess.call(command)
+                    '--interaction=batchmode',
+                    '--shell-escape',
+                    '--output-directory={}'.format(tmp_dir), # self.output_directory
+                    tex_path,
+                ]
+                subprocess.call(command)
 
-            if os.path.exists(pdf_path):
-                if extension == 'pdf':
-                    dst_path = self._make_filename(output_dir, filename, 'pdf')
-                    # os.rename(pdf_path, dst_path)
-                    shutil.copyfile(pdf_path, dst_path)
-                elif extension == 'svg':
-                    dst_path = self._make_filename(output_dir, filename, 'svg')
-                    subprocess.call((self.__svg_command__, pdf_path, dst_path))
+                if os.path.exists(pdf_path):
+                    if crop:
+                        cropped_pdf_path = self._make_filename(tmp_dir, 'out-crop', 'pdf')
+                        subprocess.call((self.__pdfcrop_command__, '--margins', str(margin), pdf_path, cropped_pdf_path))
+                        pdf_path = cropped_pdf_path
+                    if extension == 'pdf':
+                        dst_path = self._make_filename(output_dir, filename, 'pdf')
+                        # os.rename(pdf_path, dst_path)
+                        shutil.copyfile(pdf_path, dst_path)
+                    elif extension == 'svg':
+                        dst_path = self._make_filename(output_dir, filename, 'svg')
+                        subprocess.call((self.__svg_command__, pdf_path, dst_path))
+                        # mutool draw -o output input

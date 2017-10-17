@@ -38,7 +38,9 @@ class DiatonicScale(TikzFigure):
                  inner_radius=3,
                  outer_radius=4):
 
-        super().__init__(packages_options=('shapes.arrows',))
+        super().__init__()
+
+        self.use_library('shapes.arrows')
 
         diatonic_pitches = [Pitch(step) for step in ET12.step_names]
         for i, pitch in enumerate(diatonic_pitches):

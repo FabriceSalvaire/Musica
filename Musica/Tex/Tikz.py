@@ -52,10 +52,18 @@ class TikzFigure(Environment):
 
     ##############################################
 
+    @staticmethod
+    def setup_externalisation(document):
+
+        document.append_preambule(r'\usetikzlibrary{external}')
+        document.append_preambule(r'\tikzexternalize')
+
+    ##############################################
+
     def use_library(self, name):
 
-        # \usetikzlibrary{}
-        self.packages['tikz'].set_option(name)
+        # self.packages['tikz'].set_option(name)
+        self.append_preambule(r'\usetikzlibrary{%s}' % name)
 
     ##############################################
 
