@@ -37,14 +37,20 @@ class Environment(TexContent):
 
     ##############################################
 
-    def _content_to_string(self):
+    def format_begin(self):
 
         if self._options:
             options = '[' + self._options + ']'
         else:
             options = ''
 
-        source = r'\begin{%s}%s' % (self._name, options) + '\n'
+        return r'\begin{%s}%s' % (self._name, options)
+
+    ##############################################
+
+    def _content_to_string(self):
+
+        source = self.format_begin() + '\n'
         source += super().to_string('content')
         source += r'\end{%s}' % (self._name) + '\n'
 

@@ -36,10 +36,6 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-LINE_BREAK = r'\\'
-
-####################################################################################################
-
 class Document(TexContent):
 
     _logger = _module_logger.getChild('Document')
@@ -66,7 +62,7 @@ class Document(TexContent):
         for package in packages:
             source += str(package) + '\n'
 
-        source += self.to_string('preambule')
+        source += self.collect_preambule()
 
         source += r'\begin{document}' + '\n'
         source += self.to_string('content')
@@ -135,3 +131,5 @@ class Document(TexContent):
                         dst_path = self._make_filename(output_dir, filename, 'svg')
                         subprocess.call((self.__svg_command__, pdf_path, dst_path))
                         # mutool draw -o output input
+                else:
+                    raise NameError("LaTeX failed")

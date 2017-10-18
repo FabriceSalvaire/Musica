@@ -28,6 +28,8 @@ from .Package import Packages
 
 class Buffer:
 
+    LINE_BREAK = r'\\'
+
     ##############################################
 
     def __init__(self):
@@ -103,19 +105,19 @@ class BasicCommandMixin:
     def define(self, name, value, unit=''):
 
         value = str(value) + unit
-        self.append(self.format(r'\def\«0»{«1»}', name, value))
+        self.append(self.format(r'\def\«»{«»}', name, value))
 
     ##############################################
 
     def new_command(self, name, number_of_parameters, code):
 
-        self.append(self.format(r'\newcommand{\«0»}[«1»]{«2»}', name, number_of_parameters, code))
+        self.append(self.format(r'\newcommand{\«»}[«»]{«»}', name, number_of_parameters, code))
 
     ##############################################
 
     def set_main_font(self, name):
 
-        self.append(self.format(r'\setmainfont[Ligatures=TeX]{}{«0»}', name))
+        self.append(self.format(r'\setmainfont[Ligatures=TeX]{«»}', name))
 
     ##############################################
 
@@ -124,7 +126,13 @@ class BasicCommandMixin:
         if base_line_skip is None:
             base_line_skip = 1.2 * font_size
 
-        self.append(self.format(r'\fontsize{«0»}{«1:.2f»}', font_size, base_line_skip))
+        self.append(self.format(r'\fontsize{«»}{«:.2f»}', font_size, base_line_skip))
+
+    ##############################################
+
+    def centerline(self, content):
+
+        self.append(self.format(r'\centerline{«»}', content))
 
 ####################################################################################################
 
@@ -186,8 +194,18 @@ class TexContent(BasicCommandMixin, ContentCommandMixin):
         packages = self._packages.clone()
         for item in self._content:
             if isinstance(item, TexContent):
-                packages.merge(item.packages)
+                packages.merge(item.collect_packages())
         return packages
+
+    ##############################################
+
+    def collect_preambule(self):
+
+        source = ''
+        for item in self._content:
+            if isinstance(item, TexContent):
+                source += item.to_string('preambule')
+        return source
 
     ##############################################
 

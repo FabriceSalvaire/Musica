@@ -20,8 +20,9 @@
 
 ####################################################################################################
 
-from . import Environment
-from . import Document
+from .Environment import Environment
+from .Buffer import Buffer
+from .Package import Package
 
 ####################################################################################################
 
@@ -30,59 +31,96 @@ class Tabular(Environment):
     #######################################
 
     def __init__(self, tabular_format,
-                 position='',
+                 position='', # ('h', 't', 'b', 'p')
                  environment='tabular',
-                 alternated_colour=False,
-                 colour_model='gray',
-                 odd_row_colour='.9',
-                 even_row_colour='1.',
                  ):
 
-        super(Tabular, self).__init__(name=environment)
+        super().__init__(name=environment, options=position)
 
-        self.format = tabular_format
-        self.position = position
-        self.alternated_colour = alternated_colour
-        self.colour_model = colour_model
-        self.odd_row_colour = odd_row_colour
-        self.even_row_colour = even_row_colour
+        self.packages.add(Package('multirow'))
+        self.packages.add(Package('xcolor', 'table'))
 
-        self._odd_row = True
+        self._format = tabular_format
 
     #######################################
 
-    def set_begin(self):
+    def format_begin(self):
 
-        self.begin_buffer.push(r'\begin{%s}[%s]{%s}' % (self.name, self.position, self.format) + '\n')
+        return super().format_begin() + '{%s}' % self._format
 
     #######################################
 
-    def push_columns(self, columns, vspace=None):
+    def end_row(self, vspace=None):
 
-        if self.alternated_colour:
-            self.set_odd_even_row_colour(self._odd_row)
-            self._odd_row = not self._odd_row
-
-        line_break = Document.LINE_BREAK
+        line_break = Buffer.LINE_BREAK # Fixme:
         if vspace is not None:
-            line_break += '[%s]' % (vspace)
-        self.push(' & '.join(columns) + ' ' + line_break + '\n')
+            line_break += '[{}]'.format(vspace)
+        self.append(' ' + line_break)
+
+    #######################################
+
+    def add_row(self, columns, vspace=None):
+
+        self.append(' & '.join(columns), newline=False)
+        self.end_row(vspace)
+
+    #######################################
+
+    @staticmethod
+    def multicolumn(number_of_columns, column_format, content):
+
+        # Fixme:
+        return Tabular.format(r'\multicolumn{«0»}{«1»}{«2»}', number_of_columns, column_format, content)
 
     #######################################
 
     def hline(self):
 
-        self.push(r'\hline' + '\n')
+        self.append(r'\hline')
 
     #######################################
 
-    def set_row_colour(self, colour_model, colour):
+    def set_row_colour(self, colour):
 
-        self.push(r'\rowcolor' + '[%s]{%s}' % (colour_model, colour)  + '\n')
+        # self.append(self.format(r'\rowcolor[«0»]{«1»}', colour_model, colour))
+        self.append(self.format(r'\rowcolor{«0»}', colour))
 
-    #######################################
+####################################################################################################
 
-    def set_odd_even_row_colour(self, odd_row):
-
-        row_colour = self.odd_row_colour if odd_row else self.even_row_colour
-        self.set_row_colour(self.colour_model, row_colour)
+#class AlternatedColourTabular(Environment):
+#
+#    #######################################
+#
+#    def __init__(self, tabular_format,
+#                 position='',
+#                 environment='tabular',
+#                 alternated_colour=False,
+#                 colour_model='gray',
+#                 odd_row_colour='.9',
+#                 even_row_colour='1.',
+#                 ):
+#
+#        ...
+#
+#        self._alternated_colour = alternated_colour
+#        self._colour_model = colour_model
+#        self._odd_row_colour = odd_row_colour
+#        self._even_row_colour = even_row_colour
+#        self._odd_row = True
+#
+#    #######################################
+#
+#    def add_row(self, columns, vspace=None):
+#
+#        if self._alternated_colour:
+#            self._set_odd_even_row_colour(self._odd_row)
+#            self._odd_row = not self._odd_row
+#
+#        ...
+#
+#    #######################################
+#
+#    def _set_odd_even_row_colour(self, odd_row):
+#
+#        row_colour = self._odd_row_colour if odd_row else self._even_row_colour
+#        self.set_row_colour(self._colour_model, row_colour)
