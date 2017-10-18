@@ -415,7 +415,7 @@ class Pitch:
                 except ValueError:
                     step_number = None
                 if step_number is not None:
-                    self._init_from_number(step_number)
+                    self._init_from_number(step_number, kwargs)
                 else:
                     self._init_from_string(name)
         else:
@@ -440,7 +440,7 @@ class Pitch:
 
     ##############################################
 
-    def _init_from_number(self, step_number):
+    def _init_from_number(self, step_number, kwargs):
 
         try:
             name = self.__temperament__.number_to_name(step_number)
@@ -455,7 +455,7 @@ class Pitch:
             self._step = name
             self._accidental = None
 
-        self._octave = None
+        self._octave = kwargs.get('octave', None)
 
     ##############################################
 
@@ -487,7 +487,7 @@ class Pitch:
     def pitch_class(self):
         """Returns the integer value for the pitch, between 0 and 11, where C=0, C#=1, D=2, ... B=11.
         """
-        return self.__temperament__.name_to_number(self._step)
+        return self.__temperament__.name_to_number(self._step) + int(self.alteration)
 
     @pitch_class.setter
     def pitch_class(self, value):
@@ -564,25 +564,20 @@ class Pitch:
         return name
 
     @property
+    def name(self):
+        return self._to_string()
+
+    @property
     def full_name(self):
-        name = self._step
-        if self._accidental is not None:
-            name += str(self._accidental)
-        if self._octave is not None:
-            name += str(self._octave)
-        return name
+        return self._to_string(octave=True)
 
     @property
     def unicode_name(self):
-        name = self._step
-        if self._accidental is not None:
-            name += self._accidental.unicode_name
-        if self._octave is not None:
-            name += str(self._octave)
-        return name
+        return self._to_string(unicode=True)
 
-    # @property
-    # def unicode_name_with_octave(self): # Fixme: full_name
+    @property
+    def unicode_name_with_octave(self):
+        return self._to_string(octave=True, unicode=True)
 
     def __str__(self):
         return self.full_name
@@ -591,14 +586,19 @@ class Pitch:
 
     @property
     def locale(self):
-        # Return :class:`Musica.Locale.Note.NoteName`
-        return self.__temperament__.translator(self._step)
+        # Return :class:`Musica.Locale.Note.NoteNameTranslation`
+        return self.__temperament__.translator(self.pitch_class) # self.name
+
+    ##############################################
+
+    @property
+    def english_locale(self):
+        return self.locale['english']
 
     ##############################################
 
     @property
     def french_locale(self):
-        # Return :class:`Musica.Locale.Note.NoteNameTranslation`
         return self.locale['français']
 
     ##############################################

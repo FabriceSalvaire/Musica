@@ -31,6 +31,16 @@ class NoteNameTranslation:
 
     ##############################################
 
+    @staticmethod
+    def to_tex(x):
+
+        x = x.replace('♭', r'$\flat$')
+        x = x.replace('♯', r'$\sharp$')
+
+        return x
+
+    ##############################################
+
     def __init__(self, step,
                  name, unicode_name=None,
                  flat_name=None, unicode_flat_name=None,
@@ -56,11 +66,14 @@ class NoteNameTranslation:
 
     @property
     def unicode_name(self):
-
         if self._unicode_name is None:
-            return self.name
+            return self._name
         else:
             return self._unicode_name
+
+    @property
+    def tex_name(self):
+        return self.to_tex(self.unicode_name)
 
     @property
     def flat_name(self):
@@ -71,12 +84,20 @@ class NoteNameTranslation:
         return self._unicode_flat_name
 
     @property
+    def tex_flat_name(self):
+        return self.to_tex(self._unicode_flat_name)
+
+    @property
     def sharp_name(self):
         return self._sharp_name
 
     @property
     def unicode_sharp_name(self):
         return self._unicode_sharp_name
+
+    @property
+    def tex_sharp_name(self):
+        return selt.to_tex(self._unicode_sharp_name)
 
 ####################################################################################################
 
@@ -220,10 +241,10 @@ class NoteName:
 ####################################################################################################
 
 #: List of NoteName for 12-TET
-ET12_NOTE_NAMES = [NoteName(step) for step in range(1, 13)]
+ET12_NOTE_NAMES = [NoteName(step) for step in range(12)]
 for language, data in __et12_note_name_translations__.items():
     for note in ET12_NOTE_NAMES:
-        note.add_language(language, data[note.step -1])
+        note.add_language(language, data[note.step])
 
 _et12_note_names_map = {}
 for note in ET12_NOTE_NAMES:
@@ -237,4 +258,7 @@ for note in ET12_NOTE_NAMES:
                 _et12_note_names_map[name] = note
 
 def translate_et12_note(name):
-    return _et12_note_names_map[name]
+    if isinstance(name, int):
+        return ET12_NOTE_NAMES[name]
+    else:
+        return _et12_note_names_map[name]
