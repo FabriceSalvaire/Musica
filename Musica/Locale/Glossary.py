@@ -21,8 +21,11 @@
 ####################################################################################################
 
 __all__ = [
+    'General'
     'INTERVAL_NAMES',
     'ACCIDENTAL_NAMES'
+    'OCTAVE_NAMES',
+    'SCALE_DEGREES',
     ]
 
 ####################################################################################################
@@ -90,4 +93,14 @@ OCTAVE_NAMES = (
     _('five-lined'),
     _('six-lined'),
     _('seven-lined'), # C10
+)
+
+SCALE_DEGREES = (
+    _('tonic'),        # 1
+    _('supertonic'),   # 2
+    _('mediant'),      # 3
+    _('subdominant'),  # 4
+    _('dominant'),     # 5
+    _('submediant'),   # 6
+    _('leading tone'), # 7
 )
