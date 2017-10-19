@@ -29,24 +29,43 @@ __all__ = [
 
 GENERAL = (
     _('pitch'),
-    _('semitone'), # half step or a half tone
-    _('tone'),
 )
 
 INTERVAL_NAMES = (
-    _('Unison'),
-    _('Minor second'),
-    _('Major second'),
-    _('Minor third'),
-    _('Major third'),
-    _('Perfect fourth'),
-    _('Tritone'),
-    _('Perfect fifth'),
-    _('Minor sixth'),
-    _('Major sixth'),
-    _('Minor seventh'),
-    _('Major seventh'),
-    _('Octave'),
+    _('semitone'), # half step or a half tone
+    _('tone'),
+    _('tritone'),
+
+    _('minor'),
+    _('major'),
+    _('diminished'),
+    _('augmented'),
+
+    _('unison'),
+
+    _('second'),
+    _('minor second'),
+    _('major second'),
+
+    _('third'),
+    _('minor third'),
+    _('major third'),
+
+    _('fourth'),
+    _('perfect fourth'),
+
+    _('fifth'),
+    _('perfect fifth'),
+
+    _('sixth'),
+    _('minor sixth'),
+    _('major sixth'),
+
+    _('seventh'),
+    _('minor seventh'),
+    _('major seventh'),
+
+    _('octave'),
 )
 
 ACCIDENTAL_NAMES = (
