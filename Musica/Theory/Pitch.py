@@ -434,15 +434,21 @@ class Pitch:
 
     ##############################################
 
-    def _compute_float_value(self, octave):
+    def _compute_float_value(self, octave, add_microtone=True):
 
         value = (octave + 1) * self.__temperament__.number_of_steps
         value += self.__temperament__.name_to_number(self._step)
         if self._accidental is not None:
             value += self._accidental.alteration
-        # if self.microtone is not None:
-        #     value += self.microtone.alter
-        return float(value)
+        if add_microtone:
+            # if self.microtone is not None:
+            #     value += self.microtone.alter
+            return float(value)
+        else:
+            return value
+
+    def __int__(self):
+        return self._compute_float_value(self.implicit_octave, False)
 
     def __float__(self):
         return float(self._compute_float_value(self.implicit_octave))

@@ -22,8 +22,9 @@
 
 import os
 
+from ..Theory.Pitch import Pitch
+# from ..Theory.Temperament import ET12
 from .Instrument import Instrument
-from Musica.Theory.Pitch import Pitch, ET12
 
 ####################################################################################################
 
