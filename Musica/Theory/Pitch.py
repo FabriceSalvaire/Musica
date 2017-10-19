@@ -25,10 +25,6 @@
 ####################################################################################################
 
 __all__ = [
-    'PitchStandard',
-    'A440',
-    'EqualTemperament',
-    'ET12',
     'Accidental',
     'Pitch',
     ]
@@ -37,193 +33,8 @@ __all__ = [
 
 import re
 
-from Musica.Locale.Note import translate_et12_note
-from Musica.Locale.Unicode import to_unicode
-
-####################################################################################################
-
-class PitchStandard:
-
-    """Class to define a pitch standard.
-
-    Octave are numbered according SPN and step (semitone) numbers lie from 0 to 11.
-
-    To define A440 use :code:`PitchStandard(name='A440', frequency=440, octave_number=4, step_number=9)`
-    """
-
-    def __init__(self, name, frequency, octave, step_number):
-
-        self._name = name
-        self._frequency = frequency
-        self._octave = octave
-        self._step_number = step_number # Fixme: pitch class ?
-
-    ##############################################
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def frequency(self):
-        return self._frequency
-
-    @property
-    def octave(self):
-        return self._octave
-
-    @property
-    def step_number(self):
-        return self._step_number
-
-####################################################################################################
-
-#: A440 or A4, also known as the Stuttgart pitch, which has a frequency of 440 Hz,
-#  is the musical note of A above middle C
-#  and serves as a general tuning standard for musical pitch.
-A440 = PitchStandard(name='A440', frequency=440, octave=4, step_number=9)
-
-####################################################################################################
-
-class EqualTemperament:
-
-    """Class to define an Equal Temperament.
-
-    Step is an alias for semitone.
-    """
-
-    ##############################################
-
-    def __init__(self, number_of_steps, pitch_standard):
-
-        self._number_of_steps = number_of_steps
-        self._pitch_standard = pitch_standard
-
-        self._fundamental = self._compute_fundamental()
-
-    ##############################################
-
-    @property
-    def number_of_steps(self):
-        return self._number_of_steps
-
-    @property
-    def pitch_standard(self):
-        return self._pitch_standard
-
-    @property
-    def fundamental(self):
-        """Return the frequency of C0"""
-        return self._fundamental
-
-    ##############################################
-
-    def _compute_scale(self, octave, step_number):
-
-        octave_factor = 2 ** octave
-        interval_factor = 2 ** (step_number / self._number_of_steps)
-        return octave_factor * interval_factor
-
-    ##############################################
-
-    def _compute_fundamental(self):
-
-        denominator = self._compute_scale(self._pitch_standard.octave,
-                                          self._pitch_standard.step_number)
-        return self._pitch_standard.frequency / denominator
-
-    ##############################################
-
-    def frequency(self, octave, step_number):
-
-        """Return the frequency for an octave using the scientific pitch notation and an step number
-        ranging from 0 to 11.
-
-        For A440 (La3), use octave 4 and step number 9.
-
-        """
-
-        return self._fundamental * self._compute_scale(octave, step_number)
-
-####################################################################################################
-
-class UsualEqualTemperament(EqualTemperament):
-
-    """Base class factory to build for example a twelve-tone equal temperament.
-    """
-
-    ##############################################
-
-    def __init__(self, number_of_steps, pitch_standard, step_name_to_number, translator):
-
-        super().__init__(number_of_steps, pitch_standard)
-
-        self._translator = translator
-
-        self._step_name_to_number = step_name_to_number
-        self._step_names = list(step_name_to_number.keys())
-
-        # accidental steps are set to None
-        self._step_number_to_name = [None]*number_of_steps
-        for name, step_number in step_name_to_number.items():
-            self._step_number_to_name[step_number] = name
-
-        # Add accidentals
-        for i in range(number_of_steps):
-            if self._step_number_to_name[i] is None:
-                if i > 0:
-                    self._step_name_to_number[self._step_number_to_name[i-1] + '#'] = i
-                if i < 11:
-                    self._step_name_to_number[self._step_number_to_name[i+1] + '-'] = i
-
-    ##############################################
-
-    @property
-    def step_names(self):
-        return self._step_names
-
-    ##############################################
-
-    def translator(self, *args, **kwargs):
-        return self._translator(*args, **kwargs)
-
-    ##############################################
-
-    def is_valid_step_name(self, name):
-        return name in self._step_names
-
-    ##############################################
-
-    def is_valid_step_number(self, number):
-        return 0 < number < self._number_of_steps
-
-    ##############################################
-
-    def name_to_number(self, name):
-        return self._step_name_to_number[name]
-
-    ##############################################
-
-    def number_to_name(self, name):
-        return self._step_number_to_name[name]
-
-####################################################################################################
-
-#: Twelve-tone equal temperament, also known as 12 equal temperament, 12-TET, or 12-ET
-ET12 = UsualEqualTemperament(
-    number_of_steps=12,
-    pitch_standard=A440,
-    step_name_to_number={
-        'C' : 0,
-        'D' : 2,
-        'E' : 4,
-        'F' : 5,
-        'G' : 7,
-        'A' : 9,
-        'B' : 11,
-    },
-    translator=translate_et12_note,
-)
+from ..Locale.Unicode import to_unicode
+from .Temperament import ET12
 
 ####################################################################################################
 
@@ -364,7 +175,8 @@ class Accidental:
         else:
             return False
 
-Accidental.__alteration_to_name__ = {alteration:name for name, alteration in Accidental.__name_to_alteration__.items()}
+Accidental.__alteration_to_name__ = {
+    alteration:name for name, alteration in Accidental.__name_to_alteration__.items()}
 
 ####################################################################################################
 
@@ -428,9 +240,9 @@ class Pitch:
 
     def _init_from_clone(self, other):
 
-        self._step = name._step
-        self.accidental = name._accidental
-        self._octave = name._octave
+        self._step = other._step
+        self.accidental = other._accidental
+        self._octave = other._octave
 
     ##############################################
 
@@ -483,6 +295,12 @@ class Pitch:
     def __repr__(self):
 
         return '{} {}'.format(self.__class__.__name__, str(self))
+
+    ##############################################
+
+    @property
+    def temperament(self):
+        return self.___temperament__
 
     ##############################################
 
