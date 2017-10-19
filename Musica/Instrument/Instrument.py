@@ -38,10 +38,7 @@ class Instrument:
 
     def __init__(self,
                  name,
-                 category,
-                 # lowest_note,
-                 # highest_note
-    ):
+                 category):
 
         # partId
         # partName
@@ -59,8 +56,6 @@ class Instrument:
 
         self._name = name
         self._category = category
-        # self._lowest_note = lowest_note
-        # self._highest_note = highest_note
 
     ##############################################
 
@@ -72,10 +67,10 @@ class Instrument:
     def category(self):
         return self._category
 
-    # @property
-    # def lowest_note(self):
-    #     return self._lowest_note
+    @property
+    def lowest_note(self):
+        raise NotImplementedError
 
-    # @property
-    # def highest_note(self):
-    #     return self._highest_note
+    @property
+    def highest_note(self):
+        raise NotImplementedError

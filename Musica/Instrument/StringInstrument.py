@@ -23,7 +23,7 @@
 import os
 
 from .Instrument import Instrument
-from Musica.Theory.Pitch import Pitch
+from Musica.Theory.Pitch import Pitch, ET12
 
 ####################################################################################################
 
@@ -50,6 +50,18 @@ class String:
 
     def __eq__(self, other):
         return self._pitch == other.pitch and self._length == other.length
+
+    ##############################################
+
+    def fret_position(self, i, from_nut=True):
+
+        # From nut / sillet
+
+        position = self._length * 2**(-i/self._pitch.temperament)
+        if from_nut:
+            position = self._length - position
+
+        return position
 
 ####################################################################################################
 
@@ -264,7 +276,8 @@ class StringInstrument(Instrument):
 
     @property
     def highest_pitche(self):
-        return self._tuning.highest_pitche
+        raise NotImplementedError
+        # return self._tuning.highest_pitche
 
 ####################################################################################################
 
