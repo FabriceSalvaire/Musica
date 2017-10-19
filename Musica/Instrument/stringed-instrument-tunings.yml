@@ -1,0 +1,101 @@
+####################################################################################################
+#
+# String Instrument Tunings
+#
+# References: https://en.wikipedia.org/wiki/Stringed_instrument_tunings
+#
+# Syntax:
+#
+#   Instrument Name/Sub Name ... :
+#     Tuning Name: << spaced list of notes from the lowest to the highest >>
+#
+#     Note use Scientific Pitch Notation
+#     Try to align notes for comparison, use double spacing if there are accidentals
+#     Emacs can search a pattern independently of the spacing
+#
+####################################################################################################
+
+Double Bass:
+  # Contrebasse / Contrabbasso / Contrabajo
+
+  # 4-strings
+  Standard:               E1  A1  D2  G2
+  Drop D:                 D1  A1  D2  G2
+  Solo Tuning:            F#1 B1  E2  A2
+  With low C machine:     C1  A1  D2  G2
+  C Machine Legion:       B0  A1  D2  G2
+
+  # 5-strings
+  Standard 5-string:  C1  E1  A1  D2  G2
+  Modern 4th:         B0  E1  A1  D2  G2
+
+####################################################################################################
+
+Guitare:
+
+  # 6-strings
+  Standard:              E2  A2  D3  G3  B3  E4
+  Drop D:                D2  A2  D3  G3  B3  E4
+  Open D:                D2  A2  D3  F#3 A3  D4
+  Open G:                D2  G2  D2  G2  B3  D4
+  Open A:                E2  A2  E3  A3  C#4 E4
+  Lute:                  E2  A2  D3  F#3 B3  E4
+  Irish:                 D2  A2  D3  G3  A3  D4
+
+  # 7-string
+  Standard 7-string: B1  E2  A2  D3  G3  B3  E4
+  Van Eps:           A1  E2  A2  D3  G3  B3  E4
+  Choro:             C2  E2  A2  D3  G3  B3  E4
+
+# Guitar, Alto (Niibori) 6 strings B2 E3 A3 D4 F#4 B4
+
+# Guitar, 8 string B1 E2 A2 D3 G3 B3 E4 A4
+#   [B1 D2] E2 A2 D3 G3 B3 E4
+
+# Guitar, 9 string E3 E2 A3 A2 D4 D3 G3 B3 E4
+#   E2  A2  D3  G4 G3 B3 B3 E4 E4
+#   F#1 B1 E2 A2 D3 G3 B3 E4 A4
+
+# Guitar, 10 string F#2 G#2 A#2 C2 E2 A2 D3 G3 B3 E4
+
+# Guitar, Alto 11 strings Bb1 C2 D2 Eb2 F2 G2 C3 F3 Bb3 D4 G4
+
+# Guitar, 12 string
+#   Standard/Common: E3 E2 A3 A2 D4 D3 G4 G3 B3 B3 E4 E4
+#   Variant: E4 E2 A3 A2 D4 D3 G4 G3 B3 B3 E4 E4
+#   All 6-string alternates may be adapted to 12-string.
+
+# Guitar, Alto 13 strings A1 Bb1 C2 D2 E2 F2 G2 A2 D3 F3 A3 D4 F4
+
+# Guitar, baritone
+#   4th lower: B1 E2 A2 D3 F#3 B3
+#   5th lower: A1 D2 G2 C3 E3 A3
+#   Octave lower: E1 A1 D2 G2 B2 E3
+
+# Guitar, octave E3 A3 D4 G4 B4 E5
+
+####################################################################################################
+
+Guitare/Bass:
+
+  # 4-string
+  Standard 4-string:          E1 A1 D2 G2
+  #                           D1 A1 D2 G2
+  #                           D1 G1 C2 F2
+
+  # 5-string
+  Standard 5-string:       B0 E1 A1 D2 G2
+  Standard 5-string Tenor:    E1 A1 D2 G2 C3
+
+  # 6-string
+  Standard 6-string:       B0 E1 A1 D2 G2 C3
+  #  Alternate:               E1 A1 D2 G2 B2 E3
+
+# Guitar, bass (8-string)  E2 E1 A2 A1 D3 D2 G3 G2
+# Guitar, bass (12-string) E2 E2 E1 A2 A2 A1 D3 D3 D2 G3 G3 G2
+
+####################################################################################################
+
+Piano:
+  # 88-key A0 A#0 B0 C1 C#1 D1 D#1 E1 F1 F#1 G1 G#1 ... C#7 D7 D#7 E7 F7 F#7 G7 G#7 A7 A#7 B7 C8
+  Standard 88-key: A0 ... C8

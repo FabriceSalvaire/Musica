@@ -359,7 +359,10 @@ class Accidental:
 
     def __eq__(self, other):
 
-        return self._alteration == other.alteration
+        if other is not None:
+            return self._alteration == other.alteration
+        else:
+            return False
 
 Accidental.__alteration_to_name__ = {alteration:name for name, alteration in Accidental.__name_to_alteration__.items()}
 
@@ -607,7 +610,7 @@ class Pitch:
 
         # By default, __ne__() delegates to __eq__() and inverts the result
 
-        return (self._pitch == other.pitch and
+        return (self._step == other.step and
                 self._accidental == other.accidental and
                 self._octave == other.octave)
 
@@ -706,3 +709,27 @@ class Pitch:
     #     C <-> B#, D <-> C##, E <-> F-; F <-> E#, G <-> F##, A <-> B–, B <-> C-
     #
     # However, isEnharmonic() for A## and B certainly returns True.
+
+    ##############################################
+
+    def pitch_iterator(self, until):
+
+        # Fixme: complex accidental ???
+
+        if until < self:
+            raise StopIteration
+
+        number_of_steps = self.__temperament__.number_of_steps
+
+        pitch_class = self.pitch_class
+        octave = self.octave
+
+        while True:
+            pitch = self.__class__(pitch_class, octave=octave)
+            yield pitch
+            if pitch == until:
+                raise StopIteration
+            pitch_class += 1
+            if pitch_class == number_of_steps:
+                pitch_class = 0
+                octave += 1
