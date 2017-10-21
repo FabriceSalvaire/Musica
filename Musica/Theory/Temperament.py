@@ -98,6 +98,37 @@ class EqualTemperament:
 
 ####################################################################################################
 
+class TemperamentStep:
+
+    ##############################################
+
+    def __init__(self, step_number, name, degree, quality):
+
+        self._step_number = step_number
+        self._name = name
+        self._degree = degree
+        self._quality = quality
+
+    ##############################################
+
+    @property
+    def step_number(self):
+        return self._step_number
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def degree(self):
+        return self._degree
+
+    @property
+    def quality(self):
+        return self._quality
+
+####################################################################################################
+
 class UsualEqualTemperament(EqualTemperament):
 
     """Base class factory to build for example a twelve-tone equal temperament.
@@ -111,25 +142,42 @@ class UsualEqualTemperament(EqualTemperament):
 
         self._translator = translator
 
-        # Map   note name -> number of semitones
+        # Map   note name -> step number (number of semitones)
         self._step_name_to_number = step_name_to_number
 
         # Note name
         #   ensure name are sorted by degree
         self._step_names = sorted(step_name_to_number.keys(), key=lambda x: step_name_to_number[x])
 
-        # Map   number of semitones -> note name
+        # List of natural step number
+        self._natural_step_number = list(step_name_to_number.values())
+
+        # Map   step number -> note name
         #   accidental steps are set to None
         self._step_number_to_name = [None]*number_of_steps
         for name, step_number in step_name_to_number.items():
             self._step_number_to_name[step_number] = name
-        #   add accidentals
+
+        # Add accidentals
         for i in range(number_of_steps):
             if self._step_number_to_name[i] is None:
                 if i > 0:
                     self._step_name_to_number[self._step_number_to_name[i-1] + '#'] = i
                 if i < 11:
                     self._step_name_to_number[self._step_number_to_name[i+1] + '-'] = i
+
+        # Map  step number -> degree
+        self._step_number_to_degree = [None]*number_of_steps
+        for i, name, in enumerate(self._step_names):
+            step_number = self._step_name_to_number[name]
+            self._step_number_to_degree[step_number] = i +1
+        current_degree = None
+        for i in reversed(range(self.number_of_steps)):
+            degree = self._step_number_to_degree[i]
+            # if degree is not None:
+            #     current_degree = degree
+            # else:
+            #     self._step_number_to_degree[i] = current_degree
 
     ##############################################
 
@@ -138,7 +186,7 @@ class UsualEqualTemperament(EqualTemperament):
         return self._step_names
 
     @property
-    def number_of_names(self):
+    def number_of_step_names(self):
         return len(self._step_names)
 
     ##############################################
@@ -175,10 +223,16 @@ class UsualEqualTemperament(EqualTemperament):
 
     def name_to_degree(self, name):
 
+        # Fixme: cache ?
         if name in self._step_names:
             return self._step_names.index(name)
         else:
             raise ValueError("Invalid name {}".format(name))
+
+    ##############################################
+
+    def is_natural_step_number(self, number):
+        return number in self._natural_step_number
 
 ####################################################################################################
 
@@ -187,13 +241,17 @@ ET12 = UsualEqualTemperament(
     number_of_steps=12,
     pitch_standard=A440,
     step_name_to_number={
-        'C' : 0,
-        'D' : 2,
-        'E' : 4,
-        'F' : 5,
-        'G' : 7,
-        'A' : 9,
-        'B' : 11,
+        # Name / Step number / Degree / Latin name / Quality
+        'C' : 0,  # 1 Do  P
+        'D' : 2,  # 2 Rè  M
+        'E' : 4,  # 3 Mi  M
+        'F' : 5,  # 4 Fa  P
+        'G' : 7,  # 5 Sol P
+        'A' : 9,  # 6 La  M
+        'B' : 11, # 7 Si  M
     },
+    perfect_steps=('C', 'F', 'G'), # Do Fa Sol
+    #   (D, E, A, B) / (Ré, Mi, La, Si) are major,
+    #   altered steps are minor, excepted step 6 between F/Fa and G/Sol which is particular
     translator=translate_et12_note,
 )
