@@ -20,41 +20,51 @@
 
 ####################################################################################################
 
-import numpy
+import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator
+
+from Musica.Math.MusicTheory import *
 
 ####################################################################################################
 
-from Musica.Theory.Pitch import *
+"""
+
+.. math::
+
+  \cos(2\pi f_1 t) + \cos(2\pi f_2 t) = 2 \cos\left(2\pi \frac{f_1 + f_2}{2} t\right) \cos\left(2\pi \frac{f_1 - f_2}{2} t\right)
+
+  f2 = f1 + f_\delta
+
+  f_\text{beat} = f2 - f1 = f_\delta
+
+  \cos(2\pi f_1 t) + \cos(2\pi f_2 t) = 2 \cos\left(2\pi \frac{2 f_1 + f_\delta}{2} t\right) \cos\left(2\pi \frac{f_\delta}{2} t\right)
+
+"""
 
 ####################################################################################################
 
-number_of_octaves = 10
-octave_frequencies = [[ET12.frequency(octave_number, interval_number) for interval_number in range(1, 13)] for octave_number in range(1, number_of_octaves +1)]
-all_frequencies = []
-for octave_number in range(1, number_of_octaves +1):
-    frequencies = octave_frequencies[octave_number -1]
-    all_frequencies += frequencies
-    print("Octave {} {}".format(octave_number, ['{:.2f}'.format(x) for x in frequencies]))
+delta_frequency = Frequency(5)
+frequency1 = Frequency(100)
+frequency2 = Frequency(float(frequency1) + float(delta_frequency))
+beat_frequency = Frequency(float(delta_frequency) / 2)
 
-figure = plt.figure(1, (20, 10))
+t = np.arange(0, beat_frequency.period, frequency1.period / 100)
+
+y1 = np.cos(t * frequency1.pulsation)
+y2 = np.cos(t * frequency2.pulsation)
+yb = 2 * np.cos(t * beat_frequency.pulsation)
+
+figure1 = plt.figure(1, (20, 10))
 
 axe = plt.subplot(111)
-axe.set_title('Twelve-tone Equal Temperament')
-axe.set_xlabel('notes')
-axe.set_ylabel('Hz')
+axe.set_title('Beat')
+axe.set_xlabel('Time')
+axe.set_ylabel('Amplitude')
 axe.grid()
-for octave_number in range(number_of_octaves):
-    x = octave_number * 12 + 1
-    axe.axvline(x, color='blue')
-    axe.text(x, 10, 'Octave {}'.format(octave_number +1), color='black')
-axe.semilogy(range(1, len(all_frequencies) +1), all_frequencies, 'o-')
-axe.axhline(y=440, color='red')
-axe.text(2, 460, 'A 440 Hz', color='black')
-axe.axhline(y=50, color='red')
-axe.axhline(y=60, color='red')
-axe.text(20, 65, 'Electric Network Frequency 50/60Hz', color='black')
-axe.axhline(y=20e3, color='red')
-axe.text(2, 22e3, 'Human Ear Limit 20 kHz', color='black')
+axe.plot(t, y1)
+axe.plot(t, y2)
+axe.plot(t, y1 + y2)
+axe.plot(t, yb)
 
 plt.show()
