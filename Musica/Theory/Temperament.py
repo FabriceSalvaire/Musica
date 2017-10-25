@@ -69,7 +69,25 @@ class EqualTemperament:
 
     ##############################################
 
+    def is_valid_step_number(self, number):
+        return 0 <= number < self._number_of_steps
+
+    ##############################################
+
+    def fold_step_number(self, number, octave_number=False):
+
+        step_number = number % self._number_of_steps
+        if octave_number:
+            return step_number, number // self._number_of_steps
+        else:
+            return step_number
+
+    ##############################################
+
     def _compute_scale(self, octave, step_number):
+
+        if step_number < 0:
+            raise ValueError("Invalid step number {}".format(step_number))
 
         octave_factor = 2 ** octave
         interval_factor = 2 ** (step_number / self._number_of_steps)
@@ -102,18 +120,64 @@ class TemperamentStep:
 
     ##############################################
 
-    def __init__(self, step_number, name, degree, quality):
+    def __init__(self, step_number, quality=None):
 
         self._step_number = step_number
-        self._name = name
-        self._degree = degree
         self._quality = quality
+
+        self._prev_natural = None
+        self._next_natural = None
+        self._prev_step = None
+        self._next_step = None
 
     ##############################################
 
     @property
     def step_number(self):
         return self._step_number
+
+    @property
+    def quality(self):
+        return self._quality
+
+    @property
+    def prev_natural(self): # Fixme: previous ?
+        return self._prev_natural
+
+    @property
+    def next_natural(self):
+        return self._next_natural
+
+    @property
+    def prev_step(self):
+        return self._prev_step
+
+    @property
+    def next_step(self):
+        return self._next_step
+
+    ##############################################
+
+    def __int__(self):
+        return self._step_number
+
+    def __lt__(self, other):
+        return self._step_number < int(other)
+
+####################################################################################################
+
+class TemperamentNaturalStep(TemperamentStep):
+
+    ##############################################
+
+    def __init__(self, step_number, name=None, quality=None, degree=None):
+
+        super().__init__(step_number, quality)
+
+        self._name = name
+        self._degree = degree
+
+    ##############################################
 
     @property
     def name(self):
@@ -123,9 +187,25 @@ class TemperamentStep:
     def degree(self):
         return self._degree
 
-    @property
-    def quality(self):
-        return self._quality
+    ##############################################
+
+    def __repr__(self):
+        return '{0.__class__.__name__} {0._step_number} {0._name}'.format(self)
+
+####################################################################################################
+
+class TemperamentAccidentalStep(TemperamentStep):
+
+    ##############################################
+
+    def __init__(self, step_number):
+
+        super().__init__(step_number, quality='m')
+
+    ##############################################
+
+    def __repr__(self):
+        return '{0.__class__.__name__} {0.step_number}'.format(self)
 
 ####################################################################################################
 
@@ -136,58 +216,69 @@ class UsualEqualTemperament(EqualTemperament):
 
     ##############################################
 
-    def __init__(self, number_of_steps, pitch_standard, step_name_to_number, translator):
+    def __init__(self, number_of_steps, pitch_standard, natural_steps, translator):
 
         super().__init__(number_of_steps, pitch_standard)
 
         self._translator = translator
 
-        # Map   note name -> step number (number of semitones)
-        self._step_name_to_number = step_name_to_number
+        # ensure sorted by degree
+        self._natural_steps = sorted(natural_steps)
+        # complete
+        number_of_natural_steps = len(natural_steps)
+        for degree, step in enumerate(self._natural_steps):
+            step._degree = degree
+            i_prev = (degree - 1) % number_of_natural_steps
+            i_next = (degree + 1) % number_of_natural_steps
+            step._prev_natural = self._natural_steps[i_prev]
+            step._next_natural = self._natural_steps[i_next]
 
-        # Note name
-        #   ensure name are sorted by degree
-        self._step_names = sorted(step_name_to_number.keys(), key=lambda x: step_name_to_number[x])
+        # Note names
+        self._natural_step_names = [step.name for step in self._natural_steps]
 
         # List of natural step number
-        self._natural_step_number = list(step_name_to_number.values())
+        self._natural_step_numbers = [step.step_number for step in self._natural_steps]
 
-        # Map   step number -> note name
-        #   accidental steps are set to None
-        self._step_number_to_name = [None]*number_of_steps
-        for name, step_number in step_name_to_number.items():
-            self._step_number_to_name[step_number] = name
+        # Map note name -> step
+        self._name_to_step = {step.name:step for step in self._natural_steps}
 
+        # Map step number -> step
+        self._steps = [None]*number_of_steps
+        for step in self._natural_steps:
+            self._steps[step.step_number] = step
         # Add accidentals
         for i in range(number_of_steps):
-            if self._step_number_to_name[i] is None:
-                if i > 0:
-                    self._step_name_to_number[self._step_number_to_name[i-1] + '#'] = i
-                if i < 11:
-                    self._step_name_to_number[self._step_number_to_name[i+1] + '-'] = i
-
-        # Map  step number -> degree
-        self._step_number_to_degree = [None]*number_of_steps
-        for i, name, in enumerate(self._step_names):
-            step_number = self._step_name_to_number[name]
-            self._step_number_to_degree[step_number] = i +1
-        current_degree = None
-        for i in reversed(range(self.number_of_steps)):
-            degree = self._step_number_to_degree[i]
-            # if degree is not None:
-            #     current_degree = degree
-            # else:
-            #     self._step_number_to_degree[i] = current_degree
+            if self._steps[i] is None:
+                self._steps[i] = TemperamentAccidentalStep(i)
+                i_prev = (i - 1) % number_of_steps
+                i_next = (i + 1) % number_of_steps
+                prev_step = self._steps[i_prev]
+                next_step = self._steps[i_next]
+                name = prev_step.name + '-'
+                self._name_to_step[name] = prev_step
+                name = next_step.name + '#'
+                self._name_to_step[name] = next_step
+        # link steps
+        for i in range(number_of_steps):
 
     ##############################################
 
-    @property
-    def step_names(self):
-        return self._step_names
+    def __iter__(self):
+        return iter(self._steps)
+
+    ##############################################
+
+    def natural_step_names(self):
+        return self._natural_step_names
 
     @property
-    def number_of_step_names(self):
-        return len(self._step_names)
+    def number_of_natural_steps(self):
+        return len(self._natural_step_names)
+
+    ##############################################
+
+    def is_natural_step_number(self, number):
+        return number in self._natural_step_numbers
 
     ##############################################
 
@@ -197,42 +288,27 @@ class UsualEqualTemperament(EqualTemperament):
     ##############################################
 
     def is_valid_step_name(self, name):
-        return name in self._step_names
+        return name in self._natural_step_names
 
     ##############################################
 
-    def is_valid_step_number(self, number):
-        return 0 < number < self._number_of_steps
+    def __getitem__(self, step_number):
+        return self.by_step_number(step_number)
 
     ##############################################
 
-    def name_to_number(self, name):
-        return self._step_name_to_number[name]
+    def by_step_number(self, step_number):
+        return self._steps[step_number]
 
     ##############################################
 
-    def number_to_name(self, name):
-        return self._step_number_to_name[name]
+    def by_name(self, name):
+        return self._name_to_step[name]
 
     ##############################################
 
-    def degree_to_name(self, degree):
-        return self._step_names[degree]
-
-    ##############################################
-
-    def name_to_degree(self, name):
-
-        # Fixme: cache ?
-        if name in self._step_names:
-            return self._step_names.index(name)
-        else:
-            raise ValueError("Invalid name {}".format(name))
-
-    ##############################################
-
-    def is_natural_step_number(self, number):
-        return number in self._natural_step_number
+    def by_degree(self, degree):
+        return self._natural_steps[degree]
 
 ####################################################################################################
 
@@ -240,18 +316,16 @@ class UsualEqualTemperament(EqualTemperament):
 ET12 = UsualEqualTemperament(
     number_of_steps=12,
     pitch_standard=A440,
-    step_name_to_number={
-        # Name / Step number / Degree / Latin name / Quality
-        'C' : 0,  # 1 Do  P
-        'D' : 2,  # 2 Rè  M
-        'E' : 4,  # 3 Mi  M
-        'F' : 5,  # 4 Fa  P
-        'G' : 7,  # 5 Sol P
-        'A' : 9,  # 6 La  M
-        'B' : 11, # 7 Si  M
-    },
-    perfect_steps=('C', 'F', 'G'), # Do Fa Sol
-    #   (D, E, A, B) / (Ré, Mi, La, Si) are major,
-    #   altered steps are minor, excepted step 6 between F/Fa and G/Sol which is particular
+    natural_steps=(
+        # step number, name, quality
+        TemperamentNaturalStep( 0, 'C', 'P'), # 1 Do
+        TemperamentNaturalStep( 2, 'D', 'M'), # 2 Rè
+        TemperamentNaturalStep( 4, 'E', 'M'), # 3 Mi
+        TemperamentNaturalStep( 5, 'F', 'P'), # 4 Fa
+        TemperamentNaturalStep( 7, 'G', 'P'), # 5 Sol
+        TemperamentNaturalStep( 9, 'A', 'M'), # 6 La
+        TemperamentNaturalStep(11, 'B', 'M'), # 7 Si
+    ),
+    # altered steps are minor, excepted step 6 between F/Fa and G/Sol which is particular
     translator=translate_et12_note,
 )
