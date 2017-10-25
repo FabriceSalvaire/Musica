@@ -1,0 +1,227 @@
+# French (France) translations for Musica.
+# Copyright (C) 2017 Musica
+# This file is distributed under the same license as the Musica project.
+# Fabrice Salvaire < fabrice DOT salvaire @ orange DOT fr >, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Musica\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-10-25 17:44+0200\n"
+"PO-Revision-Date: 2017-10-25 17:50+0200\n"
+"Last-Translator: \n"
+"Language: fr_FR\n"
+"Language-Team: French\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"X-Generator: Poedit 2.0.3\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Language: fr_FR\n"
+"X-Source-Language: C\n"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:38
+msgid "pitch"
+msgstr "note"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:42
+msgid "semitone"
+msgstr "demi-iton"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:43
+msgid "tone"
+msgstr "ton"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:44
+msgid "tritone"
+msgstr "triton"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:46
+msgid "minor"
+msgstr "mineur"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:47
+msgid "major"
+msgstr "majeur"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:48
+msgid "diminished"
+msgstr "diminué"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:49
+msgid "augmented"
+msgstr "augmenté"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:51
+msgid "unison"
+msgstr "unisson"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:53
+msgid "second"
+msgstr "seconde"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:54
+msgid "minor second"
+msgstr "ton mineur"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:55
+msgid "major second"
+msgstr "ton majeur"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:57
+msgid "third"
+msgstr "tierce"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:58
+msgid "minor third"
+msgstr "tierce mineure"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:59
+msgid "major third"
+msgstr "tierce majeure"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:61
+msgid "fourth"
+msgstr "quarte"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:62
+msgid "perfect fourth"
+msgstr "quarte juste"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:64
+msgid "fifth"
+msgstr "quinte"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:65
+msgid "perfect fifth"
+msgstr "quinte juste"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:67
+msgid "sixth"
+msgstr "sixte"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:68
+msgid "minor sixth"
+msgstr "sixte mineure"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:69
+msgid "major sixth"
+msgstr "sixte majeure"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:71
+msgid "seventh"
+msgstr "septième"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:72
+msgid "minor seventh"
+msgstr "septième mineure"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:73
+msgid "major seventh"
+msgstr "septième majeure"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:75
+msgid "octave"
+msgstr "ocatve"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:79
+msgid "double-flat"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:80
+msgid "flat"
+msgstr "bémol"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:81
+msgid "natural"
+msgstr "naturel"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:82
+msgid "sharp"
+msgstr "dièse"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:83
+msgid "double-sharp"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:87
+msgid "octocontra"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:88
+msgid "subsubcontra"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:89
+msgid "subcontra"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:90
+msgid "contra"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:91
+msgid "great"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:92
+msgid "small"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:93
+msgid "one-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:94
+msgid "two-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:95
+msgid "three-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:96
+msgid "four-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:97
+msgid "five-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:98
+msgid "six-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:99
+msgid "seven-lined"
+msgstr ""
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:103
+msgid "tonic"
+msgstr "tonique"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:104
+msgid "supertonic"
+msgstr "sus-tonique"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:105
+msgid "mediant"
+msgstr "médiante"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:106
+msgid "subdominant"
+msgstr "sous-dominante"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:107
+msgid "dominant"
+msgstr "dominante"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:108
+msgid "submediant"
+msgstr "sus-dominante"
+
+#: /home/fabrice/musica/Musica/Locale/Glossary.py:109
+msgid "leading tone"
+msgstr "sensible"

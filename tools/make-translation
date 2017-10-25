@@ -22,31 +22,38 @@ locale_dir = os.path.join(source_path, 'Musica', 'locale')
 babel_cfg_path = os.path.join(locale_dir, 'babel.cfg')
 message_pot_path = os.path.join(locale_dir, 'messages.pot')
 
+domain = 'Musica'
+
 ####################################################################################################
 
 if args.update:
+    # Extract localizable messages from a collection of source files
     subprocess.call(('pybabel', 'extract',
-                     '-F', babel_cfg_path,
-                     '-k', 'lazy_gettext',
-                     '-o', message_pot_path,
+                     '-F', babel_cfg_path,   # path to the extraction mapping file
+                     '-k', 'lazy_gettext',   # keywords to look for in addition to the defaults
+                     '-o', message_pot_path, # path to the output POT file
                      source_path))
 
     if args.init:
-        subprocess.call(('pybabel', 'init',
-                         '-i', message_pot_path,
-                         '-d', locale_dir,
-                         '-l', 'en'))
-        subprocess.call(('pybabel', 'init',
-                         '-i', message_pot_path,
-                         '-d', locale_dir,
-                         '-l', 'fr'))
+        for language in ('en', 'fr'):
+            if not os.path.exists(os.path.join(locale_dir, language, 'LC_MESSAGES', 'Musica.po')):
+                # Create a new translations catalog based on a PO template file
+                subprocess.call(('pybabel', 'init',
+                                 '-D', domain,           # domain of PO file (default 'messages')
+                                 '-i', message_pot_path, # name of the input file
+                                 '-d', locale_dir,       # path to output directory
+                                 '-l', language))        # locale for the new localized catalog
 
+    # Update an existing new translations catalog based on a PO template file
     subprocess.call(('pybabel', 'update',
+                     '-D', domain,
                      '-i', message_pot_path,
                      '-d', locale_dir))
 
 if args.compile:
     subprocess.call(('pybabel', 'compile',
+                     '-D', domain,
                      '-d', locale_dir))
 
 # poedit
+# linguist-qt5

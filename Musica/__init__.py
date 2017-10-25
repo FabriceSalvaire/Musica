@@ -19,15 +19,16 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# Setup Logging
+#
 
-import gettext
-import os
+from .Logging import Logging as Logging
+logger = Logging.setup_logging()
 
 ####################################################################################################
+#
+# Setup Locales
+#
 
-# https://docs.python.org/3/library/gettext.html
-# http://babel.pocoo.org/en/latest/index.html
-# https://www.mattlayman.com/2015/i18n.html
-
-_locale_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
-gettext.install('Musica', _locale_path)
+from . import Locale
