@@ -32,12 +32,16 @@ import importlib
 
 from Musica.Tex.Document import Document
 from Musica.Tex.Package import Package
+from Musica.Tex.Tikz import TikzFigure
 
 ####################################################################################################
 
 parser = argparse.ArgumentParser(description='Make Figure.')
 parser.add_argument('module', metavar='Module',
                    help='Figure Module')
+parser.add_argument('--margin',
+                    type=int, default=10,
+                    help='Crop margins')
 parser.add_argument('output', metavar='OutputFile',
                    help='output filename')
 
@@ -65,8 +69,10 @@ tex_document.append_preambule(r'''
 
 tex_document.empty_page_style()
 
+# TikzFigure.setup_externalisation(tex_document)
+
 figure = figure_class()
 tex_document.append(figure)
 
-print(str(tex_document))
-#tex_document.generate(args.output)
+# print(str(tex_document))
+tex_document.generate(args.output, crop=True, margin=args.margin)
