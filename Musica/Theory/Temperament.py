@@ -32,7 +32,10 @@ __all__ = [
 ####################################################################################################
 
 from ..Locale.Note import translate_et12_note
+from ..Math.MusicTheory import ET12Tuning
+from .NoteTools import flatten_note, sharpen_note
 from .PitchStandard import A440
+from .Quality import IntervalQualities
 
 ####################################################################################################
 
@@ -170,7 +173,7 @@ class TemperamentNaturalStep(TemperamentStep):
 
     ##############################################
 
-    def __init__(self, step_number, name=None, quality=None, degree=None):
+    def __init__(self, step_number, degree, name, quality):
 
         super().__init__(step_number, quality)
 
@@ -200,12 +203,22 @@ class TemperamentAccidentalStep(TemperamentStep):
 
     def __init__(self, step_number):
 
-        super().__init__(step_number, quality='m')
+        super().__init__(step_number, quality=IntervalQualities.minor)
 
     ##############################################
 
     def __repr__(self):
         return '{0.__class__.__name__} {0.step_number}'.format(self)
+
+    ##############################################
+
+    @property
+    def sharpen_name(self):
+        return sharpen_note(self._prev_natural.name)
+
+    @property
+    def flatten_name(self):
+        return flatten_note(self._next_natural.name)
 
 ####################################################################################################
 
@@ -216,50 +229,66 @@ class UsualEqualTemperament(EqualTemperament):
 
     ##############################################
 
-    def __init__(self, number_of_steps, pitch_standard, natural_steps, translator):
+    def __init__(self, math_implementation, pitch_standard, natural_steps, translator):
 
-        super().__init__(number_of_steps, pitch_standard)
+        super().__init__(math_implementation.number_of_steps, pitch_standard)
 
+        self._math_implementation = math_implementation
         self._translator = translator
 
-        # ensure sorted by degree
-        self._natural_steps = sorted(natural_steps)
+        perfect_steps = math_implementation.perfect_steps
+        major_scale = math_implementation.major_scale
+
+        self._natural_steps = []
+        for degree, ztuple in enumerate(zip(major_scale, natural_steps)):
+            pitch, name = ztuple
+            if pitch in perfect_steps:
+                quality = IntervalQualities.perfect
+            else:
+                quality = IntervalQualities.major
+            step = TemperamentNaturalStep(pitch.step_number, degree, name, quality)
+            self._natural_steps.append(step)
         # complete
-        number_of_natural_steps = len(natural_steps)
-        for degree, step in enumerate(self._natural_steps):
-            step._degree = degree
-            i_prev = (degree - 1) % number_of_natural_steps
-            i_next = (degree + 1) % number_of_natural_steps
+        number_of_natural_steps = len(self._natural_steps)
+        for step in self._natural_steps:
+            i_prev = (step.degree - 1) % number_of_natural_steps
+            i_next = (step.degree + 1) % number_of_natural_steps
             step._prev_natural = self._natural_steps[i_prev]
             step._next_natural = self._natural_steps[i_next]
 
         # Note names
-        self._natural_step_names = [step.name for step in self._natural_steps]
-
+        self._natural_step_names = natural_steps
+ 
         # List of natural step number
-        self._natural_step_numbers = [step.step_number for step in self._natural_steps]
+        self._natural_step_numbers = major_scale
 
         # Map note name -> step
         self._name_to_step = {step.name:step for step in self._natural_steps}
 
         # Map step number -> step
-        self._steps = [None]*number_of_steps
+        self._steps = [None]*self._number_of_steps
         for step in self._natural_steps:
             self._steps[step.step_number] = step
-        # Add accidentals
-        for i in range(number_of_steps):
-            if self._steps[i] is None:
-                self._steps[i] = TemperamentAccidentalStep(i)
-                i_prev = (i - 1) % number_of_steps
-                i_next = (i + 1) % number_of_steps
-                prev_step = self._steps[i_prev]
-                next_step = self._steps[i_next]
-                name = prev_step.name + '-'
-                self._name_to_step[name] = prev_step
-                name = next_step.name + '#'
-                self._name_to_step[name] = next_step
-        # link steps
-        for i in range(number_of_steps):
+        # Add accidentals and link steps
+        for i in range(self._number_of_steps):
+            step = self._steps[i]
+            if step is None:
+                step = TemperamentAccidentalStep(i)
+                self._steps[i] = step
+                # prev and next are natural steps
+                i_prev = self.fold_step_number(i - 1)
+                i_next = self.fold_step_number(i + 1)
+                step._prev_natural = self._steps[i_prev]
+                step._next_natural = self._steps[i_next]
+                for name in (step.flatten_name, step.sharpen_name):
+                    self._name_to_step[name] = step
+        # Link steps
+        for i in range(self._number_of_steps):
+            step = self._steps[i]
+            i_prev = self.fold_step_number(i - 1)
+            i_next = self.fold_step_number(i + 1)
+            step._prev_step = self._steps[i_prev]
+            step._next_step = self._steps[i_next]
 
     ##############################################
 
@@ -314,18 +343,16 @@ class UsualEqualTemperament(EqualTemperament):
 
 #: Twelve-tone equal temperament, also known as 12 equal temperament, 12-TET, or 12-ET
 ET12 = UsualEqualTemperament(
-    number_of_steps=12,
+    math_implementation=ET12Tuning,
     pitch_standard=A440,
-    natural_steps=(
-        # step number, name, quality
-        TemperamentNaturalStep( 0, 'C', 'P'), # 1 Do
-        TemperamentNaturalStep( 2, 'D', 'M'), # 2 Rè
-        TemperamentNaturalStep( 4, 'E', 'M'), # 3 Mi
-        TemperamentNaturalStep( 5, 'F', 'P'), # 4 Fa
-        TemperamentNaturalStep( 7, 'G', 'P'), # 5 Sol
-        TemperamentNaturalStep( 9, 'A', 'M'), # 6 La
-        TemperamentNaturalStep(11, 'B', 'M'), # 7 Si
+    natural_steps=( # sorted by step number
+        'C', # 1 Do
+        'D', # 2 Rè
+        'E', # 3 Mi
+        'F', # 4 Fa
+        'G', # 5 Sol
+        'A', # 6 La
+        'B', # 7 Si
     ),
-    # altered steps are minor, excepted step 6 between F/Fa and G/Sol which is particular
     translator=translate_et12_note,
 )

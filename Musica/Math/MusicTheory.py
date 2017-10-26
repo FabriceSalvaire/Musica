@@ -560,6 +560,12 @@ class EqualTemperamentTuning:
     ##############################################
 
     @property
+    def number_of_steps(self):
+        return self._number_of_steps
+
+    ##############################################
+
+    @property
     def first_pitch(self):
         return self._pitchs[0]
 
@@ -575,6 +581,12 @@ class EqualTemperamentTuning:
         fourth_step_number = self._number_of_steps - self._fifth_step_number
 
         return self._pitchs[fourth_step_number]
+
+    ##############################################
+
+    @property
+    def fifth(self):
+        return self._pitchs[self._fifth_step_number]
 
     ##############################################
 
@@ -641,6 +653,13 @@ class EqualTemperamentTuning:
         """
 
         return sorted(self.fifth_series_for_major_scale + [self.first_pitch, self.fourth])
+
+    ##############################################
+
+    @property
+    def perfect_steps(self):
+
+        return sorted([self.first_pitch, self.fourth, self.fifth])
 
 ####################################################################################################
 

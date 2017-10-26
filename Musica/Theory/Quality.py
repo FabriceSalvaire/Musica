@@ -127,6 +127,14 @@ class IntervalQualitiesSingleton:
 
     ##############################################
 
+    def __init__(self):
+
+        # Faster than _getattr__
+        for key, value in self.__map__.items():
+            setattr(self, key, value)
+
+    ##############################################
+
     @classmethod
     def __getitem__(cls, i):
         return cls.__map__[i]
