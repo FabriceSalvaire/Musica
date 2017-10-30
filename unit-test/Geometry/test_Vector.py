@@ -44,7 +44,7 @@ class TestVector2D(unittest.TestCase):
         self.assertEqual(v1.x, 10)
         self.assertEqual(v1.y, 20)
 
-        self.assertEqual(v1, v1.copy())
+        self.assertEqual(v1, v1.clone())
 
         v1 = Vector2D(10, 20)
         v2 = Vector2D(20, 30)

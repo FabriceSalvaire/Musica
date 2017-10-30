@@ -33,46 +33,18 @@ from .Primitive import Primitive2D
 
 ####################################################################################################
 
-class Vector2DBase(Primitive2D):
+class VectorAbc(Primitive2D):
 
     __data_type__ = None
 
     ##############################################
 
-    def __init__(self, *args):
+    def __init__(self, array_size, v_size):
 
-        """
-        Example of usage::
+        # Fixme: v_size versus homogeneous
 
-          Vector(1, 3)
-          Vector((1, 3))
-          Vector([1, 3])
-          Vector(iterable)
-          Vector(vector)
-
-        """
-
-        array = self._check_arguments(args)
-
-        # call __getitem__ once
-        self._v = np.array(array, dtype=self.__data_type__)
-
-    ##############################################
-
-    def _check_arguments(self, args):
-
-        size = len(args)
-        if size == 1:
-            array = args[0] # iterable, vector
-        elif size == 2:
-            array = args # (x, y)
-        else:
-            raise ValueError("More than 2 arguments where given")
-
-        # if not (np.iterable(array) and len(array) == 2):
-        #     raise ValueError("Argument must be iterable and of length 2")
-
-        return array[:2]
+        self._array = np.zeros(array_size, dtype=self.__data_type__)
+        self._v = self._array[:v_size] # view
 
     ##############################################
 
@@ -85,6 +57,10 @@ class Vector2DBase(Primitive2D):
     ##############################################
 
     @property
+    def array(self):
+        return self._array
+
+    @property
     def v(self):
         return self._v
 
@@ -94,61 +70,67 @@ class Vector2DBase(Primitive2D):
 
     @property
     def x(self):
-        return self.__data_type__(self._v[0])
+        return self.__data_type__(self._array[0])
 
     @property
     def y(self):
-        return self.__data_type__(self._v[1])
+        return self.__data_type__(self._array[1])
 
     @x.setter
     def x(self, x):
-        self._v[0] = x
+        self._array[0] = x
 
     @y.setter
     def y(self, y):
-        self._v[1] = y
+        self._array[1] = y
 
     ##############################################
 
     def __repr__(self):
 
-        return self.__class__.__name__ + str(self._v)
-
-    ##############################################
-
-    def __nonzero__(self):
-
-        return bool(self._v.any())
+        return self.__class__.__name__ + str(self._array)
 
     ##############################################
 
     def __len__(self):
 
-        return 2
+        return NotImplementedError
 
     ##############################################
 
     def __iter__(self):
 
-        return iter(self._v)
+        return iter(self._array)
 
     ##############################################
 
     def __getitem__(self, a_slice):
 
-        return self._v[a_slice]
+        return self._array[a_slice]
 
     ##############################################
 
     def __setitem__(self, index, value):
 
-        self._v[index] = value
+        self._array[index] = value
 
     ##############################################
 
     def to_numpy(self):
 
-        return np.array(self._v, dtype=self.__data_type__)
+        return np.array(self._array, dtype=self.__data_type__)
+
+    ##############################################
+
+    def to_int_list(self):
+
+        return [int(x) for x in self]
+
+    ##############################################
+
+    def __nonzero__(self):
+
+        return bool(self._array.any())
 
     ##############################################
 
@@ -156,7 +138,18 @@ class Vector2DBase(Primitive2D):
 
         """ self == other """
 
-        return np.array_equal(v1.v, v2.v)
+        return np.array_equal(v1._array, v2.array)
+
+    ##############################################
+
+    def transform(self, transformation):
+
+        array = np.matmul(transformation.array, np.transpose(self._array))
+        return self.__class__(array)
+
+####################################################################################################
+
+class VectorArithmeticMixin:
 
     ##############################################
 
@@ -220,25 +213,87 @@ class Vector2DBase(Primitive2D):
 
     ##############################################
 
-    def to_int_list(self):
+    def __mul__(self, scale):
 
-        return [int(x) for x in self._v]
+        """ Return a new vector equal to the self scaled by scale """
+
+        return self.__class__(scale * self._v)
 
     ##############################################
 
-    def transform(self, transformation):
+    def __imul__(self, scale):
 
-        if transformation.size == 2:
-            array = np.matmul(transformation.array, np.transpose(self._v))
-            return self.__class__(array)
-        elif transformation.size == 3:
-            return HomogeneousVector2D(self).transform(transformation)
-        else:
-            raise ValueError("Incompatible size")
+        """ Scale self by scale """
+
+        self._v *= scale
+
+        return self
+
+    ##############################################
+
+    def magnitude_square(self):
+
+        """ Return the square of the magnitude of the vector """
+
+        return np.dot(self._v, self._v)
+
+    ##############################################
+
+    def normal(self):
+
+        """ Return a new vector equal to self rotated of 90 degree in the counter clockwise
+        direction
+        """
+
+        xp = -self._v[1]
+        yp =  self._v[0]
+
+        return self.__class__((xp, yp))
+
+    ##############################################
+
+    def anti_normal(self):
+
+        """ Return a new vector equal to self rotated of 90 degree in the clockwise direction
+        """
+
+        xp =  self._v[1]
+        yp = -self._v[0]
+
+        return self.__class__((xp, yp))
+
+    ##############################################
+
+    def parity(self):
+
+        """ Return a new vector equal to self rotated of 180 degree
+        """
+
+        # parity
+        xp = -self._v[0]
+        yp = -self._v[1]
+
+        return self.__class__((xp, yp))
+
+    ##############################################
+
+    def dot(self, other):
+
+        """ Return the dot product of self with other """
+
+        return self.__data_type__(np.dot(self._v, other.v))
+
+    ##############################################
+
+    def cross(self, other):
+
+        """ Return the cross product of self with other """
+
+        return self.__data_type__(np.cross(self._v, other.v))
 
 ####################################################################################################
 
-class Vector2DInt(Vector2DBase):
+class VectorIntMixin:
 
     __data_type__ = np.int
 
@@ -251,7 +306,7 @@ class Vector2DInt(Vector2DBase):
 
 ####################################################################################################
 
-class Vector2DFloatBase(Vector2DBase):
+class VectorFloatMixin:
 
     __data_type__ = np.float
 
@@ -268,16 +323,33 @@ class Vector2DFloatBase(Vector2DBase):
 
         """ self ~= other """
 
-        print(tuple(v1), tuple(v2))
         return np.allclose(tuple(v1), tuple(v2), rtol, atol, equal_nan)
 
     ##############################################
 
-    def magnitude_square(self):
+    def __truediv__(self, scale):
 
-        """ Return the square of the magnitude of the vector """
+        """ Return a new vector equal to the self dvivided by scale """
 
-        return np.dot(self._v, self._v)
+        return self.__class__(self._v / scale)
+
+    ##############################################
+
+    def __itruediv__(self, scale):
+
+        """ Scale self by 1/scale """
+
+        self._v /= scale
+
+        return self
+
+    ##############################################
+
+    def normalise(self):
+
+        """ Normalise the vector """
+
+        self._v /= self.magnitude()
 
     ##############################################
 
@@ -343,44 +415,6 @@ class Vector2DFloatBase(Vector2DBase):
 
     ##############################################
 
-    def normal(self):
-
-        """ Return a new vector equal to self rotated of 90 degree in the counter clockwise
-        direction
-        """
-
-        xp = -self._v[1]
-        yp =  self._v[0]
-
-        return self.__class__((xp, yp))
-
-    ##############################################
-
-    def anti_normal(self):
-
-        """ Return a new vector equal to self rotated of 90 degree in the clockwise direction
-        """
-
-        xp =  self._v[1]
-        yp = -self._v[0]
-
-        return self.__class__((xp, yp))
-
-    ##############################################
-
-    def parity(self):
-
-        """ Return a new vector equal to self rotated of 180 degree
-        """
-
-        # parity
-        xp = -self._v[0]
-        yp = -self._v[1]
-
-        return self.__class__((xp, yp))
-
-    ##############################################
-
     def tan(self):
 
         """ Return the tangent """
@@ -395,22 +429,6 @@ class Vector2DFloatBase(Vector2DBase):
         """ Return the inverse tangent """
 
         return self.x / self.y
-
-    ##############################################
-
-    def dot(self, other):
-
-        """ Return the dot product of self with other """
-
-        return float(np.dot(self._v, other.v))
-
-    ##############################################
-
-    def cross(self, other):
-
-        """ Return the cross product of self with other """
-
-        return float(np.cross(self._v, other.v))
 
     ##############################################
 
@@ -481,73 +499,97 @@ class Vector2DFloatBase(Vector2DBase):
 
 ####################################################################################################
 
-class Vector2D(Vector2DFloatBase):
+class Vector2DBase(VectorAbc):
+
+    ##############################################
+
+    def __init__(self, *args):
+
+        """
+        Example of usage::
+
+          Vector(1, 3)
+          Vector((1, 3))
+          Vector([1, 3])
+          Vector(iterable)
+          Vector(vector)
+
+        """
+
+        array = self._check_arguments(args)
+        super().__init__(2, 2)
+        self._v[...] = array[:2]
+
+    ##############################################
+
+    def _check_arguments(self, args):
+
+        size = len(args)
+        if size == 1:
+            array = args[0] # iterable, vector
+        elif size == 2:
+            array = args # (x, y)
+        else:
+            raise ValueError("More than 2 arguments where given")
+
+        # if not (np.iterable(array) and len(array) == 2):
+        #     raise ValueError("Argument must be iterable and of length 2")
+
+        return array
+
+    ##############################################
+
+    def __len__(self):
+
+        return 2
+
+    ##############################################
+
+    def transform(self, transformation):
+
+        if transformation.size == 2:
+            return super().transform(transformation)
+        elif transformation.size == 3:
+            return HomogeneousVector2D(self).transform(transformation)
+        else:
+            raise ValueError("Incompatible size")
+
+####################################################################################################
+
+class Vector2DInt(VectorIntMixin, VectorArithmeticMixin, Vector2DBase):
+    pass
+
+####################################################################################################
+
+class Vector2D(VectorFloatMixin, VectorArithmeticMixin, Vector2DBase):
 
     """ 2D Vector """
 
     ##############################################
 
-    @staticmethod
-    def from_angle(angle):
+    @classmethod
+    def from_angle(cls, angle):
 
         """ Create the unitary vector (cos(angle), sin(angle)).  The *angle* is in degree. """
 
         rad = math.radians(angle)
 
-        return Vector2D((math.cos(rad), math.sin(rad)))
+        return cls((math.cos(rad), math.sin(rad)))
 
     ##############################################
 
-    @staticmethod
-    def middle(p0, p1):
+    @classmethod
+    def middle(cls, p0, p1):
 
         """ Return the middle point. """
 
-        return Vector2D(p0 + p1) * .5
+        return cls(p0 + p1) * .5
 
     ##############################################
 
-    def __mul__(self, scale):
+    def rint(self):
 
-        """ Return a new vector equal to the self scaled by scale """
-
-        return self.__class__(scale * self._v)
-
-    ##############################################
-
-    def __imul__(self, scale):
-
-        """ Scale self by scale """
-
-        self._v *= scale
-
-        return self
-
-    ##############################################
-
-    def __truediv__(self, scale):
-
-        """ Return a new vector equal to the self dvivided by scale """
-
-        return self.__class__(self._v / scale)
-
-    ##############################################
-
-    def __itruediv__(self, scale):
-
-        """ Scale self by 1/scale """
-
-        self._v /= scale
-
-        return self
-
-    ##############################################
-
-    def normalise(self):
-
-        """ Normalise the vector """
-
-        self._v /= self.magnitude()
+        return Vector2DInt(np.rint(self._v))
 
     ##############################################
 
@@ -557,23 +599,18 @@ class Vector2D(Vector2DFloatBase):
 
         return NormalisedVector2D(self._v / self.magnitude())
 
-    ##############################################
-
-    def rint(self):
-
-        return Vector2DInt(np.rint(self._v))
-
 ####################################################################################################
 
-class NormalisedVector2D(Vector2DFloatBase):
+class NormalisedVector2D(VectorAbc):
 
     """ 2D Normalised Vector """
 
     ##############################################
 
-    def __init__(self, *args):
+    def __init__(self, array):
 
-        super(NormalisedVector2D, self).__init__(*args)
+        VectorAbc.__init__(self, 2, 2)
+        self._v[...] = array
 
         #! if self.magnitude() != 1.:
         #!     raise ValueError("Magnitude != 1")
@@ -592,7 +629,7 @@ class NormalisedVector2D(Vector2DFloatBase):
 
 ####################################################################################################
 
-class HomogeneousVector2D(Vector2D):
+class HomogeneousVector2D(VectorAbc):
 
     """ 2D Homogeneous Coordinate Vector """
 
@@ -602,16 +639,13 @@ class HomogeneousVector2D(Vector2D):
 
         array = self._check_arguments(args)
 
-        # Fixme: base use v
-
-        self._vw = np.ones(3, dtype=self.__data_type__)
-        # Set v as a view on vw
-        self._v = self._vw[:2]
+        VectorAbc.__init__(self, 3, 2)
 
         if len(array) == 2:
-            self._vw[:2] = array
+            self._v[...] = array
+            self.w = 1
         else:
-            self._vw[...] = array[:3]
+            self._array[...] = array[:3]
 
     ##############################################
 
@@ -629,11 +663,6 @@ class HomogeneousVector2D(Vector2D):
 
     ##############################################
 
-    def clone(self):
-        return self.__class__(self)
-
-    ##############################################
-
     def to_vector(self):
 
         return Vector2D(self._v)
@@ -641,42 +670,15 @@ class HomogeneousVector2D(Vector2D):
     ##############################################
 
     @property
-    def vw(self):
-        return self._vw
-
-    # @v.setter
-    # def vw(self, value):
-    #     self._vw = value
-
-    @property
     def w(self):
-        return self._vw[2]
+        return self._array[2]
 
     @w.setter
     def w(self, value):
-        self._vw[2] = value
-
-    ##############################################
-
-    def __repr__(self):
-
-        return self.__class__.__name__ + str(self._vw)
+        self._array[2] = value
 
     ##############################################
 
     def __len__(self):
 
         return 3
-
-    ##############################################
-
-    def to_numpy(self):
-
-        return np.array(self._v, dtype=self.__data_type__)
-
-    ##############################################
-
-    def transform(self, transformation):
-
-        array = np.matmul(transformation.array, np.transpose(self._vw))
-        return self.__class__(array)

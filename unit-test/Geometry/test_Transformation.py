@@ -45,20 +45,20 @@ class TestTransformation(unittest.TestCase):
 
         rotation = AffineTransformation2D.Rotation(90)
         p1 = rotation * p0
-        self.assertTrue(p1.almost_equal(p1_true))
+        self.assertTrue(p1.to_vector().almost_equal(p1_true))
 
         offset = Vector2D(10, 30)
         translation = AffineTransformation2D.Translation(offset)
         p1 = translation * p0
         p1_true = Vector2D(20, 30)
-        self.assertTrue(p1.almost_equal(p1_true))
+        self.assertTrue(p1.to_vector().almost_equal(p1_true))
 
         p0 = Vector2D(20, 10)
         center = Vector2D(10, 10)
         rotation_at = AffineTransformation2D.RotationAt(center, 90)
         p1 = rotation_at * p0
         p1_true = Vector2D(10, 20)
-        self.assertTrue(p1.almost_equal(p1_true))
+        self.assertTrue(p1.to_vector().almost_equal(p1_true))
 
         # np_testing.assert_almost_equal()
 
