@@ -33,17 +33,24 @@ class TestInterval(unittest.TestCase):
 
     ##############################################
 
+    def _test_interval(self, note1, note2, truth):
+
+        pitch1, pitch2 = [Pitch(note) for note in (note1, note2)]
+        self.assertEqual(Interval(pitch1, pitch2).short_name, truth)
+
+    ##############################################
+
     def test(self):
 
-        interval = Interval(Pitch('A-'), Pitch('B#'))
-        interval = Interval(Pitch('A'),  Pitch('C#'))
-        interval = Interval(Pitch('A'),  Pitch('D-'))
-        interval = Interval(Pitch('A#'), Pitch('E--'))
+        self._test_interval('A-', 'B#',  'AA2')
+        self._test_interval('A',  'C#',  'M3')
+        self._test_interval('A',  'D-',  'd4')
+        self._test_interval('A#', 'E--', 'ddd5')
 
-        interval = Interval(Pitch('F#'), Pitch('A#'))
-        interval = Interval(Pitch('G-'), Pitch('B-'))
-        interval = Interval(Pitch('F#'), Pitch('B-'))
-        interval = Interval(Pitch('G-'), Pitch('A#'))
+        self._test_interval('F#', 'A#',  'M3')
+        self._test_interval('G-', 'B-',  'M3')
+        self._test_interval('F#', 'B-',  'd4')
+        self._test_interval('G-', 'A#',  'AA2')
 
 ####################################################################################################
 
