@@ -26,8 +26,8 @@ __all__ = [
 
 ####################################################################################################
 
-from Musica.Theory.Pitch import ET12, Pitch
-from Musica.Tex.Tikz import TikzFigure
+from ..Theory.Pitch import ET12, Pitch
+from ..Tex.Tikz import TikzFigure
 
 ####################################################################################################
 
@@ -102,14 +102,14 @@ class DiatonicScale(TikzFigure):
         self.append_command(r'\draw (O) circle (\OuterRadius)')
 
         for pitch, interval in zip(diatonic_pitches, intervales):
-            pitch_text = pitch.locale['français'].name
+            pitch_text = pitch.french_locale.name
             self.node('l{}'.format(pitch), pitch_text)
             if interval == 1:
                 interval_text = '1/2'
             else:
                 interval_text = '1'
                 next_pitch = next_pitch_of(pitch)
-                next_pitch_text = next_pitch.locale['français'].name
+                next_pitch_text = next_pitch.french_locale.name
                 text = r'{}$\sharp$/{}$\flat$'.format(pitch_text, next_pitch_text)
                 self.node('l{}b'.format(pitch), text)
             self.node('m{}'.format(pitch), interval_text)
