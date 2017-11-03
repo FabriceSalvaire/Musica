@@ -554,20 +554,53 @@ class Pitch:
 
     def pitch_iterator(self, until):
 
+        return iter(PitchInterval(self, until))
+
+####################################################################################################
+
+class PitchInterval:
+
+    ##############################################
+
+    def __init__(self, lower_pitch, upper_pitch=None):
+
+        if upper_pitch < lower_pitch:
+            raise ValueError('{} < {}'.format(upper_pitch, lower_pitch))
+
+        self._lower = Pitch(lower_pitch)
+        if upper_pitch is not None:
+            self._upper = Pitch(upper_pitch)
+        else:
+            self._upper = None
+
+    ##############################################
+
+    @property
+    def lower(self):
+        return self._lower
+
+    @property
+    def upper(self):
+        return self._upper
+
+    ##############################################
+
+    def __iter__(self):
+
         # Fixme: complex accidental ???
 
-        if until < self:
-            return
+        lower = self._lower
+        upper = self._upper
 
-        number_of_steps = self.__temperament__.number_of_steps
+        number_of_steps = lower.__temperament__.number_of_steps
 
-        pitch_class = self.pitch_class
-        octave = self.octave
+        pitch_class = lower.pitch_class
+        octave = lower.octave
 
         while True:
-            pitch = self.__class__(pitch_class, octave=octave)
+            pitch = lower.__class__(pitch_class, octave=octave)
             yield pitch
-            if pitch == until:
+            if pitch == upper: # upper can be None
                 return
             pitch_class += 1
             if pitch_class == number_of_steps:
