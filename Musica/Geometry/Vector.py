@@ -633,6 +633,8 @@ class HomogeneousVector2D(VectorAbc):
 
     """ 2D Homogeneous Coordinate Vector """
 
+    __data_type__ = float
+
     ##############################################
 
     def __init__(self, *args):

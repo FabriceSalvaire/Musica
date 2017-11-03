@@ -46,6 +46,12 @@ class Polyline(Primitive2D):
 
     ##############################################
 
+    def __repr__(self):
+
+        return "{0.__class__.__name__} {0._points}".format(self)
+
+    ##############################################
+
     def transform(self, transformation):
 
         points = transformation * self._points
@@ -54,7 +60,10 @@ class Polyline(Primitive2D):
     ##############################################
 
     def __iter__(self):
-        return self._points
+        return iter(self._points)
 
     def __len__(self):
         return len(self._points)
+
+    def __getitem__(self, _slice):
+        return self._points[_slice]
