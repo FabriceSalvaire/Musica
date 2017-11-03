@@ -84,6 +84,8 @@ class Accidental:
         'one-and-a-half-flat': '-`',
     }
 
+    __alteration_to_name__ = {alteration:name for name, alteration in __name_to_alteration__.items()}
+
     ##############################################
 
     @classmethod
@@ -175,9 +177,6 @@ class Accidental:
         else:
             return False
 
-Accidental.__alteration_to_name__ = {
-    alteration:name for name, alteration in Accidental.__name_to_alteration__.items()}
-
 ####################################################################################################
 
 class Pitch:
@@ -236,6 +235,9 @@ class Pitch:
         else:
             self._init_from_kwargs(kwargs)
 
+        # Fixme: self.step = ... ?
+        self._step_number = self.__temperament__.name_to_number(self._step)
+
     ##############################################
 
     def _init_from_clone(self, other):
@@ -258,17 +260,17 @@ class Pitch:
     def _init_from_number(self, step_number, kwargs):
 
         try:
-            name = self.__temperament__.number_to_name(step_number)
-        except KeyError:
-            raise ValueError('Invalid pitch number {}'.format(name))
+            step = self.__temperament__[step_number]
+        except IndexError:
+            raise ValueError('Invalid pitch number {}'.format(step_number))
 
-        if name is None: # alteration
-            self._step = self.__temperament__.number_to_name(step_number -1)
+        if step.is_natural:
+            self._step = step.name
+            self._accidental = None
+        else:
+            self._step = step.prev_natural.name
             self._accidental = Accidental('#')
             self._spelling_is_inferred = True
-        else:
-            self._step = name
-            self._accidental = None
 
         self._octave = kwargs.get('octave', None)
 
@@ -276,13 +278,18 @@ class Pitch:
 
     def _init_from_kwargs(self, kwargs):
 
-        self.step = kwargs['step']
-        accidental = kwargs.get('accidental', None)
-        if accidental is not None:
-            self.accidental = Accidental(accidental)
+        if 'midi' in kwargs:
+            pitch_int = kwargs['midi']
+            step_number, octave = self.__temperament__.fold_step_number(octave=True)
+            self._init_from_number(step_number, octave=octave)
         else:
-            self._accidental = None
-        self._octave = kwargs.get('octave', None)
+            self.step = kwargs['step']
+            accidental = kwargs.get('accidental', None)
+            if accidental is not None:
+                self.accidental = Accidental(accidental)
+            else:
+                self._accidental = None
+            self._octave = kwargs.get('octave', None)
 
     ##############################################
 
@@ -308,7 +315,7 @@ class Pitch:
     def pitch_class(self):
         """Returns the integer value for the pitch, between 0 and 11, where C=0, C#=1, D=2, ... B=11.
         """
-        return self.__temperament__.name_to_number(self._step) + int(self.alteration)
+        return self._step_number + int(self.alteration)
 
     @pitch_class.setter
     def pitch_class(self, value):
@@ -327,12 +334,17 @@ class Pitch:
         _value = value.upper()
         if self.__temperament__.is_valid_step_name(_value):
             self._step = _value
+            self._step_number = self.__temperament__.name_to_number(self._step)
         else:
             raise ValueError("Invalid step {}".format(value))
 
     @property
     def spelling_is_inferred(self):
         return self._spelling_is_inferred
+
+    @property
+    def degree(self):
+        return self.__temperament__[self._step_number].degree
 
     ##############################################
 
@@ -347,6 +359,10 @@ class Pitch:
             self._accidental = Accidental(value)
         else:
             self._accidental = None
+
+    @property
+    def is_altered(self):
+        return self._accidental is not None
 
     @property
     def alteration(self):
@@ -437,7 +453,7 @@ class Pitch:
     def _compute_float_value(self, octave, add_microtone=True):
 
         value = (octave + 1) * self.__temperament__.number_of_steps
-        value += self.__temperament__.name_to_number(self._step)
+        value += self._step_number
         if self._accidental is not None:
             value += self._accidental.alteration
         if add_microtone:
@@ -541,7 +557,7 @@ class Pitch:
         # Fixme: complex accidental ???
 
         if until < self:
-            raise StopIteration
+            return
 
         number_of_steps = self.__temperament__.number_of_steps
 
@@ -552,7 +568,7 @@ class Pitch:
             pitch = self.__class__(pitch_class, octave=octave)
             yield pitch
             if pitch == until:
-                raise StopIteration
+                return
             pitch_class += 1
             if pitch_class == number_of_steps:
                 pitch_class = 0

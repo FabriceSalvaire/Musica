@@ -25,8 +25,12 @@
 ####################################################################################################
 
 __all__ = [
-    'EqualTemperament',
     'ET12',
+    'EqualTemperament',
+    'TemperamentAccidentalStep',
+    'TemperamentNaturalStep',
+    'TemperamentStep',
+    'UsualEqualTemperament',
     ]
 
 ####################################################################################################
@@ -183,6 +187,16 @@ class TemperamentNaturalStep(TemperamentStep):
     ##############################################
 
     @property
+    def is_natural(self):
+        return True
+
+    @property
+    def is_accidental(self):
+        return False
+
+    ##############################################
+
+    @property
     def name(self):
         return self._name
 
@@ -209,6 +223,16 @@ class TemperamentAccidentalStep(TemperamentStep):
 
     def __repr__(self):
         return '{0.__class__.__name__} {0.step_number}'.format(self)
+
+    ##############################################
+
+    @property
+    def is_natural(self):
+        return False
+
+    @property
+    def is_accidental(self):
+        return True
 
     ##############################################
 
@@ -338,6 +362,11 @@ class UsualEqualTemperament(EqualTemperament):
 
     def by_degree(self, degree):
         return self._natural_steps[degree]
+
+    ##############################################
+
+    def name_to_number(self, name):
+        return self.by_name(name).step_number
 
 ####################################################################################################
 
