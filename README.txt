@@ -21,7 +21,7 @@ Overview
 What is Musica ?
 ---------------------
 
-Musica is a Python module which
+Musica is a Python toolkit for computational music.
 
 Where is the Documentation ?
 ----------------------------

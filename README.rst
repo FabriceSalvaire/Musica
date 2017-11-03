@@ -11,16 +11,12 @@
    |Musica@readthedocs-badge|
    |Musica@pypi|_
 
-.. |ohloh| image:: https://www.openhub.net/accounts/230426/widgets/account_tiny.gif
-   :target: https://www.openhub.net/accounts/fabricesalvaire
-   :alt: Fabrice Salvaire's Ohloh profile
-   :height: 15px
-   :width:  80px
+.. https://musica.fabrice-salvaire.fr
 
-.. |MusicaUrl| replace:: https://musica.fabrice-salvaire.fr
+.. |MusicaUrl| replace:: https://fabricesalvaire.github.io/Musica
 
 .. |MusicaHomePage| replace:: Musica Home Page
-.. _MusicaHomePage: https://musica.fabrice-salvaire.fr
+.. _MusicaHomePage: https://fabricesalvaire.github.io/Musica
 
 .. |Musica@readthedocs-badge| image:: https://readthedocs.org/projects/musica/badge/?version=latest
    :target: http://musica.readthedocs.org/en/latest
@@ -30,10 +26,6 @@
 
 .. |Musica@pypi| replace:: https://pypi.python.org/pypi/Musica
 .. .. _Musica@pypi: https://pypi.python.org/pypi/Musica
-
-.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Musica.svg?branch=master
-   :target: https://travis-ci.org/FabriceSalvaire/Musica
-   :alt: Musica build status @travis-ci.org
 
 .. |Pypi Version| image:: https://img.shields.io/pypi/v/Musica.svg
    :target: https://pypi.python.org/pypi/Musica
@@ -46,6 +38,16 @@
 .. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Musica.svg
    :target: https://pypi.python.org/pypi/Musica
    :alt: Musica python version
+
+.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Musica.svg?branch=master
+   :target: https://travis-ci.org/FabriceSalvaire/Musica
+   :alt: Musica build status @travis-ci.org
+
+.. |ohloh| image:: https://www.openhub.net/accounts/230426/widgets/account_tiny.gif
+   :target: https://www.openhub.net/accounts/fabricesalvaire
+   :alt: Fabrice Salvaire's Ohloh profile
+   :height: 15px
+   :width:  80px
 
 ..  coverage test
 ..  https://img.shields.io/pypi/status/Django.svg
@@ -89,7 +91,7 @@ Overview
 What is Musica ?
 ---------------------
 
-Musica is a Python module which
+Musica is a Python toolkit for computational music.
 
 Where is the Documentation ?
 ----------------------------
@@ -99,7 +101,9 @@ The documentation is available on the |MusicaHomePage|_.
 What are the main features ?
 ----------------------------
 
-* `MusiXML <http://www.musicxml.com/>`_ Reader/Writer automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>_`)
+* `MusiXML <http://www.musicxml.com/>`_ Reader/Writer automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
+
+.. http://www.codesynthesis.com/products/xsd/
 
 How to install it ?
 -------------------
