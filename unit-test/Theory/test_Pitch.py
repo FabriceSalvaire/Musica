@@ -43,25 +43,18 @@ class TestPitch(unittest.TestCase):
     ##############################################
 
     # @unittest.skip('')
-    def test_et12(self):
-
-        self.assertAlmostEqual(ET12.fundamental, 16.352, 3)
-        self.assertAlmostEqual(ET12.frequency(octave_number=4, step_number=9), 440)
-        self.assertAlmostEqual(ET12.frequency(octave_number=8, step_number=11), 7902.13, 2)
-
-        self.assertEqual(Accidental.parse_accidental(''), 0)
-        self.assertEqual(Accidental.parse_accidental('#'), 1)
-        self.assertEqual(Accidental.parse_accidental('###'), 3)
-        self.assertEqual(Accidental.parse_accidental('-'), -1)
-        self.assertEqual(Accidental.parse_accidental('---'), -3)
-        self.assertEqual(Accidental.parse_accidental('-#-'), -1)
-        self.assertEqual(Accidental.parse_accidental('-##-'), 0)
+    def test_pitch_parser(self):
 
         self._test_pitch_parser('A', ('A', None, None))
         self._test_pitch_parser('A#', ('A', 1, None))
         self._test_pitch_parser('A#4', ('A', 1, 4))
         self._test_pitch_parser('a#4', ('A', 1, 4))
         self._test_pitch_parser('A-##--4', ('A', -1, 4))
+
+    ##############################################
+
+    # @unittest.skip('')
+    def test_pitch(self):
 
         pitch = Pitch('C4')
         self.assertEqual(pitch.step, 'C')
@@ -127,6 +120,19 @@ class TestPitch(unittest.TestCase):
 
         pitch = Pitch('A4')
         self.assertAlmostEqual(pitch.frequency, 440)
+
+        first_pitch = Pitch('C4')
+        last_pitch = Pitch('C5')
+        for pitch, pitch_name in zip(first_pitch.pitch_iterator(last_pitch),
+                                     ('C4', 'C#4',
+                                      'D4', 'D#4',
+                                      'E4',
+                                      'F4', 'F#4',
+                                      'G4', 'G#4',
+                                      'A4', 'A#4',
+                                      'B4',
+                                      'C5')):
+            self.assertEqual(pitch.full_name, pitch_name)
 
 ####################################################################################################
 
