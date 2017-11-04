@@ -581,7 +581,7 @@ class Pitch:
         alteration = self.alteration
         if alteration:
             temperament = self.__temperament__
-            step_number = self._step_number + self.alteration
+            step_number = self._step_number + self.alteration # Fixme: int ?, self.pitch_class ?
             if temperament.is_valid_step_name(step_number):
                 return self
             else:
@@ -599,29 +599,23 @@ class Pitch:
 
     ##############################################
 
-    def next_pitch(self):
+    def _prev_next_pitch(self, offset):
 
         pitch = self.simplify_accidental()
-        pitch_class = pitch.pitch_class + 1
-        octave = pitch._octave
-        if pitch_class == self.__temperament__.number_of_steps:
-            pitch_class = 0
-            octave += 1
-        return self.__class__(pitch_class, octave=octave)
+        step_number = pitch.pitch_class + offset
+        step_number, octave_offset = self.__temperament__.fold_step_number(step_number, octave=True)
+        octave = pitch._octave + octave_offset
+        return self.__class__(step_number, octave=octave)
+
+    ##############################################
+
+    def next_pitch(self):
+        return self._prev_next_pitch(1)
 
     ##############################################
 
     def prev_pitch(self):
-
-        pitch = self.simplify_accidental()
-        pitch_class = pitch.pitch_class
-        octave = pitch._octave
-        if pitch_class == 0:
-            pitch_class = self.__temperament__.number_of_steps -1
-            octave -= 1
-        else:
-            pitch_class -= 1
-        return self.__class__(pitch_class, octave=octave)
+        return self._prev_next_pitch(-1)
 
 ####################################################################################################
 
@@ -647,13 +641,18 @@ class PitchIterator:
             stop = stop.simplify_accidental()
 
         cls = start.__class__
-        number_of_steps = start.__temperament__.number_of_steps
+        fold_step_number = start.__temperament__.fold_step_number
 
-        pitch_class = start.pitch_class
+        if reverse:
+            offset = -1
+        else:
+            offset = 1
+
+        step_number = start.pitch_class
         octave = start.octave
 
         while True:
-            pitch = cls(pitch_class, octave=octave)
+            pitch = cls(step_number, octave=octave)
             must_stop = stop is not None and pitch == stop
             if inclusive and must_stop:
                 return
@@ -662,17 +661,9 @@ class PitchIterator:
             if not inclusive and must_stop:
                 return
             # Fixme: could use Pitch API
-            if reverse:
-                if pitch_class == 0:
-                    pitch_class = number_of_steps -1
-                    octave -= 1
-                else:
-                    pitch_class -= 1
-            else:
-                pitch_class += 1
-                if pitch_class == number_of_steps:
-                    pitch_class = 0
-                    octave += 1
+            step_number += offset
+            step_number, octave_offset = fold_step_number(step_number, octave=True)
+            octave += octave_offset
 
 ####################################################################################################
 
