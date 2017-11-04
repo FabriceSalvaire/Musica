@@ -278,16 +278,16 @@ class UsualEqualTemperament(EqualTemperament):
             step = TemperamentNaturalStep(pitch.step_number, degree, name, quality)
             self._natural_steps.append(step)
         # complete
-        number_of_natural_steps = len(self._natural_steps)
+        self._number_of_natural_steps = len(self._natural_steps)
         for step in self._natural_steps:
-            i_prev = (step.degree - 1) % number_of_natural_steps
-            i_next = (step.degree + 1) % number_of_natural_steps
+            i_prev = (step.degree - 1) % self._number_of_natural_steps
+            i_next = (step.degree + 1) % self._number_of_natural_steps
             step._prev_natural = self._natural_steps[i_prev]
             step._next_natural = self._natural_steps[i_next]
 
         # Note names
         self._natural_step_names = natural_steps
- 
+
         # List of natural step number
         self._natural_step_numbers = major_scale
 
@@ -331,7 +331,17 @@ class UsualEqualTemperament(EqualTemperament):
 
     @property
     def number_of_natural_steps(self):
-        return len(self._natural_step_names)
+        return self._number_of_natural_steps
+
+    ##############################################
+
+    def fold_natural_step_number(self, number, octave=False):
+
+        step_number = number % self._number_of_natural_steps
+        if octave:
+            return step_number, number // self._number_of_natural_steps
+        else:
+            return step_number
 
     ##############################################
 
