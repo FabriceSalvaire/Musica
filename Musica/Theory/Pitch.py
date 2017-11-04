@@ -576,6 +576,8 @@ class Pitch:
 
     def simplify_accidental(self):
 
+        # Fixme: enharmonic
+
         alteration = self.alteration
         if alteration:
             temperament = self.__temperament__
@@ -599,10 +601,9 @@ class Pitch:
 
     def next_pitch(self):
 
-        # Fixme: complex accidental can alter octave too !
-        #   should simplify self
-        pitch_class = self.pitch_class + 1
-        octave = self._octave
+        pitch = self.simplify_accidental()
+        pitch_class = pitch.pitch_class + 1
+        octave = pitch._octave
         if pitch_class == self.__temperament__.number_of_steps:
             pitch_class = 0
             octave += 1
@@ -612,9 +613,9 @@ class Pitch:
 
     def prev_pitch(self):
 
-        # Fixme: complex accidental can alter octave too !
-        pitch_class = self.pitch_class
-        octave = self._octave
+        pitch = self.simplify_accidental()
+        pitch_class = pitch.pitch_class
+        octave = pitch._octave
         if pitch_class == 0:
             pitch_class = self.__temperament__.number_of_steps -1
             octave -= 1
@@ -640,10 +641,10 @@ class PitchIterator:
 
     def iter(self, reverse=False, natural=False, inclusive=True):
 
-        # Fixme: complex accidental ???
-
-        start = self._start
+        start = self._start.simplify_accidental()
         stop = self._stop
+        if stop is not None:
+            stop = stop.simplify_accidental()
 
         cls = start.__class__
         number_of_steps = start.__temperament__.number_of_steps
