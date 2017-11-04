@@ -61,6 +61,17 @@ class TestPitch(unittest.TestCase):
         self.assertEqual(pitch.octave, 4)
         self.assertEqual(float(pitch), 60)
 
+        pitch = Pitch('C/-1')
+        self.assertEqual(pitch.step, 'C')
+        self.assertEqual(pitch.octave, -1)
+        self.assertEqual(float(pitch), 0)
+
+        pitch = Pitch('C', octave=-1)
+        self.assertEqual(pitch.step, 'C')
+        self.assertEqual(pitch.octave, -1)
+        self.assertEqual(float(pitch), 0)
+        self.assertEqual(pitch.full_name, 'C/-1')
+
         pitch = Pitch('C#4')
         self.assertEqual(pitch.step, 'C')
         self.assertEqual(pitch.octave, 4)
@@ -133,6 +144,11 @@ class TestPitch(unittest.TestCase):
                                       'B4',
                                       'C5')):
             self.assertEqual(pitch.full_name, pitch_name)
+
+        self.assertEqual(Pitch(midi=60), Pitch('C4')) # Midi specification
+        self.assertEqual(Pitch(midi=0), Pitch('C', octave=-1))
+        self.assertEqual(Pitch(midi=12), Pitch('C0'))
+        self.assertEqual(Pitch(midi=127), Pitch('G9'))
 
 ####################################################################################################
 

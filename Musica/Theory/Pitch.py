@@ -184,6 +184,9 @@ class Pitch:
     """Class to represents a pitch.
     """
 
+    # Fixme: negative octave
+    #  use ~ for bemol : C-1 versus C~-1
+
     #! Define an implicit octave so as to be able to define a float value
     __implicit_octave__ = 4
 
@@ -191,7 +194,7 @@ class Pitch:
     __temperament__ = ET12
 
     # Fixme: note re
-    __pitch_regexp__ = re.compile('(?P<note>[abcdefg])(?P<accidental>[#-]*)(?P<octave>\d*)')
+    __pitch_regexp__ = re.compile('(?P<note>[abcdefg])(?P<accidental>[#-]*)(?P<octave_sign>(/-)?)(?P<octave>\d*)')
 
     ##############################################
 
@@ -206,6 +209,8 @@ class Pitch:
             accidental = Accidental(accidental) if accidental else None
             octave = match['octave']
             octave = int(octave) if octave else None
+            if match['octave_sign']:
+                octave = - octave
             if return_dict:
                 return dict(note=note, accidental=accidental, octave=octave)
             else:
@@ -231,7 +236,7 @@ class Pitch:
                 if step_number is not None:
                     self._init_from_number(step_number, kwargs)
                 else:
-                    self._init_from_string(name)
+                    self._init_from_string(name, kwargs)
         else:
             self._init_from_kwargs(kwargs)
 
@@ -248,12 +253,15 @@ class Pitch:
 
     ##############################################
 
-    def _init_from_string(self, name):
+    def _init_from_string(self, name, kwargs):
 
         step, accidental, octave = self.parse_pitch(name)
         self._step = step
         self._accidental = accidental
         self._octave = octave
+
+        if octave is None:
+            self._octave = kwargs.get('octave', None)
 
     ##############################################
 
@@ -280,8 +288,9 @@ class Pitch:
 
         if 'midi' in kwargs:
             pitch_int = kwargs['midi']
-            step_number, octave = self.__temperament__.fold_step_number(octave=True)
-            self._init_from_number(step_number, octave=octave)
+            step_number, octave = self.__temperament__.fold_step_number(pitch_int, octave=True)
+            octave -= 1 # C4 60 -> 0, 5
+            self._init_from_number(step_number, dict(octave=octave))
         else:
             self.step = kwargs['step']
             accidental = kwargs.get('accidental', None)
@@ -307,7 +316,7 @@ class Pitch:
 
     @property
     def temperament(self):
-        return self.___temperament__
+        return self.__temperament__
 
     ##############################################
 
@@ -397,6 +406,8 @@ class Pitch:
         if self._accidental is not None:
             name += str(self._accidental)
         if octave and self._octave is not None:
+            if self._octave < 0:
+                name += '/' # Fixme: ???
             name += str(self._octave)
         return name
 
@@ -482,7 +493,7 @@ class Pitch:
 
         The MIDI specification only defines note number 60 as "Middle C" (C4, Do3), and all other
         notes are relative. Note are encoded by a 7-bit non signed integer, ranging from 0 to 127.
-        Consequently, Midi map note C0 to 0, C#0 to 1, ... and G10 to 127.
+        Consequently, Midi map note C/-1 to 0, C#0 to 1, ... and G9 to 127.
 
         """
 
@@ -572,6 +583,11 @@ class PitchInterval:
             self._upper = Pitch(upper_pitch)
         else:
             self._upper = None
+
+    ##############################################
+
+    def clone(self):
+        return self.__class__(self._lower, self._upper)
 
     ##############################################
 

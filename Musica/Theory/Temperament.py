@@ -81,10 +81,10 @@ class EqualTemperament:
 
     ##############################################
 
-    def fold_step_number(self, number, octave_number=False):
+    def fold_step_number(self, number, octave=False):
 
         step_number = number % self._number_of_steps
-        if octave_number:
+        if octave:
             return step_number, number // self._number_of_steps
         else:
             return step_number
