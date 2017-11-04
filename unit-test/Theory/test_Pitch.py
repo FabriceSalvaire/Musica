@@ -152,49 +152,56 @@ class TestPitch(unittest.TestCase):
     # @unittest.skip('')
     def test_iterator(self):
 
+        pitches_4 = [
+            'C4',  'C#4',
+            'D4',  'D#4',
+            'E4',
+            'F4',  'F#4',
+            'G4',  'G#4',
+            'A4',  'A#4',
+            'B4',
+        ]
+
+        natural_pitches_4 = [
+            'C4',
+            'D4',
+            'E4',
+            'F4',
+            'G4',
+            'A4',
+            'B4',
+        ]
+
+        pitches_3 = [pitch.replace('4', '3') for pitch in pitches_4]
+        natural_pitches_3 = [pitch.replace('4', '3') for pitch in natural_pitches_4]
+
+        pitches_5 = [pitch.replace('4', '5') for pitch in pitches_4]
+        natural_pitches_5 = [pitch.replace('4', '5') for pitch in natural_pitches_4]
+
+        pitches = pitches_3 + pitches_4 + pitches_5
+        natural_pitches = natural_pitches_3 + natural_pitches_4 + natural_pitches_5
+        for i in range(1, len(pitches) -1):
+            prev_pitch, pitch, next_pitch = pitches[i-1], pitches[i], pitches[i+1]
+            self.assertEqual(Pitch(pitch).prev_pitch(), Pitch(prev_pitch))
+            self.assertEqual(Pitch(pitch).next_pitch(), Pitch(next_pitch))
+
         first_pitch = Pitch('C4')
         last_pitch = Pitch('C5')
-        for pitch, pitch_name in zip(first_pitch.pitch_iterator(last_pitch).iter(),
-                                     ('C4', 'C#4',
-                                      'D4', 'D#4',
-                                      'E4',
-                                      'F4', 'F#4',
-                                      'G4', 'G#4',
-                                      'A4', 'A#4',
-                                      'B4',
-                                      'C5')):
+        pitches = pitches_4 + [pitches_5[0]]
+        natural_pitches = natural_pitches_4 + [natural_pitches_5[0]]
+        for pitch, pitch_name in zip(first_pitch.pitch_iterator(last_pitch).iter(), pitches):
             self.assertEqual(pitch.full_name, pitch_name)
         for pitch, pitch_name in zip(first_pitch.pitch_iterator(last_pitch).iter(natural=True),
-                                     ('C4',
-                                      'D4',
-                                      'E4',
-                                      'F4',
-                                      'G4',
-                                      'A4',
-                                      'B4',
-                                      'C5')):
+                                     natural_pitches
+                                     ):
             self.assertEqual(pitch.full_name, pitch_name)
+
+        first_pitch = Pitch('C5')
         for pitch, pitch_name in zip(first_pitch.pitch_iterator().iter(reverse=True),
-                                     ('C4',
-                                      'B3',
-                                      'A#3', 'A3',
-                                      'G#3', 'G3',
-                                      'F#3', 'F3',
-                                      'E3',
-                                      'D#3', 'D3',
-                                      'C#3', 'C3',
-                                     )):
+                                     reversed(pitches)):
             self.assertEqual(pitch.full_name, pitch_name)
         for pitch, pitch_name in zip(first_pitch.pitch_iterator().iter(reverse=True, natural=True),
-                                     ('C4',
-                                      'B3',
-                                      'A3',
-                                      'G3',
-                                      'F3',
-                                      'E3',
-                                      'D3',
-                                      'C3',
-                                     )):
+                                     reversed(natural_pitches)):
             self.assertEqual(pitch.full_name, pitch_name)
 
     ##############################################

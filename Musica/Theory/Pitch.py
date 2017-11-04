@@ -222,7 +222,12 @@ class Pitch:
 
     def __init__(self, name=None, **kwargs):
 
-        self._spelling_is_inferred = False
+        # self._step = 'C', 'D', ... 'G'
+        # self._step_number = 0 2 ... 11 only natural
+        # self._accidental = Accidental()
+        # self._octave = int
+
+        self._spelling_is_inferred = False # for accidental, e.g. 1 is inferred as C# versus D-
 
         if name is not None:
             # Fixme. type(self) vs self.__class__
@@ -324,11 +329,11 @@ class Pitch:
     def pitch_class(self):
         """Returns the integer value for the pitch, between 0 and 11, where C=0, C#=1, D=2, ... B=11.
         """
-        if self.alteration is not None:
+        if self.alteration is None:
             return self._step_number
         else:
             # Fixme: cache ?
-            return self.__temperament__().fold_step_number(self._step_number + int(self.alteration))
+            return self.__temperament__.fold_step_number(self._step_number + int(self.alteration))
 
     @pitch_class.setter
     def pitch_class(self, value):
