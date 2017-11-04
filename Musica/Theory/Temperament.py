@@ -81,6 +81,11 @@ class EqualTemperament:
 
     ##############################################
 
+    def is_last_step_number(self, number):
+        return (self._number_of_steps -1) == number
+
+    ##############################################
+
     def fold_step_number(self, number, octave=False):
 
         step_number = number % self._number_of_steps

@@ -324,7 +324,11 @@ class Pitch:
     def pitch_class(self):
         """Returns the integer value for the pitch, between 0 and 11, where C=0, C#=1, D=2, ... B=11.
         """
-        return self._step_number + int(self.alteration)
+        if self.alteration is not None:
+            return self._step_number
+        else:
+            # Fixme: cache ?
+            return self.__temperament__().fold_step_number(self._step_number + int(self.alteration))
 
     @pitch_class.setter
     def pitch_class(self, value):
@@ -388,6 +392,8 @@ class Pitch:
 
     @octave.setter
     def octave(self, value):
+
+        # Fixme: complex accidental can alter octave too !
 
         _value = int(value)
         if _value > 0:
@@ -525,47 +531,147 @@ class Pitch:
     def is_enharmonic(self, other):
 
         # Fixme: _compute_float_value, same __temperament__
-        bool1 = self.octave is not None
-        bool2 = other.octave is not None
-        if bool1 and bool2:
+        octave1 = self.octave is not None
+        octave2 = other.octave is not None
+        if octave1 == octave2:
+            # use __implicit_octave__ if octave is None
             ps1 = float(self)
-            ps2 = float(octave)
-        elif bool1 and not bool2:
-            ps1 = float(other)
-            ps2 = self._compute_float_value(self.octave)
-        elif not bool1 and bool2:
-            ps1 = self._compute_float_value(other.octave)
             ps2 = float(other)
+            return ps1 == ps2 and self.alteration != other.alteration
         else:
-            # use __implicit_octave__ for both
-            ps1 = float(self)
-            ps2 = float(octave)
+            return False
 
-        return ps1 == ps2 and self.alteration != other.alteration
-
-    ##############################################
-
-    # get_enharmonic(*, in_place=False)
-
-    # Returns a new Pitch that is the(/an) enharmonic equivalent of this Pitch. Can be thought of as flipEnharmonic or something like that.
-    #
-    # N.B.: n1.name == getEnharmonic(getEnharmonic(n1)).name is not necessarily true. For instance:
-    #
-    #     getEnharmonic(E##) => F# getEnharmonic(F#) => G- getEnharmonic(A–) => G getEnharmonic(G) => F##
-    #
-    # However, for all cases not involving double sharps or flats (and even many that do), getEnharmonic(getEnharmonic(n)) = n
-    #
-    # For the most ambiguous cases, it’s good to know that these are the enharmonics:
-    #
-    #     C <-> B#, D <-> C##, E <-> F-; F <-> E#, G <-> F##, A <-> B–, B <-> C-
-    #
-    # However, isEnharmonic() for A## and B certainly returns True.
+        # elif octave1 and not octave2:
+        #     ps1 = float(other)
+        #     ps2 = self._compute_float_value(self.octave)
+        # elif not octave1 and octave2:
+        #     ps1 = self._compute_float_value(other.octave)
+        #     ps2 = float(other)
 
     ##############################################
 
-    def pitch_iterator(self, until):
+    def get_enharmonic(self):
 
-        return iter(PitchInterval(self, until))
+        """Returns a new Pitch that is the enharmonic equivalent of this Pitch."""
+
+        # Fixme: check
+
+        alteration = self.alteration
+        if alteration == 0:
+            return self
+        else:
+            temperament = self.__temperament__
+            step_number = self._step_number + alteration
+            step_number, octave_offset = temperament.fold_step_number(step_number, octave=True)
+            step = temperament[step_number]
+            if step.is_accidental:
+                if alteration < 0: # flat
+                    step = step.sharpen_name
+                else: # sharp
+                    step = step.flatten_name
+            octave = self._octave + octave_offset
+            return self.__class__(step, octave=octave)
+
+    ##############################################
+
+    def simplify_accidental(self):
+
+        alteration = self.alteration
+        if alteration:
+            temperament = self.__temperament__
+            step_number = self._step_number + self.alteration
+            if temperament.is_valid_step_name(step_number):
+                return self
+            else:
+                step_number, octave_offset = temperament.fold_step_number(step_number, octave=True)
+                octave = self._octave + octave_offset
+                return self.__class__(step_number, octave=octave)
+        else:
+            return self # Fixme: clone ???
+
+    ##############################################
+
+    def pitch_iterator(self, until=None):
+
+        return PitchIterator(self, until)
+
+    ##############################################
+
+    def next_pitch(self):
+
+        # Fixme: complex accidental can alter octave too !
+        #   should simplify self
+        pitch_class = self.pitch_class + 1
+        octave = self._octave
+        if pitch_class == self.__temperament__.number_of_steps:
+            pitch_class = 0
+            octave += 1
+        return self.__class__(pitch_class, octave=octave)
+
+    ##############################################
+
+    def prev_pitch(self):
+
+        # Fixme: complex accidental can alter octave too !
+        pitch_class = self.pitch_class
+        octave = self._octave
+        if pitch_class == 0:
+            pitch_class = self.__temperament__.number_of_steps -1
+            octave -= 1
+        else:
+            pitch_class -= 1
+        return self.__class__(pitch_class, octave=octave)
+
+####################################################################################################
+
+class PitchIterator:
+
+    ##############################################
+
+    def __init__(self, start_pitch, stop_pitch=None):
+
+        self._start = Pitch(start_pitch)
+        if stop_pitch is not None:
+            self._stop = Pitch(stop_pitch)
+        else:
+            self._stop = None
+
+    ##############################################
+
+    def iter(self, reverse=False, natural=False, inclusive=True):
+
+        # Fixme: complex accidental ???
+
+        start = self._start
+        stop = self._stop
+
+        cls = start.__class__
+        number_of_steps = start.__temperament__.number_of_steps
+
+        pitch_class = start.pitch_class
+        octave = start.octave
+
+        while True:
+            pitch = cls(pitch_class, octave=octave)
+            must_stop = stop is not None and pitch == stop
+            if inclusive and must_stop:
+                return
+            if not (natural and pitch.is_altered):
+                yield pitch
+            if not inclusive and must_stop:
+                return
+            # Fixme: could use Pitch API
+            if reverse:
+                if pitch_class == 0:
+                    pitch_class = number_of_steps -1
+                    octave -= 1
+                else:
+                    pitch_class -= 1
+            else:
+                pitch_class += 1
+                if pitch_class == number_of_steps:
+                    pitch_class = 0
+                    octave += 1
 
 ####################################################################################################
 
@@ -603,22 +709,13 @@ class PitchInterval:
 
     def __iter__(self):
 
-        # Fixme: complex accidental ???
+        return PitchIterator(self._lower, self._upper).iter() # inclusive=True
 
-        lower = self._lower
-        upper = self._upper
+    ##############################################
 
-        number_of_steps = lower.__temperament__.number_of_steps
+    def iter(self, reverse=False, natural=False):
 
-        pitch_class = lower.pitch_class
-        octave = lower.octave
-
-        while True:
-            pitch = lower.__class__(pitch_class, octave=octave)
-            yield pitch
-            if pitch == upper: # upper can be None
-                return
-            pitch_class += 1
-            if pitch_class == number_of_steps:
-                pitch_class = 0
-                octave += 1
+        if reverse:
+            return PitchIterator(self._upper, self._lower).iter(reverse=True, natural=natural)
+        else:
+            return PitchIterator(self._lower, self._upper).iter(natural=natural)
