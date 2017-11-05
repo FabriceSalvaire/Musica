@@ -24,21 +24,87 @@
 ####################################################################################################
 
 __all__ = [
-    ]
+    'InstrumentWriting',
+    'InstrumentTransposition',
+    'Ambitus',
+    'Instrument',
+]
 
 ####################################################################################################
 
-# from ..Theory.Pitch import Pitch
+from ..Notation.Stave import Stave
+from ..Theory.Pitch import Pitch, PitchInterval
+from ..Tools.Abc import Named
 
 ####################################################################################################
 
-class Instrument:
+class InstrumentWriting(Named):
+
+    ##############################################
+
+    def __init__(self, name, stave, pitch_interval):
+
+        super().__init__(name)
+        self._stave = stave.clone() # can be Stave or StavePair for piano
+        self._pitch_interval = PitchInterval.clone(pitch_interval)
+
+    ##############################################
+
+    @property
+    def stave(self):
+        return self._stave
+
+    @property
+    def pitch_interval(self):
+        return self._pitch_interval
+
+####################################################################################################
+
+class InstrumentTransposition(Named):
+
+    ##############################################
+
+    def __init__(self, name, transposition):
+
+        super().__init__(name)
+        self.transposition = Pitch(transposition)
+
+    ##############################################
+
+    @property
+    def transposition(self):
+        return self._transposition
+
+####################################################################################################
+
+class Ambitus(Named):
+
+    ##############################################
+
+    def __init__(self, name, pitch_interval):
+
+        super().__init__(name)
+        self._pitch_interval = PitchInterval.clone(pitch_interval)
+
+    ##############################################
+
+    @property
+    def pitch_interval(self):
+        return self._pitch_interval
+
+####################################################################################################
+
+class Instrument(Named):
 
     ##############################################
 
     def __init__(self,
                  name,
-                 category):
+                 family='',
+                 writings=[],
+                 transpositions=[],
+                 ambitus=[],
+    ):
 
         # partId
         # partName
@@ -54,18 +120,30 @@ class Instrument:
         # inGMPercMap (bool – if it uses the GM percussion map)
         # soundfontFn (filepath to a sound font, optional)
 
-        self._name = name
-        self._category = category
+        super().__init__(name)
+
+        self._family = family
+        self._writings = {item.name:item for item in writings}
+        self._transpositxions = {item.name:item for item in transpositions}
+        self._ambitus = {item.name:item for item in ambitus}
 
     ##############################################
 
     @property
-    def name(self):
-        return self._name
+    def family(self):
+        return self._family
 
     @property
-    def category(self):
-        return self._category
+    def writings(self):
+        return self._writings
+
+    @property
+    def transpositions(self):
+        return self._transpositions
+
+    @property
+    def ambitus(self):
+        return self._ambitus
 
     @property
     def lowest_note(self):

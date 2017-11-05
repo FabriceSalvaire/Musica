@@ -670,6 +670,11 @@ class PitchIterator:
             step_number, octave_offset = fold_step_number(step_number, octave=True)
             octave += octave_offset
 
+    ##############################################
+
+    def __iter__(self):
+        return self.iter()
+
 ####################################################################################################
 
 class PitchInterval:

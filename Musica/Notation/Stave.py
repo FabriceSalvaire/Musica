@@ -219,10 +219,12 @@ class Stave:
     ##############################################
 
     @property
+    def key(self):
+        return self._key
+    
+    @property
     def lower_pitch(self):
         return self._lower_pitch
-
-    ##############################################
 
     @property
     def upper_pitch(self):
@@ -254,7 +256,7 @@ class StavePair:
     ##############################################
 
     def clone(self):
-        return self.__class__(self._lower_stave, self._upper_stave)
+        return self.__class__(self._lower_stave.key, self._upper_stave.key)
 
     ##############################################
 
