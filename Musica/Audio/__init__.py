@@ -27,3 +27,7 @@
 #   PulseAudio
 #   Gstreamer
 #     https://github.com/rubenrua/GstreamerCodeSnippets
+
+####################################################################################################
+
+from . import Wave
