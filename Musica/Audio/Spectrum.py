@@ -18,6 +18,16 @@
 #
 ####################################################################################################
 
+"""This module implements spectrum analysis based on Fast Fourier Transform.
+
+References
+
+Efficient Pitch Detection Techniques for Interactive Music
+    Patricio de la Cuadra, Aaron Master, Craig Sapp
+    Center for Computer Research in Music and Acoustics, Stanford University
+
+"""
+
 ####################################################################################################
 
 import math
@@ -175,25 +185,23 @@ class Spectrum:
 
     ##############################################
 
-    def h_dome(self, height):
-
-        from Musica.Math.Morphomath import Function
-
-        values = np.array(self.decibel_power, dtype=np.int)
-        values = np.where(values >= 0, values, 0)
-        function = Function(values).h_dome(height)
-
-        return function.values
-
-    ##############################################
-
     def hfs(self, number_of_products):
 
         # , rebin=False
 
-        """Harmonic product spectrum"""
+        """Compute the Harmonic Product Spectrum.
 
-        spectrum= self.magnitude
+        References
+
+        Noll, M. (1969).
+            Pitch determination of human speech by the harmonic product spectrum, the harmonic sum
+            spectrum, and a maximum likelihood estimate. In Proceedings of the Symposium on Computer
+            Processing ing Communications, pp. 779-797. Polytechnic Institute of Brooklyn.
+
+        """
+
+        spectrum= self.magnitude # Fixme: **2 ???
+
         # Fixme: ceil ?
         size = int(math.ceil(spectrum.size / number_of_products))
         hfs = spectrum[:size].copy()
@@ -208,4 +216,28 @@ class Spectrum:
             # else:
             hfs *= spectrum[::i][:size]
 
+        # Fixme: return class ???
         return self._frequencies[:size], hfs
+
+    ##############################################
+
+    def h_dome(self, height):
+
+        """Extract h-dome from spectrum using Mathematical Morphology.
+
+        Parameters
+        ----------
+        height : int
+            Minimal height of the peaks
+
+        """
+
+        # Fixme: just for test ...
+
+        values = np.array(self.decibel_power, dtype=np.int)
+        values = np.where(values >= 0, values, 0)
+
+        from Musica.Math.Morphomath import Function
+        function = Function(values).h_dome(height)
+
+        return function.values
