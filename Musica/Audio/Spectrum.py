@@ -184,3 +184,28 @@ class Spectrum:
         function = Function(values).h_dome(height)
 
         return function.values
+
+    ##############################################
+
+    def hfs(self, number_of_products):
+
+        # , rebin=False
+
+        """Harmonic product spectrum"""
+
+        spectrum= self.magnitude
+        # Fixme: ceil ?
+        size = int(math.ceil(spectrum.size / number_of_products))
+        hfs = spectrum[:size].copy()
+        for i in range(2, number_of_products + 1):
+            # if rebin:
+            #     rebinned_spectrum = spectrum[::i][:size].copy()
+            #     for j ixn range(1, i):
+            #         array = spectrum[j::i][:size]
+            #         rebinned_spectrum[:array.size] += array
+            #     rebinned_spectrum /= i
+            #     hfs *= rebinned_spectrum # Fixme: wrong for upper bins
+            # else:
+            hfs *= spectrum[::i][:size]
+
+        return self._frequencies[:size], hfs
