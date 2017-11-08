@@ -14,8 +14,9 @@ include setenv.sh start.sh
 include setup_data.py
 include requirements.txt requirements-dev.txt
 include .travis.yml
+include bin/make-figure
 include bower/bower.json
-recursive-include Musica *.py *.yml *py.in
+recursive-include Musica *.py *.yml *py.in *.mo
 recursive-include doc *
 recursive-include doc/sphinx/source/_static *
 recursive-include doc/sphinx/source/_templates *
