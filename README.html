@@ -373,6 +373,7 @@ ul.auto-toc {
 |Musica@readthedocs-badge|
 |Musica@pypi|_ -->
 <!-- https://musica.fabrice-salvaire.fr -->
+<!-- https://fabricesalvaire.github.io/Musica -->
 <!-- .. _Musica@github: https://github.com/FabriceSalvaire/Musica -->
 <!-- .. _Musica@pypi: https://pypi.python.org/pypi/Musica -->
 <!-- coverage test -->
@@ -392,16 +393,37 @@ ul.auto-toc {
 <h1>Overview</h1>
 <div class="section" id="what-is-musica">
 <h2>What is Musica ?</h2>
-<p>Musica is a Python toolkit for computational music.</p>
+<p>Musica is a free and open source computational music toolkit written in <a class="reference external" href="http://python.org">Python</a> covering several
+topics from music theory, audio analysis to high quality figure generation.</p>
 </div>
 <div class="section" id="where-is-the-documentation">
 <h2>Where is the Documentation ?</h2>
-<p>The documentation is available on the <a class="reference external" href="https://fabricesalvaire.github.io/Musica">Musica Home Page</a>.</p>
+<p>The documentation is available on the <a class="reference external" href="https://musica.fabrice-salvaire.fr">Musica Home Page</a>.</p>
 </div>
 <div class="section" id="what-are-the-main-features">
 <h2>What are the main features ?</h2>
+<!-- -*- Mode: rst -*- -->
 <ul class="simple">
-<li><a class="reference external" href="http://www.musicxml.com/">MusiXML</a> Reader/Writer automatically generated from XML schema (thanks to <a class="reference external" href="http://pyxb.sourceforge.net">PyXB</a>)</li>
+<li>Music Theory : temperament, pitch, interval, scale</li>
+<li>Audio Analysis<ul>
+<li>Spectrum analysis, e.g. Harmonic Power Spectrum to find the pitch</li>
+</ul>
+</li>
+<li>Database using YAML format<ul>
+<li>Instrument database covering usual orchestrations, e.g. classic and jazz music</li>
+<li>Tuning database for string instruments</li>
+</ul>
+</li>
+<li>Localisation<ul>
+<li>handle English and Latin convention</li>
+<li>translation of music therms using <cite>gettext</cite></li>
+</ul>
+</li>
+<li>Score Format<ul>
+<li>read/write <a class="reference external" href="http://www.musicxml.com/">MusiXML</a>, automatically generated from XML schema (thanks to <a class="reference external" href="http://pyxb.sourceforge.net">PyXB</a>)</li>
+</ul>
+</li>
+<li>High Quality Figures : piano keyboard, fretboard etc.</li>
 </ul>
 <!-- http://www.codesynthesis.com/products/xsd/ -->
 </div>

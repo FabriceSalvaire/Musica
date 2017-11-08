@@ -10,11 +10,12 @@
    |Musica@pypi|_
 
 .. https://musica.fabrice-salvaire.fr
+.. https://fabricesalvaire.github.io/Musica
 
-.. |MusicaUrl| replace:: https://fabricesalvaire.github.io/Musica
+.. |MusicaUrl| replace:: https://musica.fabrice-salvaire.fr
 
 .. |MusicaHomePage| replace:: Musica Home Page
-.. _MusicaHomePage: https://fabricesalvaire.github.io/Musica
+.. _MusicaHomePage: https://musica.fabrice-salvaire.fr
 
 .. |Musica@readthedocs-badge| image:: https://readthedocs.org/projects/musica/badge/?version=latest
    :target: http://musica.readthedocs.org/en/latest

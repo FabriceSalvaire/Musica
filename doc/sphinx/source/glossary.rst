@@ -39,5 +39,6 @@ Step
     the interval between two adjacent notes in a musical scale
 
 Tone
+   ...
 
 .. Pn = Pa(12√2)(n − a)

@@ -21,7 +21,8 @@ Overview
 What is Musica ?
 ---------------------
 
-Musica is a Python toolkit for computational music.
+Musica is a free and open source computational music toolkit written in |Python|_ covering several
+topics from music theory, audio analysis to high quality figure generation.
 
 Where is the Documentation ?
 ----------------------------
@@ -31,9 +32,7 @@ The documentation is available on the |MusicaHomePage|_.
 What are the main features ?
 ----------------------------
 
-* `MusiXML <http://www.musicxml.com/>`_ Reader/Writer automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
-
-.. http://www.codesynthesis.com/products/xsd/
+.. include:: features.txt
 
 How to install it ?
 -------------------

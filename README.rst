@@ -12,11 +12,12 @@
    |Musica@pypi|_
 
 .. https://musica.fabrice-salvaire.fr
+.. https://fabricesalvaire.github.io/Musica
 
-.. |MusicaUrl| replace:: https://fabricesalvaire.github.io/Musica
+.. |MusicaUrl| replace:: https://musica.fabrice-salvaire.fr
 
 .. |MusicaHomePage| replace:: Musica Home Page
-.. _MusicaHomePage: https://fabricesalvaire.github.io/Musica
+.. _MusicaHomePage: https://musica.fabrice-salvaire.fr
 
 .. |Musica@readthedocs-badge| image:: https://readthedocs.org/projects/musica/badge/?version=latest
    :target: http://musica.readthedocs.org/en/latest
@@ -91,7 +92,8 @@ Overview
 What is Musica ?
 ---------------------
 
-Musica is a Python toolkit for computational music.
+Musica is a free and open source computational music toolkit written in |Python|_ covering several
+topics from music theory, audio analysis to high quality figure generation.
 
 Where is the Documentation ?
 ----------------------------
@@ -101,7 +103,28 @@ The documentation is available on the |MusicaHomePage|_.
 What are the main features ?
 ----------------------------
 
-* `MusiXML <http://www.musicxml.com/>`_ Reader/Writer automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
+.. -*- Mode: rst -*-
+
+* Music Theory : temperament, pitch, interval, scale
+* Audio Analysis
+
+  * Spectrum analysis, e.g. Harmonic Power Spectrum to find the pitch
+
+* Database using YAML format
+
+  * Instrument database covering usual orchestrations, e.g. classic and jazz music
+  * Tuning database for string instruments
+
+* Localisation
+
+  * handle English and Latin convention
+  * translation of music therms using `gettext`
+
+* Score Format
+
+  * read/write `MusiXML <http://www.musicxml.com/>`_, automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
+
+* High Quality Figures : piano keyboard, fretboard etc.
 
 .. http://www.codesynthesis.com/products/xsd/
 

@@ -1,0 +1,24 @@
+.. -*- Mode: rst -*-
+
+* Music Theory : temperament, pitch, interval, scale
+* Audio Analysis
+
+  * Spectrum analysis, e.g. Harmonic Power Spectrum to find the pitch
+
+* Database using YAML format
+
+  * Instrument database covering usual orchestrations, e.g. classic and jazz music
+  * Tuning database for string instruments
+
+* Localisation
+
+  * handle English and Latin convention
+  * translation of music therms using `gettext`
+
+* Score Format
+
+  * read/write `MusiXML <http://www.musicxml.com/>`_, automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
+
+* High Quality Figures : piano keyboard, fretboard etc.
+
+.. http://www.codesynthesis.com/products/xsd/
