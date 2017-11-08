@@ -25,19 +25,19 @@
 .. |Musica@github| replace:: https://github.com/FabriceSalvaire/Musica
 .. .. _Musica@github: https://github.com/FabriceSalvaire/Musica
 
-.. |Musica@pypi| replace:: https://pypi.python.org/pypi/Musica
-.. .. _Musica@pypi: https://pypi.python.org/pypi/Musica
+.. |Musica@pypi| replace:: https://pypi.python.org/pypi/Musica-pip
+.. .. _Musica@pypi: https://pypi.python.org/pypi/Musica-pip
 
-.. |Pypi Version| image:: https://img.shields.io/pypi/v/Musica.svg
-   :target: https://pypi.python.org/pypi/Musica
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/Musica-pip.svg
+   :target: https://pypi.python.org/pypi/Musica-pip
    :alt: Musica last version
 
-.. |Pypi License| image:: https://img.shields.io/pypi/l/Musica.svg
+.. |Pypi License| image:: https://img.shields.io/pypi/l/Musica-pip.svg
    :target: https://pypi.python.org/pypi/Musica
    :alt: Musica license
 
-.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Musica.svg
-   :target: https://pypi.python.org/pypi/Musica
+.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Musica-pip.svg
+   :target: https://pypi.python.org/pypi/Musica-pip
    :alt: Musica python version
 
 .. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Musica.svg?branch=master

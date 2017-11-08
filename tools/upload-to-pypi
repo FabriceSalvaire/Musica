@@ -1,5 +1,11 @@
 #! /bin/bash
 
+# source ~/.bashrc
+# py36
+
+source /opt/python-virtual-env/py36/bin/activate
+
 # bdist
-python setup.py check --verbose --metadata --restructuredtext --strict && \
-  python setup.py register sdist upload
+
+python3 setup.py check --verbose --metadata --restructuredtext --strict && \
+  python3 setup.py register sdist bdist_wheel upload
