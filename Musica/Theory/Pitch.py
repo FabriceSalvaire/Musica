@@ -489,6 +489,7 @@ class Pitch:
     def unicode_name_with_octave(self):
         return self.str(unicode=True, octave=True)
 
+    # Fixme: shorter ???
     @property
     def latin_unicode_name_with_octave(self):
         return self.str(latin=True, unicode=True, octave=True)
