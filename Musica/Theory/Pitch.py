@@ -412,53 +412,89 @@ class Pitch:
 
     ##############################################
 
-    def _to_string(self, unicode=False, octave=False):
-        name = self._step
-        if self._accidental is not None:
-            name += str(self._accidental)
-        if octave and self._octave is not None:
-            if self._octave < 0:
-                name += '/' # Fixme: ???
-            name += str(self._octave)
-        return name
+    def _locale(self, natural=False):
 
-    @property
-    def name(self):
-        return self._to_string()
+        translator = self.__temperament__.translator
+        if natural:
+            note = self._step_number
+        else:
+            note = self.pitch_class
 
-    @property
-    def full_name(self):
-        return self._to_string(octave=True)
-
-    @property
-    def unicode_name(self):
-        return self._to_string(unicode=True)
-
-    @property
-    def unicode_name_with_octave(self):
-        return self._to_string(octave=True, unicode=True)
-
-    def __str__(self):
-        return self.full_name
+        return translator(note)
 
     ##############################################
+
+    @property
+    def natural_locale(self):
+        # Return :class:`Musica.Locale.Note.NoteNameTranslation`
+        return self._locale(natural=True)
 
     @property
     def locale(self):
         # Return :class:`Musica.Locale.Note.NoteNameTranslation`
-        return self.__temperament__.translator(self.pitch_class) # self.name
-
-    ##############################################
+        return self._locale()
 
     @property
     def english_locale(self):
         return self.locale['english']
 
-    ##############################################
-
     @property
     def french_locale(self):
         return self.locale['français']
+
+    ##############################################
+
+    def str(self, locale=None, latin=False, unicode=False, octave=False):
+
+        if latin:
+            locale = 'français' # or similar
+        if locale is not None:
+            name = self.natural_locale[locale].name # to get step without accidental
+        else:
+            name = self._step
+
+        if self._accidental is not None:
+            if unicode:
+                accidental = self._accidental.unicode_name
+            else:
+                accidental = str(self._accidental)
+            name += accidental
+
+        if octave and self._octave is not None:
+            if self._octave < 0:
+                name += '/' # Fixme: ???
+            name += str(self._octave)
+
+        return name
+
+    ##############################################
+
+    @property
+    def name(self):
+        return self.str()
+
+    @property
+    def full_name(self):
+        return self.str(octave=True)
+
+    @property
+    def unicode_name(self):
+        return self.str(unicode=True)
+
+    @property
+    def latin_unicode_name(self):
+        return self.str(latin=True, unicode=True)
+
+    @property
+    def unicode_name_with_octave(self):
+        return self.str(unicode=True, octave=True)
+
+    @property
+    def latin_unicode_name_with_octave(self):
+        return self.str(latin=True, unicode=True, octave=True)
+
+    def __str__(self):
+        return self.full_name
 
     ##############################################
 

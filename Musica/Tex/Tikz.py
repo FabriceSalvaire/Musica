@@ -25,7 +25,73 @@ from .Package import Package
 
 ####################################################################################################
 
+class Coordinate:
+
+    ##############################################
+
+    def __init__(self, *args, **kwargs):
+
+        number_of_args = len(args)
+        if number_of_args == 1:
+            obj = args[0]
+            self.x = obj.x
+            self.y = obj.y
+        elif number_of_args == 2:
+            self.x = args[0]
+            self.y = args[1]
+        elif 'x' in kwargs:
+            self.x = kwargs['x']
+            self.y = kwargs['y']
+        elif 'clone' in kwargs:
+            obj = kwargs['clone']
+            self.x = obj.x
+            self.y = obj.y
+        else:
+            raise ValueError("Invalid parameters")
+
+    ##############################################
+
+    def __str__(self):
+        return '({},{})'.format(self.x, self.y)
+
+####################################################################################################
+
+class PolarCoordinate:
+
+    ##############################################
+
+    def __init__(self, *args, **kwargs):
+
+        number_of_args = len(args)
+        if number_of_args == 1:
+            obj = args[0]
+            self.a = obj.a
+            self.r = obj.r
+        elif number_of_args == 2:
+            self.a = args[0]
+            self.r = args[1]
+        elif 'a' in kwargs:
+            self.a = kwargs['a']
+            self.r = kwargs['r']
+        elif 'clone' in kwargs:
+            obj = kwargs['clone']
+            self.a = obj.a
+            self.r = obj.r
+        else:
+            raise ValueError("Invalid parameters")
+
+    ##############################################
+
+    def __str__(self):
+        return '({}:{})'.format(self.a, self.r)
+
+####################################################################################################
+
 class TikzFigure(Environment):
+
+    __option_map__ = {
+        'linewidth': 'line width',
+    }
 
     ##############################################
 
@@ -37,30 +103,46 @@ class TikzFigure(Environment):
 
     ##############################################
 
-    @staticmethod
-    def _format_coordinate(obj):
+    # @staticmethod
+    # def _format_coordinate(obj):
 
-        if hasattr(obj, 'x'):
-            return '({},{})'.format(obj.x, obj.y)
-        elif isinstance(obj, dict):
-            if 'x' in obj:
-                return '({},{})'.format(obj['x'], obj['y'])
-            elif 'r' in obj:
-                return '({}:{})'.format(obj['a'], obj['r'])
-            else:
-                raise ValueError('Invalid coordinate')
-        elif isinstance(obj, str):
-            return obj
+    #     if hasattr(obj, 'x'):
+    #         return '({},{})'.format(obj.x, obj.y)
+    #     elif isinstance(obj, dict):
+    #         if 'x' in obj:
+    #             return '({},{})'.format(obj['x'], obj['y'])
+    #         elif 'r' in obj:
+    #             return '({}:{})'.format(obj['a'], obj['r'])
+    #         else:
+    #             raise ValueError('Invalid coordinate')
+    #     elif isinstance(obj, str):
+    #         return obj
 
     ##############################################
 
     @staticmethod
-    def _format_options(kwargs):
+    def _ensure_coordinate(obj):
 
-        # key can have spaces
+        if hasattr(obj, 'x') or 'x' in obj:
+            return Coordinate(obj)
+        elif hasattr(obj, 'a') or 'a' in obj:
+            return PolarCoordinate(obj)
+        else:
+            raise ValueError("Invalid coordinate {}".format(obj))
+
+    ##############################################
+
+    @classmethod
+    def _translate_option(cls, option):
+        return cls.__option_map__.get(option, option)
+
+    ##############################################
+
+    @classmethod
+    def _format_options_dict(cls, kwargs):
 
         if kwargs:
-            comma_list = ', '.join(['{}={}'.format(key, value)
+            comma_list = ', '.join(['{}={}'.format(cls._translate_option(key), value)
                                     for key, value in kwargs.items()
                                     if value is not None])
             return '[' + comma_list + ']'
@@ -70,9 +152,9 @@ class TikzFigure(Environment):
     ##############################################
 
     @classmethod
-    def _format_options_dict(cls, **kwargs):
+    def _format_options(cls, **kwargs):
 
-        return cls._format_options(kwargs)
+        return cls._format_options_dict(kwargs)
 
     ##############################################
 
@@ -108,17 +190,21 @@ class TikzFigure(Environment):
 
     ##############################################
 
-    def line(self, _from, to):
+    def path(self, path, **kwargs):
 
-        _from = self._format_coordinate(_from)
-        to = self._format_coordinate(to)
-        self.append_command('draw', self.format(r'«0» -- «1»', _from, to))
+        # close = False
+        # draw
+        # fill
+        # linewidth
 
-    ##############################################
+        points = [str(self._ensure_coordinate(point)) for point in path]
 
-    def path(self, path, close=False, fill=None, draw=None):
-
-        points = [self._format_coordinate(point)  for point in path]
+        command = 'draw'
+        args = self._format_options(**kwargs)
+        args += ' ' + ' -- '.join(points)
+        if kwargs.get('close', False) or kwargs.get('fill', False):
+            args += ' -- cycle'
+        self.append_command(command, args)
 
         # if fill is None:
         #     command = 'draw'
@@ -126,25 +212,24 @@ class TikzFigure(Environment):
         # else:
         #     if filldraw:
         #         command = 'filldraw'
-        #         args = self._format_options_dict(fill=fill, filldraw=filldraw)
+        #         args = self._format_options(fill=fill, filldraw=filldraw)
         #     else:
         #         command = 'fill'
         #         args = '[{}]'.format(fill)
 
-        command = 'draw'
-        args = self._format_options_dict(fill=fill, draw=draw)
-        args += ' ' + ' -- '.join(points)
-        if close:
-            args += ' -- cycle'
-        self.append_command(command, args)
+    ##############################################
+
+    def line(self, _from, to, **kwargs):
+
+        self.path((_from, to), **kwargs)
 
     ##############################################
 
-    def node(self, coordinate, text, **kwargs):
+    def text(self, coordinate, text, **kwargs):
 
         # anchor
         # rotate
 
-        coordinate = self._format_coordinate(coordinate)
-        args = self._format_options_dict(**kwargs)
-        self.append_command('node', args + self.format(r' at «0» {«1»}', coordinate, text))
+        coordinate = self._ensure_coordinate(coordinate)
+        args = self._format_options(**kwargs)
+        self.append_command('node', args + self.format(r' at «0» {«1»}', coordinate, self.to_tex(text)))

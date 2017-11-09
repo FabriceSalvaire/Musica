@@ -35,16 +35,6 @@ class NoteNameTranslation:
 
     ##############################################
 
-    @staticmethod
-    def to_tex(x):
-
-        x = x.replace('♭', r'$\flat$')
-        x = x.replace('♯', r'$\sharp$')
-
-        return x
-
-    ##############################################
-
     def __init__(self, step,
                  name, unicode_name=None,
                  flat_name=None, unicode_flat_name=None,
@@ -76,10 +66,6 @@ class NoteNameTranslation:
             return self._unicode_name
 
     @property
-    def tex_name(self):
-        return self.to_tex(self.unicode_name)
-
-    @property
     def flat_name(self):
         return self._flat_name
 
@@ -88,20 +74,12 @@ class NoteNameTranslation:
         return self._unicode_flat_name
 
     @property
-    def tex_flat_name(self):
-        return self.to_tex(self._unicode_flat_name)
-
-    @property
     def sharp_name(self):
         return self._sharp_name
 
     @property
     def unicode_sharp_name(self):
         return self._unicode_sharp_name
-
-    @property
-    def tex_sharp_name(self):
-        return selt.to_tex(self._unicode_sharp_name)
 
 ####################################################################################################
 

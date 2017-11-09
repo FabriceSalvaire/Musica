@@ -92,6 +92,17 @@ class BasicCommandMixin:
     ##############################################
 
     @staticmethod
+    def to_tex(x):
+
+        x = str(x)
+        x = x.replace('♭', r'$\flat$')
+        x = x.replace('♯', r'$\sharp$')
+
+        return x
+
+    ##############################################
+
+    @staticmethod
     def format(pattern, *args, **kwargs):
 
         pattern = pattern.replace('{', '{{')

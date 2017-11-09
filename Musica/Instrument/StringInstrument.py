@@ -58,7 +58,7 @@ class String:
 
         # From nut / sillet
 
-        position = self._length * 2**(-i/self._pitch.temperament)
+        position = self._length * 2**(-i/self._pitch.temperament.number_of_steps)
         if from_nut:
             position = self._length - position
 
