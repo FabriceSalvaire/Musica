@@ -1,12 +1,16 @@
-*~
-__pycache__
+# -*- mode: conf -*-
 *.pyc
+*~
+.cache/
+.tox/
+__pycache__
 #
 .directory
 du.log
 #
 Musica/locale/fr/LC_MESSAGES/Musica.mo
 Musica/locale/messages.pot
+MANIFEST
 #
 specifications/musicxml-xsd/musicxml.cxx
 specifications/musicxml-xsd/musicxml.hxx
