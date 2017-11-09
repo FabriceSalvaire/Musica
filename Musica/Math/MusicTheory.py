@@ -18,7 +18,7 @@
 #
 ####################################################################################################
 
-"""
+r"""
 
 String Vibration
 ----------------
@@ -26,8 +26,8 @@ String Vibration
 There are four physical quantities involved in the string vibration phenomenon :
 
 * the frequency :math:`f` of dimension :math:`s^{-1}`,
-* the linear density :math:`\mu` of the string of dimension :math:`kg m^{-1}`,
-* the tension :math:`T` applied to the string of dimension :math:`kg m s^{-2}`,
+* the linear density :math:`\mu` of the string of dimension :math:`kg \cdot m^{-1}`,
+* the tension :math:`T` applied to the string of dimension :math:`kg \cdot m \cdot s^{-2}`,
 * the length :math:`L` of the string of dimension :math:`m`.
 
 According to the Vaschy-Buckingham theorem, we can build a dimensionless constant:
@@ -363,7 +363,7 @@ PythagoreanTuning = PythagoreanTuningSingleton()
 
 class AdditionModuloGroup:
 
-    """Group of Addition Modulo a Positive Integer
+    r"""Group of Addition Modulo a Positive Integer
 
     Group Definition
 
@@ -509,7 +509,7 @@ class EqualTemperamentTuning:
     @staticmethod
     def fifth_approximations(number_of_steps_max=20):
 
-        """Compute the best perfect fifth approximations having the form :math:`2^{i/j}`.
+        r"""Compute the best perfect fifth approximations having the form :math:`2^{i/j}`.
 
         12-TET is based on :math:`2^{7/12} \approx 1.498` versus 1.5 for the perfect fifth.
         """
