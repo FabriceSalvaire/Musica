@@ -79,11 +79,16 @@ class Document(TexContent):
 
     #######################################
 
+    # Fixme: use shell ???
     __latex_command__ = '/usr/bin/lualatex'
     __pdfcrop_command__ = '/usr/bin/pdfcrop'
     __svg_command__ = '/usr/bin/pdf2svg'
+    __dvisvgm_command__ = '/usr/bin/dvisvgm'
 
-    def generate(self, output_path, crop=False, margin=10):
+    def generate(self, output_path, crop=False, margin=10, dvisvgm=False):
+
+        if dvisvgm and not output_path.stopswith('.svg'):
+            raise ValueError("Output must be SVG when using dvisvgm")
 
         output_path = os.path.abspath(output_path)
         base, extension = os.path.splitext(output_path)
@@ -110,26 +115,41 @@ class Document(TexContent):
                 pdf_path = self._make_filename(tmp_dir, 'out', 'pdf')
 
                 command = [
-                self.__latex_command__,
+                    self.__latex_command__,
                     '--interaction=batchmode',
                     '--shell-escape',
                     '--output-directory={}'.format(tmp_dir), # self.output_directory
-                    tex_path,
                 ]
+                if dvisvgm:
+                    command.append('--output-format=dvi')
+                command.append(tex_path)
                 subprocess.call(command)
 
                 if os.path.exists(pdf_path):
-                    if crop:
-                        cropped_pdf_path = self._make_filename(tmp_dir, 'out-crop', 'pdf')
-                        subprocess.call((self.__pdfcrop_command__, '--margins', str(margin), pdf_path, cropped_pdf_path))
-                        pdf_path = cropped_pdf_path
-                    if extension == 'pdf':
-                        dst_path = self._make_filename(output_dir, filename, 'pdf')
-                        # os.rename(pdf_path, dst_path)
-                        shutil.copyfile(pdf_path, dst_path)
-                    elif extension == 'svg':
+                    if dvisvgm:
+                        dvi_path = self._make_filename(tmp_dir, 'out', 'dvi')
                         dst_path = self._make_filename(output_dir, filename, 'svg')
-                        subprocess.call((self.__svg_command__, pdf_path, dst_path))
-                        # mutool draw -o output input
+                        command = (
+                            self.__dvisvgm_command__,
+                            '--output={}'.format(dst_path),
+                            '--zip=9',
+                            '--no-fonts',
+                            # '--font-format=woff,autohint',
+                            dvi_path,
+                        )
+                        subprocess.call(command)
+                    else:
+                        if crop:
+                            cropped_pdf_path = self._make_filename(tmp_dir, 'out-crop', 'pdf')
+                            subprocess.call((self.__pdfcrop_command__, '--margins', str(margin), pdf_path, cropped_pdf_path))
+                            pdf_path = cropped_pdf_path
+                        if extension == 'pdf':
+                            dst_path = self._make_filename(output_dir, filename, 'pdf')
+                            # os.rename(pdf_path, dst_path)
+                            shutil.copyfile(pdf_path, dst_path)
+                        elif extension == 'svg':
+                            dst_path = self._make_filename(output_dir, filename, 'svg')
+                            subprocess.call((self.__svg_command__, pdf_path, dst_path))
+                            # mutool draw -o output input
                 else:
                     raise NameError("LaTeX failed")
