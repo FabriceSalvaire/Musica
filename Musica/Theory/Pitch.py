@@ -342,6 +342,10 @@ class Pitch:
     ##############################################
 
     @property
+    def step_number(self):
+        return self._step_number
+
+    @property
     def step(self):
         """The diatonic name of the note; i.e. it does not give the accidental and octave."""
         return self._step

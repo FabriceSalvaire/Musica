@@ -18,6 +18,38 @@
 #
 ####################################################################################################
 
+# (2cm,-5mm+2pt)
+# \fill [red] ($(a) + 1/3*(1cm,0)$) circle (2pt);
+#
+# \draw[red] (0,0) -- ([xshift=3pt] 1,1);
+# \draw[red] (1,0) -- +([shift=(135:5pt)] 30:2cm);
+#
+# \draw (0,0) -- ++(1,0) -- ++(0,1) -- ++(-1,0) -- cycle; % relative coordinate
+# \draw (0,0) -- +(1,0) -- +(1,1) -- +(0,1) -- cycle; % don't update coordinate
+#
+# \tikz \draw (0,0) -- (1,1) -- ([turn]-45:1cm) -- ([turn]-30:1cm);
+#
+# \draw (0,0) --(2,0) (0,1) --(2,1); % mode to operation
+#
+# \draw[rounded corners]
+# \draw[rounded corners=10pt] (0,0) -- (0pt,25pt) -- (40pt,25pt);
+#
+# \draw (1,0) circle [radius=1.5];
+# \fill (1,0) circle [x radius=1cm, y radius=5mm, rotate=30];
+#
+# \draw svg {M 0 0 L 20 20 h 10 a 10 10 0 0 0 -20 0};
+# https://www.w3.org/TR/SVG/paths.html#PathData
+# M/m x y | move to absolute/relative
+# Z/z     | close
+# L/l x y | lineto absolute/relative
+# H/h x   | horizontal absolute/relative
+# V/v x   | vertical absolute/relative
+# curve
+#
+# \draw     = \path[draw].
+# \fill     = \path[fill].
+# \filldraw = \path[fill,draw].
+
 ####################################################################################################
 
 from .Environment import Environment
@@ -99,6 +131,7 @@ class TikzFigure(Environment):
 
         super().__init__('tikzpicture', options)
 
+        self.packages.add(Package('xcolor', 'rgb'))
         self.packages.add(Package('tikz', *packages_options))
 
     ##############################################
@@ -139,12 +172,25 @@ class TikzFigure(Environment):
     ##############################################
 
     @classmethod
+    def _format_option(cls, key, value):
+
+        key = cls._translate_option(key)
+
+        if value is None or value is False:
+            return None
+        if value is True:
+            return key
+        else:
+            return '{}={}'.format(key, value)
+
+    ##############################################
+
+    @classmethod
     def _format_options_dict(cls, kwargs):
 
         if kwargs:
-            comma_list = ', '.join(['{}={}'.format(cls._translate_option(key), value)
-                                    for key, value in kwargs.items()
-                                    if value is not None])
+            formated_options = [cls._format_option(key, value) for key, value in kwargs.items()]
+            comma_list = ', '.join([x for x in formated_options if x])
             return '[' + comma_list + ']'
         else:
             return ''
@@ -190,6 +236,52 @@ class TikzFigure(Environment):
 
     ##############################################
 
+    def circle(self, point, radius, **kwargs):
+
+        point = self._ensure_coordinate(point)
+
+        command = 'path'
+        args = self._format_options(**kwargs)
+        args += ' {} circle '.format(point) + self._format_options(radius=radius)
+        self.append_command(command, args)
+
+    ##############################################
+
+    def draw_circle(self, point, radius, **kwargs):
+        self.circle(point, radius, draw=True, **kwargs)
+
+    ##############################################
+
+    def ellipse(self, point, x_radius, y_radius, **kwargs):
+
+        point = self._ensure_coordinate(point)
+
+        command = 'path'
+        args = self._format_options(**kwargs)
+        args += ' {} ellipse '.format(point) + self._format_options(x_radius=x_radius, y_radius=y_radius)
+        self.append_command(command, args)
+
+    ##############################################
+
+    def rectangle(self, point0, point1, **kwargs):
+
+        # draw fill
+
+        point0 = self._ensure_coordinate(point0)
+        point1 = self._ensure_coordinate(point1)
+
+        command = 'path'
+        args = self._format_options(**kwargs)
+        args += ' {} rectangle {}'.format(point0, point1)
+        self.append_command(command, args)
+
+    ##############################################
+
+    def draw_rectangle(self, point0, point1, **kwargs):
+        self.rectangle(point0, point1, draw=True, **kwargs)
+
+    ##############################################
+
     def path(self, path, **kwargs):
 
         # close = False
@@ -199,7 +291,7 @@ class TikzFigure(Environment):
 
         points = [str(self._ensure_coordinate(point)) for point in path]
 
-        command = 'draw'
+        command = 'path'
         args = self._format_options(**kwargs)
         args += ' ' + ' -- '.join(points)
         if kwargs.get('close', False) or kwargs.get('fill', False):
@@ -220,8 +312,7 @@ class TikzFigure(Environment):
     ##############################################
 
     def line(self, _from, to, **kwargs):
-
-        self.path((_from, to), **kwargs)
+        self.path((_from, to), draw=True, **kwargs)
 
     ##############################################
 

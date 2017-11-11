@@ -69,10 +69,17 @@ class StringFretboard:
     def pitch(self):
         return self._pitches[0]
 
+    # alias
+    first_pitch = pitch
+
+    @property
+    def last_pitch(self):
+        return self._pitches[-1]
+
     @property
     def pitch_interval(self):
         # /!\ midi note, i.e. int not float
-        return IntervalInt(int(self._pitches[0]), int(self._pitches[-1]))
+        return IntervalInt(int(self.first_pitch), int(self.last_pitch))
 
     ##############################################
 
@@ -158,83 +165,135 @@ class Fretboard:
 
 ####################################################################################################
 
-class StringPart(IntervalInt):
+class PitchInterval:
 
     ##############################################
 
-    def __init__(self, *args, strings=()):
+    @classmethod
+    def make_C_E_interval(cls, octave):
 
-        super().__init__(*args)
-        if isinstance(strings, int):
-            strings = (strings,)
-        self.strings = set(strings)
+        lower_pitch = Pitch('C', octave=octave)
+        upper_pitch = Pitch('E', octave=octave)
 
-    ##############################################
-
-    def __and__(self, i2):
-
-        intersection = super().__and__(i2)
-        strings = set(self.strings)
-        strings.update(i2.strings)
-
-        return self.__class__(intersection, strings=strings)
+        return cls(lower_pitch, upper_pitch)
 
     ##############################################
 
-    def __str__(self):
-        return super().__str__() +  str(self.strings)
+    @classmethod
+    def make_F_B_interval(cls, octave):
 
-####################################################################################################
+        lower_pitch = Pitch('F', octave=octave)
+        upper_pitch = Pitch('B', octave=octave)
 
-def interval_parts(interval, sub_interval):
+        return cls(lower_pitch, upper_pitch)
 
-    # cases
-    # 1 interval left | sub_interval
-    # 2 interval left | sub_interval | interval right
-    # 3                 sub_interval | interval right
-    # 4          sub_interval == interval
+    ##############################################
 
-    if interval == sub_interval: # 4
-        return sub_interval
-    elif interval.inf < sub_interval.inf:
-        part1 = StringPart(interval.inf, sub_interval.inf -1, strings=interval.strings)
-        part2 = sub_interval
-        if sub_interval.sup < interval.sup: # 2
-            part3 = StringPart(sub_interval.sup +1, interval.sup, strings=interval.strings)
-            return part1, part2, part3
-        else: # 1
-            return part1, part2
-    else: # sub_interval.inf <= interval.inf
-        if sub_interval.sup < interval.sup: # 3
-            part2 = StringPart(sub_interval.sup +1, interval.sup, strings=interval.strings)
-            return sub_interval, part2
-        else: # 4
-            raise NotImplementedError # should not happen
+    def __init__(self, lower_pitch, upper_pitch):
 
-####################################################################################################
+        self._lower_pitch = lower_pitch
+        self._upper_pitch = upper_pitch
+        self._interval = IntervalInt(int(lower_pitch), int(upper_pitch))
 
-def merge_parts(parts1, parts2):
+    ##############################################
 
-    parts = {}
-    for part in list(parts1) + list(parts2):
-        if part not in parts:
-            parts[part] = part
+    @property
+    def lower_pitch(self):
+        return self._lower_pitch
+
+    @property
+    def upper_pitch(self):
+        return self._upper_pitch
+
+    @property
+    def interval(self):
+        return self._interval
+
+    ##############################################
+
+    def __len__(self):
+        return self._interval.length
+
+    ##############################################
+
+    def __repr__(self):
+        return '{0._lower_pitch} {0._upper_pitch}'.format(self)
+
+    ##############################################
+
+    def __contains__(self, pitch):
+        return int(pitch) in self._interval
+
+    ##############################################
+
+    def length_from(self, pitch):
+
+        if pitch in self:
+            delta = int(pitch) - self._interval.inf
+            print(pitch, self._interval.length, delta)
+            return self._interval.length - delta
         else:
-            parts[part].strings.update(part.strings)
-
-    return parts.values()
+            raise ValueError("Invalid pitch {} for {}".format(pitch, self))
 
 ####################################################################################################
 
-def intersection_parts(interval1, interval2):
+class PitchIntervals:
 
-    if interval1.intersect(interval2):
-        intersection = interval1 & interval2
-        parts1 = interval_parts(interval1, intersection)
-        parts2 = interval_parts(interval2, intersection)
-        return merge_parts(parts1, parts2)
-    else:
-        return ()
+    ##############################################
+
+    def __init__(self, lower_pitch, upper_pitch):
+
+        # Split in block (C, D, E) (F, G, A, B)
+        self._pitch_intervals = []
+
+        octave = lower_pitch.octave
+        if lower_pitch.degree < 3:
+            pitch_interval = PitchInterval.make_C_E_interval(octave)
+            is_C_E = True
+        else:
+            pitch_interval = PitchInterval.make_F_B_interval(octave)
+            octave += 1
+            is_C_E = False
+        self._pitch_intervals.append(pitch_interval)
+
+        while pitch_interval.upper_pitch < upper_pitch:
+            if is_C_E:
+                pitch_interval = PitchInterval.make_F_B_interval(octave)
+                octave += 1
+            else:
+                pitch_interval = PitchInterval.make_C_E_interval(octave)
+            is_C_E = not is_C_E
+            self._pitch_intervals.append(pitch_interval)
+
+    ##############################################
+
+    def __len__(self):
+        return len(self._pitch_intervals)
+
+    ##############################################
+
+    def __iter__(self):
+        return iter(self._pitch_intervals)
+
+    ##############################################
+
+    def matchings_interval(self, lower_pitch, upper_pitch):
+
+        # Faster algo: compute delta ???
+
+        pitch_intervals = []
+        start = True
+        for interval in self._pitch_intervals:
+            if start:
+                if lower_pitch in interval:
+                    pitch_intervals.append(interval)
+                    start = False
+            else:
+                pitch_intervals.append(interval)
+            if upper_pitch in interval:
+                break
+
+        return pitch_intervals
 
 ####################################################################################################
 
@@ -246,32 +305,69 @@ class FretboardFigure(TikzFigure, Fretboard):
 
         Fretboard.__init__(self, **kwargs)
 
-        parts = []
-        for i in self.string_iter:
-            string1_interval = self.string(i).pitch_interval
-            for j in self.string_iter:
-                if j != i:
-                    string2_interval = self.string(j).pitch_interval
-                    if string1_interval.intersect(string2_interval):
-                        new_parts = intersection_parts(StringPart(string1_interval, strings=i),
-                                                    StringPart(string2_interval, strings=j))
-                        parts = merge_parts(parts, new_parts)
-                        intersection = string1_interval & string2_interval
-                        print(i, j, string1_interval, string2_interval, '&', intersection, 'P', ' '.join([str(x) for x in new_parts]))
-        for interval in sorted(parts, key=lambda x: x.inf):
-            print(interval)
+        # for i in self.string_iter:
+        #     string1_interval = self.string(i).pitch_interval
+        #     for j in self.string_iter:
+        #         if j != i:
+        #             string2_interval = self.string(j).pitch_interval
+        #             if string1_interval.intersect(string2_interval):
+        #                 intersection = string1_interval & string2_interval
+        #                 print(i, j, string1_interval, string2_interval, '&', intersection, 'P', ' '.join([str(x) for x in new_parts]))
+
+        fretboard_interval = None
+        for string in self.string_fretboard_iter:
+            if fretboard_interval is None:
+                fretboard_interval = string.pitch_interval.clone()
+            else:
+                fretboard_interval |= string.pitch_interval
+        lower_pitch = Pitch(midi=fretboard_interval.inf)
+        upper_pitch = Pitch(midi=fretboard_interval.sup)
+        pitch_intervals = PitchIntervals(lower_pitch, upper_pitch)
 
         # Fixme: scale, paper
         TikzFigure.__init__(self, options='x=.5mm,y=5mm')
 
         self.set_main_font('Latin Modern Sans') # Roman
-        self.font_size(3)
+        self.font_size(4)
 
         # Fixme: broken corner
 
         # Mark
         #   circle: 3, 5, 7, 9, 15, 17
         #   2 circles: 12
+
+        delta_hue = 360 / len(pitch_intervals)
+        hue = delta_hue
+        even = True
+        for i, pitch_interval in enumerate(pitch_intervals):
+            name = 'color{}'.format(i)
+            if even:
+                hue = (i+1) * delta_hue
+            else:
+                hue = (i-1) * delta_hue
+            hue = hue % 360
+            self.append(self.format(r'\definecolor{«»}{Hsb}{«»,0.3,1}', name, hue))
+            pitch_interval.colour = name
+            even = not even
+
+        # Paint pitch intervals
+        for i, string in enumerate(self.string_fretboard_iter):
+            y = i
+            string_pitch_intervals = pitch_intervals.matchings_interval(string.first_pitch, string.last_pitch)
+            lower_fret = 0
+            for interval in string_pitch_intervals:
+                interval_length = interval.length_from(string[lower_fret])
+                upper_fret = min(lower_fret + interval_length -1, self.number_of_frets)
+                if lower_fret:
+                    lower_x = self.fret_position(lower_fret-1)
+                else:
+                    lower_x = '-10em'
+                # print(i, interval, interval_length, lower_fret, upper_fret)
+                upper_x = self.fret_position(upper_fret)
+                point0 = Coordinate(lower_x, y)
+                point1 = Coordinate(upper_x, y+1)
+                self.rectangle(point0, point1, fill=interval.colour)
+                lower_fret = upper_fret +1
 
         # Paint string borders
         for i in range(self.number_of_strings +1):
@@ -307,13 +403,13 @@ class FretboardFigure(TikzFigure, Fretboard):
             y_middle = y + .5
             string = self.string(i)
             # string pitch
-            point = Vector2D(-1, y_middle)
+            point = Coordinate('-7em', y_middle)
             self.text(point, i+1, anchor='east')
-            point = Coordinate('-10em', y_middle)
+            point = Coordinate('-1em', y_middle)
             pitch = string.pitch
             english_pitch = pitch.unicode_name_with_octave
             latin_pitch = pitch.latin_unicode_name_with_octave
-            self.text(point, '{} / {} / {}'.format(english_pitch, latin_pitch, int(pitch)), anchor='west')
+            self.text(point, '{} / {}'.format(english_pitch, latin_pitch), anchor='east')
             # fret pitches
             for i in self.fret_iter:
                 fret_pitch = string[i]
@@ -321,4 +417,14 @@ class FretboardFigure(TikzFigure, Fretboard):
                 point = Coordinate(x, y_middle)
                 english_pitch = fret_pitch.unicode_name_with_octave
                 latin_pitch = fret_pitch.latin_unicode_name
-                self.text(point, '{} / {} / {}'.format(english_pitch, latin_pitch, int(fret_pitch)))
+                self.text(point, '{} / {}'.format(english_pitch, latin_pitch))
+
+        # Paint decorations
+        for i in (5, 7, 9): # 12 15 17
+            x = self.middle_position(i)
+            point = Coordinate(x, self.number_of_strings / 2)
+            self.circle(point, radius='1mm', fill=True)
+        x = self.fret_position(12)
+        for y in (-1, 1):
+            point = Coordinate(x, (.5 + y * .1) *  self.number_of_strings)
+            self.circle(point, radius='1mm', fill=True)
