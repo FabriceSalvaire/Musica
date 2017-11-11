@@ -97,7 +97,6 @@ setup_dict = dict(
         'Musica.Instrument',
         'Musica.Config',
         'Musica.MusicXML',
-        'Musica.Doc',
         'Musica.Logging',
         'Musica.Math',
         'Musica.Tex',
@@ -123,7 +122,7 @@ setup_dict = dict(
         'Programming Language :: Python :: 3.6',
         ],
     install_requires=[
-        'ArithmeticInterval',
+        'IntervalArithmetic',
         'PyYAML',
         'numpy',
         'pyxb',

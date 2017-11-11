@@ -28,7 +28,7 @@ __all__ = [
 
 import math
 
-from ArithmeticInterval import IntervalInt
+from IntervalArithmetic import IntervalInt
 
 from ..Geometry.Path import Polyline
 from ..Geometry.Transformation import AffineTransformation2D
