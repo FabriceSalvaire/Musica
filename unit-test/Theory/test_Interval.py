@@ -40,6 +40,7 @@ class TestInterval(unittest.TestCase):
 
     ##############################################
 
+    @unittest.skip('')
     def test(self):
 
         self._test_interval('A-', 'B#',  'AA2')
