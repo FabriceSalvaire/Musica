@@ -3,9 +3,9 @@
 .. include:: project-links.txt
 .. include:: abbreviation.txt
 
-============
- Musica
-============
+===============
+ Musica Tookit
+===============
 
 |Pypi License|
 |Pypi Python Version|
@@ -18,8 +18,8 @@
 Overview
 ========
 
-What is Musica ?
----------------------
+What is the Musica Toolkit ?
+----------------------------
 
 Musica is a free and open source computational music toolkit written in |Python|_ covering several
 topics from music theory, audio analysis to high quality figure generation.
@@ -48,5 +48,3 @@ News
 ====
 
 .. include:: news.txt
-
-.. End

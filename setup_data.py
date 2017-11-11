@@ -73,13 +73,13 @@ else:
 ####################################################################################################
 
 setup_dict = dict(
-    name='Musica-pip',
+    name='musica-toolkit',
     version='0.1.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='Musica is a free and open source computational music toolkit written in Python covering several topics from music theory, audio analysis to high quality figure generation',
     license='GPLv3',
-    keywords= 'music computational theory',
+    keywords= 'music computational theory computer aided musical analysis',
     url='https://musica.fabrice-salvaire.fr',
     scripts=[
         'bin/make-figure',

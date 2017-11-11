@@ -88,7 +88,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Musica'
+project = 'Musica Toolkit'
 copyright = '{0.year}, Fabrice Salvaire'.format(datetime.now())
 
 # The version info for the project you're documenting, acts as replacement for
@@ -310,9 +310,3 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 
 # Don't work
 # mathjax_path = 'MathJax/MathJax.js'
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

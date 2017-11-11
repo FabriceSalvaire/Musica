@@ -25,19 +25,19 @@
 .. |Musica@github| replace:: https://github.com/FabriceSalvaire/Musica
 .. .. _Musica@github: https://github.com/FabriceSalvaire/Musica
 
-.. |Musica@pypi| replace:: https://pypi.python.org/pypi/Musica-pip
-.. .. _Musica@pypi: https://pypi.python.org/pypi/Musica-pip
+.. |Musica@pypi| replace:: https://pypi.python.org/pypi/musica-toolkit
+.. .. _Musica@pypi: https://pypi.python.org/pypi/musica-toolkit
 
-.. |Pypi Version| image:: https://img.shields.io/pypi/v/Musica-pip.svg
-   :target: https://pypi.python.org/pypi/Musica-pip
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/musica-toolkit.svg
+   :target: https://pypi.python.org/pypi/musica-toolkit
    :alt: Musica last version
 
-.. |Pypi License| image:: https://img.shields.io/pypi/l/Musica-pip.svg
+.. |Pypi License| image:: https://img.shields.io/pypi/l/musica-toolkit.svg
    :target: https://pypi.python.org/pypi/Musica
    :alt: Musica license
 
-.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Musica-pip.svg
-   :target: https://pypi.python.org/pypi/Musica-pip
+.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/musica-toolkit.svg
+   :target: https://pypi.python.org/pypi/musica-toolkit
    :alt: Musica python version
 
 .. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Musica.svg?branch=master
@@ -74,9 +74,9 @@
 
 .. End
 
-============
- Musica
-============
+===============
+ Musica Tookit
+===============
 
 |Pypi License|
 |Pypi Python Version|
@@ -89,8 +89,8 @@
 Overview
 ========
 
-What is Musica ?
----------------------
+What is the Musica Toolkit ?
+----------------------------
 
 Musica is a free and open source computational music toolkit written in |Python|_ covering several
 topics from music theory, audio analysis to high quality figure generation.
@@ -150,7 +150,5 @@ V0 2017-10-01
 -------------
 
 Started project
-
-.. End
 
 .. End
