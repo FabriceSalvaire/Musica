@@ -139,15 +139,19 @@ pygments_style = 'sphinx'
 # Options for Autodoc
 #
 
+# This value selects if automatically documented members are sorted alphabetical (value
+# 'alphabetical'), by member type (value 'groupwise') or by source order (value 'bysource'). The
+# default is alphabetical.
+autodoc_member_order='groupwise'
 # Show both class-level docstring and __init__ docstring in class documentation
 autoclass_content = 'both'
 autodoc_default_flags = [
     'members',
     'undoc-members',
-    # 'private-members',
-    # 'special-members',
+    'private-members',
+    'special-members',
     # 'inherited-members',
-    # 'show-inheritance',
+    'show-inheritance',
     ]
 
 ####################################################################################################
