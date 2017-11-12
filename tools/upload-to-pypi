@@ -5,7 +5,8 @@
 
 source /opt/python-virtual-env/py36/bin/activate
 
-# bdist
-
 python3 setup.py check --verbose --metadata --restructuredtext --strict && \
-  python3 setup.py register sdist bdist_wheel upload
+  python3 setup.py register sdist upload
+
+# bdist
+# bdist_wheel
