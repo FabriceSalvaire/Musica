@@ -5,5 +5,3 @@
 ==========
  Examples
 ==========
-
-To be completed ...

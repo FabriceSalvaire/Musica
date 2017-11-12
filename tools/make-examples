@@ -1,0 +1,16 @@
+#! /usr/bin/bash
+
+# Regenerate from scratch
+# examples=doc/sphinx/source/examples
+# rm -rf ${examples}
+
+echo
+echo Generate RST examples files
+# generate-rst-examples --skip-external-figure --skip-figure
+MusicaLogLevel=WARNING generate-rst-examples # --force
+
+echo
+echo Run Sphinx
+pushd doc/sphinx/
+./make-html # --clean
+popd
