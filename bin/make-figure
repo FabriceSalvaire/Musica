@@ -23,16 +23,8 @@
 ####################################################################################################
 
 import argparse
-import importlib
-import logging
 
-from Musica.Tex.Document import Document
-from Musica.Tex.Package import Package
-from Musica.Tex.Tikz import TikzFigure
-
-####################################################################################################
-
-logger = logging.getLogger(__name__)
+from Musica.Figure.Render import render_figure
 
 ####################################################################################################
 
@@ -44,50 +36,29 @@ parser.add_argument('output', metavar='OutputFile',
 parser.add_argument('--kwargs',
                     default='',
                     help='Module kwargs')
+parser.add_argument('--paper',
+                    default='a4paper',
+                    help='set paper')
 parser.add_argument('--margin',
                     type=int, default=10,
                     help='Crop margins')
 parser.add_argument('--dvisvgm',
                     action='store_true', default=False,
                     help='use dvisvgm')
-parser.add_argument('--paper',
-                    default='a4paper',
-                    help='set paper')
+parser.add_argument('--force',
+                    action='store_true', default=False,
+                    help='regenerate')
 
 args = parser.parse_args()
 
 ####################################################################################################
 
-parts = args.module.split('.')
-figure_module = importlib.import_module('.'.join(parts[:-1]))
-figure_class = getattr(figure_module, parts[-1])
-
-if args.dvisvgm:
-    tex_document = Document(class_name='minimal', class_options=('dvisvgm',))
-else:
-    tex_document = Document(class_name='article', class_options=(args.paper,))
-
-    tex_document.append_preambule(r'''
-    \RequirePackage{luatex85} % for geometry
-    ''')
-
-    tex_document.packages.add(Package('geometry',
-                                      'includeheadfoot',
-                                      paper=args.paper,
-                                      margin='1cm',
-                                      # headsep='1cm',
-                                      # footskip='1cm',
-    ))
-
-    tex_document.empty_page_style()
-
-# TikzFigure.setup_externalisation(tex_document)
-
-kwargs = eval('dict(' + args.kwargs + ')')
-logger.info(kwargs)
-
-figure = figure_class(**kwargs)
-tex_document.append(figure)
-
-# print(str(tex_document))
-tex_document.generate(args.output, crop=True, margin=args.margin, dvisvgm=args.dvisvgm)
+render_figure(
+    figure=args.module,
+    kwargs=args.kwargs,
+    output=args.output,
+    paper=args.paper,
+    margin=args.margin,
+    dvisvgm=args.dvisvgm,
+    force=args.force,
+)

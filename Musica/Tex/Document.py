@@ -87,9 +87,6 @@ class Document(TexContent):
 
     def generate(self, output_path, crop=False, margin=10, dvisvgm=False):
 
-        if dvisvgm and not output_path.stopswith('.svg'):
-            raise ValueError("Output must be SVG when using dvisvgm")
-
         output_path = os.path.abspath(output_path)
         base, extension = os.path.splitext(output_path)
         extension = extension[1:]
@@ -112,6 +109,9 @@ class Document(TexContent):
                 fd.write(str(self))
 
             if extension in ('pdf', 'svg'):
+                if dvisvgm and not output_path.endswith('.svg'):
+                    raise ValueError("Output must be SVG when using dvisvgm")
+
                 pdf_path = self._make_filename(tmp_dir, 'out', 'pdf')
 
                 command = [
