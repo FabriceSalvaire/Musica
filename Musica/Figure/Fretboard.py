@@ -103,7 +103,7 @@ class Fretboard:
         # Fixme:
         reverse = kwargs.get('reverse', False)
 
-        # Fixme: Guitare default
+        # Fixme: Guitar default
         self._diapason = kwargs.get('diapason', 640) # mm
         self._number_of_frets = kwargs.get('number_of_frets', 12)
 

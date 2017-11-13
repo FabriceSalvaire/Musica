@@ -89,7 +89,7 @@ Strings Family:
         written range: C2 C5 # also A2, B2
         transposing: 8va bassa
 
-    Guitare:
+    Guitar:
         writings:
             classic:
                 # 1) Sol à l'octave supérieure des sons réels
@@ -100,7 +100,7 @@ Strings Family:
                 # 2) Sol8 puis Sol à octave réel
                 staff key: G8vb # 8va bassa, Sol8
 
-    Guitare/Bass:
+    Guitar/Bass:
         # 1) Fa à l'octave supérieure des sons réels
         # 2) Fa8 puis Fa à octave réel
         staff key: F8vb # Fa8

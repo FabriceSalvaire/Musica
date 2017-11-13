@@ -111,7 +111,7 @@ class BassKey(StaveKey):
 
 class LowerTrebleKey(StaveKey):
     # G-clef 8va bassa
-    # e.g. guitare stave
+    # e.g. guitar stave
     __key_name__ = 'G8vb'
     __reference_pitch__ = 'G3' # Sol
     __reference_line__ = 2

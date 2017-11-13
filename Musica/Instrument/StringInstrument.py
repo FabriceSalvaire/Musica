@@ -282,14 +282,14 @@ class StringInstrument(Instrument):
 
 ####################################################################################################
 
-# class Guitare(StringInstrument):
+# class Guitar(StringInstrument):
 
 #     ##############################################
 
 #     def __init__():
 
 #         super().__init__(
-#             name='guitare',
-#             category='fretted string/guitare',
-#             standard_tuning=GuitareTuning.standard,
+#             name='guitar',
+#             category='fretted string/guitar',
+#             standard_tuning=GuitarTuning.standard,
 #         )
