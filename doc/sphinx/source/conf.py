@@ -311,3 +311,43 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 
 # Don't work
 # mathjax_path = 'MathJax/MathJax.js'
+
+####################################################################################################
+#
+# Setup
+#
+
+def autodoc_skip_member(app, what, name, obj, skip, options):
+
+    # Emitted when autodoc has to decide whether a member should be included in the
+    # documentation. The member is excluded if a handler returns True. It is included if the handler
+    # returns False.
+    #
+    # If more than one enabled extension handles the autodoc-skip-member event, autodoc will use the
+    # first non-None value returned by a handler. Handlers should return None to fall back to the
+    # skipping behavior of autodoc and other enabled extensions.
+    #
+    # Parameters:
+    #
+    #     app – the Sphinx application object
+    #     what – the type of the object which the docstring belongs to
+    #            (one of "module", "class", "exception", "function", "method", "attribute")
+    #     name – the fully qualified name of the object
+    #     obj – the object itself
+    #     skip – a boolean indicating if autodoc will skip this member if the user handler does not
+    #            override the decision
+    #     options – the options given to the directive: an object with attributes inherited_members,
+    #               undoc_members, show_inheritance and noindex that are true if the flag option of
+    #               same name was given to the auto directive
+
+    exclusions = (
+        '__weakref__', # special-members
+        '__doc__', '__module__', '__dict__', # undoc-members
+        '__init__',
+        '__repr__',
+    )
+    exclude = name in exclusions
+    return skip or exclude
+
+def setup(app):
+    app.connect('autodoc-skip-member', autodoc_skip_member)
