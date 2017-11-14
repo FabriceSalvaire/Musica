@@ -346,7 +346,7 @@ class FretboardFigure(TikzFigure, Fretboard):
             else:
                 hue = (i-1) * delta_hue
             hue = hue % 360
-            self.append(self.format(r'\definecolor{«»}{Hsb}{«»,0.3,1}', name, hue))
+            self.append(self.format(r'\definecolor{«»}{Hsb}{«»,0.3,1}', name, self.format_number(hue))) # Fixme:
             pitch_interval.colour = name
             even = not even
 

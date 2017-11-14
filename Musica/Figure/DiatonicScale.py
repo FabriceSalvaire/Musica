@@ -37,24 +37,22 @@ class DiatonicScale(TikzFigure):
 
     def __init__(self,
                  inner_radius=3,
-                 outer_radius=4):
+                 outer_radius=4,
+                 language='français'):
 
         super().__init__()
 
         self.use_library('shapes.arrows')
 
-        diatonic_pitches = [Pitch(step) for step in ET12.step_names]
-        for i, pitch in enumerate(diatonic_pitches):
-            setattr(pitch, 'rank', i)
+        diatonic_steps = list(ET12.iter_on_naturals())
+        for step in diatonic_steps:
+            step.interval = ET12.fold_step_number(step.next_natural.step_number - step.step_number)
 
-        def pitch_to_angle(pitch):
-            return int((90 - pitch.pitch_class / 12 * 360) % 360)
+        def step_to_angle(step):
+            return int((90 - step.step_number / ET12.number_of_steps * 360) % 360)
 
-        def next_pitch_of(pitch):
-            return diatonic_pitches[(pitch.rank+1) % len(diatonic_pitches)]
-
-        intervales = [(next_pitch_of(pitch).pitch_class - pitch.pitch_class) % 12
-                      for pitch in diatonic_pitches]
+        def translate_step(step, language):
+            return step.translate(language).unicode_name
 
         self.set_main_font('Latin Modern Sans') # Roman
         self.font_size(12)
@@ -69,25 +67,25 @@ class DiatonicScale(TikzFigure):
 
         # 360 / 6 = 60 for 2 semitone
 
-        for pitch, interval in zip(diatonic_pitches, intervales):
-            angle = pitch_to_angle(pitch)
-            self.coordinate('i{}'.format(pitch), r='\InnerRadius', a=angle)
-            self.coordinate('o{}'.format(pitch), r='\OuterRadius', a=angle)
-            self.coordinate('l{}'.format(pitch), r='\OuterLabelRadius', a=angle)
-            # next_pitch = next_pitch_of(pitch)
-            # angle = (pitch_to_angle(pitch) + pitch_to_angle(next_pitch))/2
-            angle = pitch_to_angle(pitch) - interval * 15 # interval / 2 * 30
-            if interval == 2:
-                self.coordinate('l{}b'.format(pitch), r='\OuterLabelRadius', a=angle)
-            self.coordinate('m{}'.format(pitch.step), r='\MiddleRadius', a=angle)
+        for step in diatonic_steps:
+            angle = step_to_angle(step)
+            self.coordinate('i{}'.format(step.name), r=r'\InnerRadius', a=angle)
+            self.coordinate('o{}'.format(step.name), r=r'\OuterRadius', a=angle)
+            self.coordinate('l{}'.format(step.name), r=r'\OuterLabelRadius', a=angle)
+            # angle = (step_to_angle(step) + step_to_angle(next_step))/2
+            angle = step_to_angle(step) - step.interval * 15 # interval / 2 * 30
+            if step.interval == 2:
+                self.coordinate('l{}b'.format(step.name), r=r'\OuterLabelRadius', a=angle)
+            self.coordinate('m{}'.format(step.name), r=r'\MiddleRadius', a=angle)
 
+        # Fixme: move to tikz ???
         self.new_command('Sector', 3,
                            r'\fill[fill=gray!#1] (#2:\InnerRadius) -- (#2:\OuterRadius) arc (#2:#3:\OuterRadius) -- (#3:\InnerRadius) arc (#3:#2:\InnerRadius);')
-        for pitch, interval in zip(diatonic_pitches, intervales):
-            colour = 20 if interval == 1 else 40
-            next_pitch = next_pitch_of(pitch)
-            _angle1 = pitch_to_angle(pitch)
-            _angle2 = pitch_to_angle(next_pitch)
+        for step in diatonic_steps:
+            colour = 20 if step.interval == 1 else 40
+            next_step = step.next_natural
+            _angle1 = step_to_angle(step)
+            _angle2 = step_to_angle(next_step)
             if abs(_angle1 - _angle2) > 60:
                 angle1 = _angle1
                 angle2 = _angle2 - 360
@@ -96,22 +94,22 @@ class DiatonicScale(TikzFigure):
                 angle2 = max(_angle1, _angle2)
             self.append(self.format(r'\Sector{«0»}{«1»}{«2»};', colour, angle1, angle2))
 
-        for pitch in diatonic_pitches:
-            self.line('i{}'.format(pitch), 'o{}'.format(pitch))
-        self.append_command(r'\draw (O) circle (\InnerRadius)')
-        self.append_command(r'\draw (O) circle (\OuterRadius)')
+        for step in diatonic_steps:
+            self.line('i{}'.format(step.name), 'o{}'.format(step.name))
+        self.draw_circle('O', radius=r'\InnerRadius')
+        self.draw_circle('O', radius=r'\OuterRadius')
 
-        for pitch, interval in zip(diatonic_pitches, intervales):
-            pitch_text = pitch.french_locale.name
-            self.node('l{}'.format(pitch), pitch_text)
-            if interval == 1:
+        for step in diatonic_steps:
+            step_text = translate_step(step, language)
+            self.text('l{}'.format(step.name), step_text)
+            if step.interval == 1:
                 interval_text = '1/2'
             else:
                 interval_text = '1'
-                next_pitch = next_pitch_of(pitch)
-                next_pitch_text = next_pitch.french_locale.name
-                text = r'{}$\sharp$/{}$\flat$'.format(pitch_text, next_pitch_text)
-                self.node('l{}b'.format(pitch), text)
-            self.node('m{}'.format(pitch), interval_text)
+                next_step = step.next_natural
+                next_step_text = translate_step(next_step, language)
+                text = r'{}$\sharp$/{}$\flat$'.format(step_text, next_step_text)
+                self.text('l{}b'.format(step.name), text)
+            self.text('m{}'.format(step.name), interval_text)
 
-        self.append_command(r'\draw[->,line width=2pt] (90:\ArrowRadius) arc (90:45:\ArrowRadius)')
+        self.append_command('draw', r'[->,line width=2pt] (90:\ArrowRadius) arc (90:45:\ArrowRadius)')

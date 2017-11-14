@@ -132,8 +132,9 @@ class TemperamentStep:
 
     ##############################################
 
-    def __init__(self, step_number, quality=None):
+    def __init__(self, temperament, step_number, quality=None):
 
+        self._temperament = temperament
         self._step_number = step_number
         self._quality = quality
 
@@ -176,15 +177,20 @@ class TemperamentStep:
     def __lt__(self, other):
         return self._step_number < int(other)
 
+    ##############################################
+
+    def translate(self, language):
+        return self._temperament.translator(self._step_number)[language]
+
 ####################################################################################################
 
 class TemperamentNaturalStep(TemperamentStep):
 
     ##############################################
 
-    def __init__(self, step_number, degree, name, quality):
+    def __init__(self, temperament, step_number, degree, name, quality):
 
-        super().__init__(step_number, quality)
+        super().__init__(temperament, step_number, quality)
 
         self._name = name
         self._degree = degree
@@ -220,9 +226,9 @@ class TemperamentAccidentalStep(TemperamentStep):
 
     ##############################################
 
-    def __init__(self, step_number):
+    def __init__(self, temperament, step_number):
 
-        super().__init__(step_number, quality=IntervalQualities.minor)
+        super().__init__(temperament, step_number, quality=IntervalQualities.minor)
 
     ##############################################
 
@@ -275,7 +281,7 @@ class UsualEqualTemperament(EqualTemperament):
                 quality = IntervalQualities.perfect
             else:
                 quality = IntervalQualities.major
-            step = TemperamentNaturalStep(pitch.step_number, degree, name, quality)
+            step = TemperamentNaturalStep(self, pitch.step_number, degree, name, quality)
             self._natural_steps.append(step)
         # complete
         self._number_of_natural_steps = len(self._natural_steps)
@@ -302,7 +308,7 @@ class UsualEqualTemperament(EqualTemperament):
         for i in range(self._number_of_steps):
             step = self._steps[i]
             if step is None:
-                step = TemperamentAccidentalStep(i)
+                step = TemperamentAccidentalStep(self, i)
                 self._steps[i] = step
                 # prev and next are natural steps
                 i_prev = self.fold_step_number(i - 1)
@@ -326,6 +332,15 @@ class UsualEqualTemperament(EqualTemperament):
 
     ##############################################
 
+    def iter_on_naturals(self):
+
+        for step in self._steps:
+            if step.is_natural:
+                yield step
+
+    ##############################################
+
+    @property
     def natural_step_names(self):
         return self._natural_step_names
 

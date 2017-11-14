@@ -57,34 +57,83 @@ from .Package import Package
 
 ####################################################################################################
 
-class Coordinate:
+def _format_number(x):
+    if isinstance(x, (str, int)):
+        return str(x)
+    else:
+        return '{:.2f}'.format(x)
+
+####################################################################################################
+
+class NameCoordinate:
 
     ##############################################
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, obj):
 
-        number_of_args = len(args)
-        if number_of_args == 1:
-            obj = args[0]
-            self.x = obj.x
-            self.y = obj.y
-        elif number_of_args == 2:
-            self.x = args[0]
-            self.y = args[1]
-        elif 'x' in kwargs:
-            self.x = kwargs['x']
-            self.y = kwargs['y']
-        elif 'clone' in kwargs:
-            obj = kwargs['clone']
-            self.x = obj.x
-            self.y = obj.y
+        if isinstance(obj, str):
+            self.name = obj
+        elif hasattr(obj, 'name'):
+            self.name = obj.name
         else:
             raise ValueError("Invalid parameters")
 
     ##############################################
 
     def __str__(self):
-        return '({},{})'.format(self.x, self.y)
+        return '({})'.format(self.name)
+
+####################################################################################################
+
+class Coordinate:
+
+    ##############################################
+
+    def __init__(self, *args, **kwargs):
+
+        if not args:
+            if 'x' in kwargs:
+                self._set_from_dict(kwargs)
+            elif 'clone' in kwargs:
+                self._set_from_obj(kwargs['clone'])
+        else:
+            number_of_args = len(args)
+            if number_of_args == 1:
+                obj = args[0]
+                if isinstance(obj, dict):
+                    self._set_from_dict(obj)
+                else:
+                    self._set_from_obj(obj)
+            elif number_of_args == 2:
+                self._set_from_tuple(args)
+            else:
+                raise ValueError("Invalid parameters")
+
+    ##############################################
+
+    def _set_from_tuple(self, obj):
+
+        self.x = obj[0]
+        self.y = obj[1]
+
+    ##############################################
+
+    def _set_from_dict(self, obj):
+
+        self.x = obj['x']
+        self.y = obj['y']
+
+    ##############################################
+
+    def _set_from_obj(self, obj):
+
+        self.x = obj.x
+        self.y = obj.y
+
+    ##############################################
+
+    def __str__(self):
+        return '({},{})'.format(_format_number(self.x), _format_number(self.y))
 
 ####################################################################################################
 
@@ -94,28 +143,49 @@ class PolarCoordinate:
 
     def __init__(self, *args, **kwargs):
 
-        number_of_args = len(args)
-        if number_of_args == 1:
-            obj = args[0]
-            self.a = obj.a
-            self.r = obj.r
-        elif number_of_args == 2:
-            self.a = args[0]
-            self.r = args[1]
-        elif 'a' in kwargs:
-            self.a = kwargs['a']
-            self.r = kwargs['r']
-        elif 'clone' in kwargs:
-            obj = kwargs['clone']
-            self.a = obj.a
-            self.r = obj.r
+        if not args:
+            if 'a' in kwargs: # only differ here
+                self._set_from_dict(kwargs)
+            elif 'clone' in kwargs:
+                self._set_from_obj(kwargs['clone'])
         else:
-            raise ValueError("Invalid parameters")
+            number_of_args = len(args)
+            if number_of_args == 1:
+                obj = args[0]
+                if isinstance(obj, dict):
+                    self._set_from_dict(obj)
+                else:
+                    self._set_from_obj(obj)
+            elif number_of_args == 2:
+                self._set_from_tuple(args)
+            else:
+                raise ValueError("Invalid parameters")
+
+    ##############################################
+
+    def _set_from_tuple(self, obj):
+
+        self.a = obj[0]
+        self.r = obj[1]
+
+    ##############################################
+
+    def _set_from_dict(self, obj):
+
+        self.a = obj['a']
+        self.r = obj['r']
+
+    ##############################################
+
+    def _set_from_obj(self, obj):
+
+        self.a = obj.a
+        self.r = obj.r
 
     ##############################################
 
     def __str__(self):
-        return '({}:{})'.format(self.a, self.r)
+        return '({}:{})'.format(_format_number(self.a), _format_number(self.r))
 
 ####################################################################################################
 
@@ -156,6 +226,8 @@ class TikzFigure(Environment):
     @staticmethod
     def _ensure_coordinate(obj):
 
+        if isinstance(obj, str) or hasattr(obj, 'name'):
+           return NameCoordinate(obj)
         if hasattr(obj, 'x') or 'x' in obj:
             return Coordinate(obj)
         elif hasattr(obj, 'a') or 'a' in obj:
@@ -219,6 +291,12 @@ class TikzFigure(Environment):
 
     ##############################################
 
+    @staticmethod
+    def format_number(x):
+        return _format_number(x)
+
+    ##############################################
+
     def append_command(self, command, args):
 
         if not args.startswith('[') and not args.startswith(' '):
@@ -229,9 +307,15 @@ class TikzFigure(Environment):
 
     ##############################################
 
-    def coordinate(self, name, **kwargs):
+    def coordinate(self, name, *args, **kwargs):
 
-        coordinate = self._format_coordinate(kwargs)
+        if not args:
+            coordinate = self._ensure_coordinate(kwargs)
+        elif len(args) == 1:
+            coordinate = self._ensure_coordinate(args[0])
+        else:
+            raise ValueError("Invalid coordinate")
+
         self.append_command('coordinate', self.format('(«0») at «1»', name, coordinate))
 
     ##############################################

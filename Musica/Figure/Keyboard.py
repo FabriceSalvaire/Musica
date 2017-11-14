@@ -482,13 +482,13 @@ class Keyboard(TikzFigure):
                 frequency_point = key.lower_point - geometry.key_length_offset(30)
             else:
                 position = key.center + geometry.key_length_offset(key.pitch.degree)
-                self.node(position, pitch.full_name)
-                self.node(position - geometry.key_length_offset(5), pitch.french_locale.name, anchor='north')
-                self.node(key.upper_point, key.number, anchor='south')
+                self.text(position, pitch.full_name)
+                self.text(position - geometry.key_length_offset(5), pitch.french_locale.name, anchor='north')
+                self.text(key.upper_point, key.number, anchor='south')
                 frequency_point = key.lower_point
             frequency = int(round(pitch.frequency))
             # frequency = '{:.1f}'.format(pitch.frequency)
-            self.node(frequency_point, frequency, anchor='east', rotate=90)
+            self.text(frequency_point, frequency, anchor='east', rotate=90)
 
 ####################################################################################################
 
