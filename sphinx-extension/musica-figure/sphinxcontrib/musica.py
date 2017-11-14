@@ -43,9 +43,10 @@ def render_figure(self, figure_cls, kwargs, figure_name, extensions):
     # shasum = sha().hexdigest()
 
     # .../_images/musica_figure/foo.svg
-    relative_filename = path.join(self.builder.imgpath, 'musica_figure', figure_name + extensions[0])
+    extension = '.svg' # Fixme: ok ???
+    relative_filename = path.join(self.builder.imgpath, 'musica_figure', figure_name + extension)
     # to get absolute path
-    absolute_filename = path.join(self.builder.outdir, '_images', 'musica_figure', figure_name + extensions[0])
+    absolute_filename = path.join(self.builder.outdir, '_images', 'musica_figure', figure_name + extension)
     # print('>>> Musica', relative_filename, absolute_filename)
 
     dst_directory = path.dirname(absolute_filename)
@@ -86,7 +87,7 @@ class MusicaFigureDirective(Directive):
 
         .. musica-figure::  guitare-fretboard  Musica.Figure.Fretboard.FretboardFigure
             :kwargs: instrument='Guitar',tuning='Standard
-            :extensions: svg,pdf
+            :extensions: svg,tex,pdf
 
     """
 
@@ -128,11 +129,13 @@ class MusicaFigureDirective(Directive):
         node = MusicaFigure()
         node['figure_name'] = self.arguments[0]
         node['figure_cls'] = self.arguments[1]
-        node['kwargs'] = self.options.get('kwargs', None)
-        node['extensions'] = self.options.get('extensions', ('.svg', '.pdf'))
-        # Fixme: height
-        node['width'] = self.options.get('width', '100%')
+        node['kwargs'] = self.options.get('kwargs', '')
+        node['extensions'] = self.options.get('extensions', ('.tex', '.pdf', '.svg'))
         node['center'] = self.options.get('align', 'center')
+
+        for key in ('width', 'height'):
+            if key in self.options:
+                node[key] = self.options[key]
 
         return [node]
 
@@ -150,7 +153,7 @@ def visit_MusicaFigure_html(self, node):
                                  extensions=node['extensions'],
         )
     except Exception as exception:
-        # print(exception)
+        print('Error:', exception) # Fixme
         sytem_message = nodes.system_message(str(exception), type='WARNING', level=2,
                                              backrefs=[], source=node['figure_name'])
         sytem_message.walkabout(self)
@@ -166,7 +169,7 @@ def visit_MusicaFigure_html(self, node):
         filename_base, ext = path.splitext(filename)
         # Fixme: svgz
         if '.svg' in node['extensions']:
-            kwargs = {'src': filename}
+            kwargs = {'src': filename_base + '.svg'}
             if 'width' in node:
                 kwargs['width'] = node['width']
             if 'height' in node:
@@ -184,6 +187,7 @@ def visit_MusicaFigure_html(self, node):
             self.body.append('<div class="musica-figure-download">')
             self.body.append('<ul>')
             self.body.append(pattern.format(filename_base + '.svg', 'fa-file-o'))
+            self.body.append(pattern.format(filename_base + '.tex', 'fa-file-text-o'))
             self.body.append(pattern.format(filename_base + '.pdf', 'fa-file-pdf-o'))
             self.body.append('</ul></div>\n')
 
