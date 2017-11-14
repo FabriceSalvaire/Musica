@@ -212,7 +212,7 @@ class TexContent(BasicCommandMixin, ContentCommandMixin):
 
     def collect_preambule(self):
 
-        source = ''
+        source = self.to_string('preambule')
         for item in self._content:
             if isinstance(item, TexContent):
                 source += item.to_string('preambule')

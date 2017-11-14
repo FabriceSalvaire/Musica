@@ -20,6 +20,7 @@
 
 ####################################################################################################
 
+import datetime
 import importlib
 import logging
 import os
@@ -56,15 +57,29 @@ def render_figure(figure,
         and timestamp(figure_module.__file__) <= timestamp(output)):
         return
 
+    header = '''
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This LaTeX source file
+% is part of the Musica Toolkit https://musica.fabrice-salvaire.fr
+% and licensed under CC BY-NC-SA 4.0 https://creativecommons.org/licenses/by-nc-sa/4.0/
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+'''
+
     if dvisvgm:
-        tex_document = Document(class_name='minimal', class_options=('dvisvgm',))
+        class_options = ['dvisvgm']
     else:
-        tex_document = Document(class_name='article', class_options=(paper,))
+        class_options = [paper]
 
-        tex_document.append_preambule(r'''
-        \RequirePackage{luatex85} % for geometry
-        ''')
+    tex_document = Document(
+        class_name='minimal',
+        class_options=class_options,
+        header=header.lstrip()
+    )
 
+    if not dvisvgm:
+        tex_document.append_preambule(r'\RequirePackage{luatex85} % for geometry')
         tex_document.packages.add(Package('geometry',
                                           'includeheadfoot',
                                           paper=paper,
@@ -73,15 +88,91 @@ def render_figure(figure,
                                           # footskip='1cm',
         ))
 
-        tex_document.empty_page_style()
-
     # TikzFigure.setup_externalisation(tex_document)
+
+    now = datetime.datetime.now()
+
+    # Fixme: don't work
+    pdfinfo_template = r'''
+\protected\def\pdfinfo{{\pdfextension info}}
+\pdfinfo{{
+/Title ({title})
+/Author ({author})
+}}
+'''
+    tex_document.append_preambule(pdfinfo_template.format(
+        title=figure,
+        date=now,
+        source='https://musica.fabrice-salvaire.fr',
+        author='Musica Tookit',
+        rights='http://creativecommons.org/licenses/by-nc-sa/4.0/',
+    ))
 
     kwargs = eval('dict(' + kwargs + ')')
     _logger.info(kwargs)
 
-    figure = figure_class(**kwargs)
-    tex_document.append(figure)
+    tex_figure = figure_class(**kwargs)
+    tex_figure.add_license()
+    tex_document.append(tex_figure)
 
     # print(str(tex_document))
     tex_document.generate(output, crop=True, margin=margin, dvisvgm=dvisvgm)
+
+    if output.endswith('.svg'):
+        with open(output, 'r') as fh:
+            source = fh.read()
+        position = source.find('>')
+        position = source.find('>', position +1)
+        metadata_template = '''
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <title id="title1">{title}</title>
+  <metadata id="metadata1">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>{title}</dc:title>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/" />
+        <dc:creator><cc:Agent><dc:title>Musica Tookit</dc:title></cc:Agent></dc:creator>
+        <dc:date>{date}</dc:date>
+        <dc:source>{source}</dc:source>
+        <dc:rights><cc:Agent><dc:title>{rights}</dc:title></cc:Agent></dc:rights>
+        <dc:publisher><cc:Agent><dc:title>{publisher}</dc:title></cc:Agent></dc:publisher>
+        <dc:identifier></dc:identifier>
+        <dc:relation></dc:relation>
+        <dc:language></dc:language>
+        <dc:subject><rdf:Bag>
+            <rdf:li></rdf:li>
+            </rdf:Bag></dc:subject>
+        <dc:coverage></dc:coverage>
+        <dc:description>{description}</dc:description>
+        <dc:contributor><cc:Agent><dc:title>{contributor}</dc:title></cc:Agent></dc:contributor>
+      </cc:Work>
+        <cc:License   rdf:about="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits   rdf:resource="https://creativecommons.org/ns#Reproduction" />
+        <cc:permits   rdf:resource="https://creativecommons.org/ns#Distribution" />
+        <cc:requires  rdf:resource="https://creativecommons.org/ns#Notice" />
+        <cc:requires  rdf:resource="https://creativecommons.org/ns#Attribution" />
+        <cc:prohibits rdf:resource="https://creativecommons.org/ns#CommercialUse" />
+        <cc:permits   rdf:resource="https://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires  rdf:resource="https://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+'''
+        metadata = metadata_template.format(
+            title=figure,
+            date=now,
+            source='https://musica.fabrice-salvaire.fr',
+            publisher='Musica Tookit',
+            rights='http://creativecommons.org/licenses/by-nc-sa/4.0/',
+            description='',
+            contributor='',
+        )
+        with open(output, 'w') as fh:
+            fh.write(source[:position])
+            fh.write(metadata)
+            fh.write(source[position+2:]) # skip \n

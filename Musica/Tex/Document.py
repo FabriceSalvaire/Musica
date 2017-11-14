@@ -42,10 +42,11 @@ class Document(TexContent):
 
     #######################################
 
-    def __init__(self, class_name, class_options=()):
+    def __init__(self, class_name, class_options=(), header=None):
 
         super().__init__()
 
+        self._header = header
         self._class_name = class_name
         self._class_options = class_options
 
@@ -55,8 +56,12 @@ class Document(TexContent):
 
     def __str__(self):
 
+        source = ''
+        if self._header is not None:
+            source += self._header
+
         class_options = ', '.join(self._class_options)
-        source = self.format(r'\documentclass[«1»]{«0._class_name»}', self, class_options) + '\n'
+        source += self.format(r'\documentclass[«1»]{«0._class_name»}', self, class_options) + '\n'
 
         packages = self.collect_packages()
         for package in packages:

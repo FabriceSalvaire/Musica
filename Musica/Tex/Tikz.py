@@ -408,3 +408,20 @@ class TikzFigure(Environment):
         coordinate = self._ensure_coordinate(coordinate)
         args = self._format_options(**kwargs)
         self.append_command('node', args + self.format(r' at «0» {«1»}', coordinate, self.to_tex(text)))
+
+    ##############################################
+
+    def add_license(self):
+
+        import datetime
+        now = datetime.datetime.now()
+        year = now.year
+
+        self.packages.add(Package('ccicons'))
+        coordinate = 'current bounding box.south east'
+
+        icons = ('Logo', 'Attribution', 'NonCommercial', 'ShareAlike')
+        text = r'\hspace{.2ex}'.join([r'\cc' + x for x in icons])
+        text += r'\hspace{.5ex}'
+        text += 'Musica Toolkit {}'.format(year)
+        self.text(coordinate, text, anchor='north east')
