@@ -562,7 +562,7 @@ class Pitch:
     def __gt__(self, other):
         return float(self) > float(other)
 
-    def __te__(self, other):
+    def __ge__(self, other):
        return float(self) >= float(other)
 
     ##############################################
