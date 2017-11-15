@@ -24,12 +24,8 @@
 
 import sys
 
-try:
-    from setuptools import setup, find_packages
-    setuptools_available = True
-except ImportError:
-    from distutils.core import setup
-    setuptools_available = False
+from setuptools import setup, find_packages
+setuptools_available = True
 
 ####################################################################################################
 
@@ -39,7 +35,7 @@ if sys.version_info < (3,):
 if sys.version_info < (3,4):
     print('WARNING: Musica could require Python 3.4 ...', file=sys.stderr)
 
-exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
+# exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
 
 ####################################################################################################
 
@@ -49,31 +45,16 @@ setup_dict = dict(
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='Musica is a free and open source computational music toolkit written in Python covering several topics from music theory, audio analysis to high quality figure generation',
+    # long_description=long_description,
     license='GPLv3',
     keywords= 'music computational theory computer aided musical analysis',
     url='https://musica.fabrice-salvaire.fr',
+
+    # include_package_data=True, # Look in MANIFEST.in
+    packages=find_packages(exclude=['unit-test']),
     scripts=[
         'bin/make-figure',
     ],
-    packages=[ # Fixme:
-        'Musica',
-        'Musica.Tools',
-        'Musica.Audio',
-        'Musica.Theory',
-        'Musica.Geometry',
-        'Musica.Figure',
-        'Musica.Midi',
-        'Musica.Notation',
-        'Musica.Locale',
-        'Musica.Instrument',
-        'Musica.Config',
-        'Musica.MusicXML',
-        'Musica.Logging',
-        'Musica.Math',
-        'Musica.Tex',
-        'Musica.Xml',
-    ],
-    # package_dir = {'Musica': 'Musica'},
     package_data={
         'Musica.Config': ['logging.yml'],
         'Musica.Instrument': ['*.yml'],
@@ -82,16 +63,19 @@ setup_dict = dict(
             'locale/fr/LC_MESSAGES/Musica.mo',
         ],
     },
-    long_description=long_description,
-    # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers
+
+    platforms='any',
+    zip_safe=False, # due to data files
+
     classifiers=[
         'Topic :: Scientific/Engineering',
         'Intended Audience :: Education',
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.4',
         ],
+
     install_requires=[
         'IntervalArithmetic',
         'PyYAML',

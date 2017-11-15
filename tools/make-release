@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# clean-python
+
+rm -rf build dist musica_toolkit.egg-info
+rm -f MANIFEST
+
+python3 setup.py bdist_wheel
+
+# which python3
