@@ -47,11 +47,14 @@ class XmlObjectifierAbc:
 
     _logger = _module_logger.getChild('XmlObjectifierAbc')
 
+    __register_attributes__ = False
+
     ##############################################
 
     @staticmethod
     def populate_class(namespace):
 
+        namespace['__register_attributes__'] = True
         namespace['__id__'] = 0
         namespace['__attribute_names__'] = set()
         namespace['__attribute_map__'] = {}
@@ -160,10 +163,12 @@ class {}({}):
 
     def set_attribute(self, name, value):
 
-        py_name = self.register_attribute(name)
-
-        value = self.to_python_value(value)
-        self._logger.info("{} {} = {} {}".format(self.__class__.__name__, name, value, type(value)))
+        if self.__register_attributes__:
+            py_name = self.register_attribute(name)
+            value = self.to_python_value(value)
+            self._logger.info("{} {} = {} {}".format(self.__class__.__name__, name, value, type(value)))
+        else:
+            py_name = name
 
         setattr(self, py_name, value)
 
@@ -217,6 +222,7 @@ class XmlObjectifierNode(XmlObjectifierAbc):
     def populate_class(namespace):
 
         XmlObjectifierAbc.populate_class(namespace)
+        namespace['__is_root__'] = False
         namespace['__child_names__'] = set()
 
     ##############################################
@@ -242,10 +248,12 @@ class XmlObjectifierNode(XmlObjectifierAbc):
 
         py_code = super().class_to_python()
         _py_code = '''
-    __child_names__ = {}
+    __is_root__ = {0.__is_root__}
+    __child_names__ = {1}
 '''
 
         return py_code + _py_code.rstrip().format(
+            cls,
             '{' + ', '.join("'{}'".format(name) for name in cls.__child_names__) + '}',
         )
 
@@ -304,6 +312,26 @@ class XmlObjectifierNode(XmlObjectifierAbc):
                 py_code += '{}.append({})\n'.format(self.instance_id, child.instance_id)
         return py_code
 
+    ##############################################
+
+    def to_tree(self):
+
+        return ElementTree.ElementTree(self.to_dom())
+
+    ##############################################
+
+    def write_xml(self, path, doctype=None):
+
+        dom = self.to_tree()
+
+        with open(path, 'wb') as fh:
+            fh.write('<?xml version="1.0" encoding="UTF-8"?>'.encode('utf-8'))
+            if doctype is not None:
+                fh.write(doctype.encode('utf-8'))
+            dom.write(fh, encoding='utf-8', xml_declaration=False)
+
+        # dom.write(path, encoding='utf-8', xml_declaration=True)
+
 ####################################################################################################
 
 class XmlObjectifierLeaf(XmlObjectifierAbc):
@@ -340,7 +368,9 @@ class XmlObjectifierLeaf(XmlObjectifierAbc):
 
         element = super().to_dom()
         if self._text is not None:
-            element.text = str(self._text)
+            text = str(self._text)
+            if text:
+                element.text = text
 
         return element
 
@@ -377,18 +407,11 @@ class XmlObjectifierFactory:
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, doctype=None):
 
+        self._doctype = doctype
         self._classes = {}
-
-    ##############################################
-
-    def parse(self, file_path):
-
-        tree = ElementTree.parse(file_path)
-        root = tree.getroot()
-
-        return self._process_element(root)
+        self._root_cls = None
 
     ##############################################
 
@@ -404,12 +427,17 @@ class XmlObjectifierFactory:
             else:
                 base_class = XmlObjectifierLeaf
             self._logger.info('Create class {} {}'.format(py_name, base_class))
-            cls = types.new_class(py_name,
-                                  bases=(base_class,),
-                                  kwds=None,
-                                  exec_body=XmlObjectifierNode.populate_class)
+            cls = types.new_class(
+                py_name,
+                bases=(base_class,),
+                kwds=None,
+                exec_body=XmlObjectifierNode.populate_class
+            )
             cls.__tag__ = name
             self._classes[py_name] = cls
+            if self._root_cls is None:
+                self._root_cls = cls
+                cls.__is_root__ = True
         else:
             cls = self._classes[py_name]
 
@@ -425,6 +453,15 @@ class XmlObjectifierFactory:
 
     def __iter__(self):
         return iter(self._classes.values())
+
+    ##############################################
+
+    def parse(self, file_path):
+
+        tree = ElementTree.parse(file_path)
+        root = tree.getroot()
+
+        return self._process_element(root)
 
     ##############################################
 
