@@ -43,18 +43,118 @@ __all__ = [
 
 ####################################################################################################
 
-class XmlObjectifierAbc:
+class SourceCode:
+
+    ##############################################
+
+    def __init__(self, indentation=4):
+
+        self._buffer = ''
+        self._indentation = indentation
+        self._level = 0
+
+    ##############################################
+
+    def increment_level(self):
+        self._level += 1
+
+    def decrement_level(self):
+        self._level -= 1
+
+    @property
+    def indentation(self):
+        return ' '*(self._indentation * self._level)
+
+    ##############################################
+
+    def __iter__(self):
+        return iter(self._buffer.split('\n'))
+
+    ##############################################
+
+    def __str__(self):
+        return self._buffer
+
+    ##############################################
+
+    def __iadd__(self, codes):
+
+        self._buffer += codes
+        return self
+
+    ##############################################
+
+    def append_line(self, codes):
+
+        self._buffer += self.indentation + codes + '\n'
+
+    ##############################################
+
+    def append_lines(self, codes):
+
+        for line in codes.split('\n'):
+            self.append_line(line)
+
+    ##############################################
+
+    def close_block(self, decrement=False):
+
+        if decrement:
+            self.decrement_level()
+        self.append_line(')')
+
+####################################################################################################
+
+class XmlObjectifierMetaclass(type):
+
+    __classes__ = {}
+
+    _logger = _module_logger.getChild('XmlObjectifierMetaclass')
+
+    ##############################################
+
+    def __new__(metacls, class_name, base_classes, attributes):
+
+        cls = super().__new__(metacls, class_name, base_classes, attributes)
+        metacls.register(cls)
+        return cls
+
+    ##############################################
+
+    def __init__(cls, class_name, base_classes, attributes):
+
+        type.__init__(cls, class_name, base_classes, attributes)
+
+    ##############################################
+
+    @classmethod
+    def register(metacls, cls):
+
+        class_name = cls.__name__
+        XmlObjectifierMetaclass._logger.info('Register {} for {}'.format(cls, class_name))
+        metacls.__classes__[class_name] = cls
+
+    ##############################################
+
+    @classmethod
+    def get(metacls, name):
+
+        return metacls.__classes__[name]
+
+####################################################################################################
+
+class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
 
     _logger = _module_logger.getChild('XmlObjectifierAbc')
 
-    __register_attributes__ = False
+    __register_schema__ = False
 
     ##############################################
 
     @staticmethod
     def populate_class(namespace):
 
-        namespace['__register_attributes__'] = True
+        namespace['__register_schema__'] = True
         namespace['__id__'] = 0
         namespace['__attribute_names__'] = set()
         namespace['__attribute_map__'] = {}
@@ -68,6 +168,7 @@ class XmlObjectifierAbc:
         cls.__id__ += 1
         # name = cls.__name__.lower()
         name = cls.pythonify_name(cls.__tag__) # Fixme: cache
+
         return '{}_{}'.format(name, _id)
 
     ##############################################
@@ -79,6 +180,7 @@ class XmlObjectifierAbc:
         cls.__attribute_names__.add(py_name)
         cls.__attribute_map__[name] = py_name
         cls.__attribute_map__[py_name] = name
+
         return py_name
 
     ##############################################
@@ -163,7 +265,7 @@ class {}({}):
 
     def set_attribute(self, name, value):
 
-        if self.__register_attributes__:
+        if self.__register_schema__:
             py_name = self.register_attribute(name)
             value = self.to_python_value(value)
             self._logger.info("{} {} = {} {}".format(self.__class__.__name__, name, value, type(value)))
@@ -206,9 +308,18 @@ class {}({}):
 
     ##############################################
 
-    def to_python(self, anonymous=False):
+    def depth_level(self):
+        return 0
 
-        return '{} = {}({})\n'.format(self.instance_id, self.class_name, self.attributes_to_python())
+    ##############################################
+
+    # def to_python(self, anonymous=False):
+    #
+    #     py_code = '{}({})'.format(self.class_name, self.attributes_to_python())
+    #     if anonymous:
+    #         return py_code
+    #     else:
+    #         return '{} = {}'.format(self.instance_id, py_code)
 
 ####################################################################################################
 
@@ -238,6 +349,13 @@ class XmlObjectifierNode(XmlObjectifierAbc):
 
     ##############################################
 
+    @classmethod
+    def is_container(cls):
+
+        return cls.__child_names__ and not cls.__attribute_names__
+
+    ##############################################
+
     # @classmethod
     # def _add_getter(cls, name):
 
@@ -259,11 +377,16 @@ class XmlObjectifierNode(XmlObjectifierAbc):
 
     ##############################################
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
 
         super().__init__(**kwargs)
         self._childs = []
         self._child_map = {name:[] for name in self.__child_names__}
+
+        for child in args:
+            self.append(child)
+        for child in kwargs.get('childs', ()):
+            self.append(child)
 
     ##############################################
 
@@ -279,15 +402,42 @@ class XmlObjectifierNode(XmlObjectifierAbc):
 
     ##############################################
 
-    def append(self, child):
+    def _append_child(self, child):
+
+        self._childs.append(child)
 
         name = child.__class__.__name__
         if name not in self._child_map:
-            self.register_child(name)
             self._child_map[name] = []
-
-        self._childs.append(child)
         self._child_map[name].append(child)
+
+        if self.__register_schema__:
+            self.register_child(name)
+
+    ##############################################
+
+    def append(self, *childs):
+
+        for child in childs:
+            self._append_child(child)
+
+    ##############################################
+
+    def childs_are_leaf(self):
+
+        for cls_name in self._child_map.keys():
+            if issubclass(XmlObjectifierMetaclass.get(cls_name), XmlObjectifierNode):
+                return False
+        return True
+
+    ##############################################
+
+    def depth_level(self):
+
+        depth_level = 0
+        for child in self._childs:
+            depth_level = max(depth_level, child.depth_level() +1)
+        return depth_level
 
     ##############################################
 
@@ -303,14 +453,40 @@ class XmlObjectifierNode(XmlObjectifierAbc):
 
     def to_python(self, anonymous=False):
 
-        py_code = super().to_python()
-        for child in self._childs:
-            if isinstance(child, XmlObjectifierLeaf):
-                py_code += '{}.append({})\n'.format(self.instance_id, child.to_python(True))
-            else:
-                py_code += child.to_python()
-                py_code += '{}.append({})\n'.format(self.instance_id, child.instance_id)
-        return py_code
+        # py_code = super().to_python()
+
+        py_code = SourceCode()
+        if not anonymous:
+            py_code += self.instance_id + ' = '
+        py_code += self.class_name + '('
+        attributes = self.attributes_to_python()
+        if attributes:
+            py_code += attributes
+
+        if self.depth_level() < 4: # self.childs_are_leaf()
+            if attributes:
+                py_code += ','
+            py_code += '\n'
+            py_code.increment_level()
+            if attributes:  # not self.is_container
+                py_code.append_line('childs=(')
+                py_code.increment_level()
+            for child in self._childs:
+                py_code.append_lines(child.to_python(True).rstrip() + ',')
+            if attributes:
+                py_code.close_block(decrement=True)
+            py_code.close_block(decrement=True)
+        else:
+            py_code.close_block()
+            template = '{}.append({})\n'
+            for child in self._childs:
+                if isinstance(child, XmlObjectifierLeaf):
+                    py_code += template.format(self.instance_id, child.to_python(True))
+                else:
+                    py_code += child.to_python()
+                    py_code += template.format(self.instance_id, child.instance_id)
+
+        return str(py_code)
 
     ##############################################
 
@@ -392,12 +568,12 @@ class XmlObjectifierLeaf(XmlObjectifierAbc):
         if attributes:
             args.append(attributes)
 
-        py_source = '{}({})'.format(self.class_name, ', '.join(args))
+        py_code = '{}({})'.format(self.class_name, ', '.join(args))
 
         if anonymous:
-            return py_source
+            return py_code
         else:
-            return '{} = {}\n'.format(self.instance_id, py_source)
+            return '{} = {}\n'.format(self.instance_id, py_code)
 
 ####################################################################################################
 
