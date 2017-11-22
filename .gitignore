@@ -5,8 +5,15 @@
 .tox/
 __pycache__
 #
+trash.py
+*.ppy
+#
 .directory
 du.log
+#
+build
+dist
+musica_toolkit.egg-info
 #
 Musica/locale/fr/LC_MESSAGES/Musica.mo
 Musica/locale/messages.pot
@@ -24,6 +31,10 @@ Musica/Geometry/unused/
 Musica/Locale/note-names.txt
 Musica/MusicXML/old.sh
 Musica/Theory/tmp.py
+#
+sphinx-extension/musica-figure/build/
+sphinx-extension/musica-figure/dist/
+sphinx-extension/musica-figure/sphinxcontrib_musica.egg-info/
 #
 doc/sphinx/build/
 doc/sphinx/source/_static/hidecode.js
@@ -53,7 +64,6 @@ external-docs/
 figures/
 latex-tests/
 lilypond-test/
-musicxml-samples/
 ressources/
 test/
 trash/
@@ -67,3 +77,10 @@ test.aux
 test.log
 test.pdf
 test.tex
+#
+other-examples/musicxml/objectifier/MusicXML.py
+other-examples/musicxml/objectifier/musicxml-example.py
+other-examples/musicxml/objectifier/out.xml
+other-examples/musicxml/objectifier/out2.xml
+other-examples/musicxml/pyxb/bootstrap.xml
+other-examples/musicxml/pyxb/out.xml
