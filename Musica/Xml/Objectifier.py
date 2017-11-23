@@ -113,33 +113,38 @@ class XmlObjectifierMetaclass(type):
 
     ##############################################
 
-    def __new__(metacls, class_name, base_classes, attributes):
+    def __new__(meta_cls, class_name, base_classes, namespace):
 
-        cls = super().__new__(metacls, class_name, base_classes, attributes)
-        metacls.register(cls)
+        print(meta_cls, class_name, base_classes, namespace)
+
+        cls = super().__new__(meta_cls, class_name, base_classes, namespace)
+        meta_cls.register(cls)
+
         return cls
 
     ##############################################
 
-    def __init__(cls, class_name, base_classes, attributes):
+    def __init__(cls, class_name, base_classes, namespace):
 
-        type.__init__(cls, class_name, base_classes, attributes)
+        print(cls, class_name, base_classes, namespace)
+
+        type.__init__(cls, class_name, base_classes, namespace)
 
     ##############################################
 
     @classmethod
-    def register(metacls, cls):
+    def register(meta_cls, cls):
 
         class_name = cls.__name__
         XmlObjectifierMetaclass._logger.info('Register {} for {}'.format(cls, class_name))
-        metacls.__classes__[class_name] = cls
+        meta_cls.__classes__[class_name] = cls
 
     ##############################################
 
     @classmethod
-    def get(metacls, name):
+    def get(meta_cls, name):
 
-        return metacls.__classes__[name]
+        return meta_cls.__classes__[name]
 
 ####################################################################################################
 
@@ -155,7 +160,8 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
     def populate_class(namespace):
 
         namespace['__register_schema__'] = True
-        namespace['__id__'] = 0
+        # namespace['__id__'] = 0
+        # we must instantiate here so as to update the class and not the base class
         namespace['__attribute_names__'] = set()
         namespace['__attribute_map__'] = {}
 
@@ -163,6 +169,9 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
 
     @classmethod
     def get_id(cls):
+
+        if not hasattr(cls, '__id__'):
+            cls.__id__ = 0
 
         _id = cls.__id__
         cls.__id__ += 1
@@ -188,20 +197,35 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
     @classmethod
     def class_to_python(cls):
 
-        py_code = '''
-class {}({}):
-    __tag__ = '{}'
-    __id__ = 0
-    __attribute_names__ = {}
-    __attribute_map__ = {}
-'''
-        return py_code.rstrip().format(
-            cls.__name__,
-            cls.__mro__[1].__name__,
-            cls.__tag__,
-            '{' + ', '.join("'{}'".format(name) for name in cls.__attribute_names__) + '}',
-            '{' + ', '.join(["'{}':'{}'".format(name, value) for name, value in cls.__attribute_map__.items()]) + '}',
-        )
+        class_name = cls.__name__
+        base_class = cls.__mro__[1].__name__
+
+        py_code = SourceCode()
+        py_code.append_line('class {}({}):'.format(class_name, base_class))
+        py_code.increment_level()
+
+        py_code.append_line("__tag__ = '{}'".format(cls.__tag__))
+
+        if cls.__attribute_names__:
+            py_code.append_line('__attribute_names__ = (') # python name
+            py_code.increment_level()
+            for name in sorted(cls.__attribute_names__):
+                py_code.append_line("'{}',".format(name))
+            py_code.decrement_level()
+            py_code.append_line(')')
+
+        attribute_map = [(name, value)
+                         for name, value in sorted(cls.__attribute_map__.items(), key=lambda x: x[0])
+                         if name != value and name not in cls.__attribute_names__]
+        if attribute_map:
+            py_code.append_line('__attribute_map__ = {')
+            py_code.increment_level()
+            for name, value in attribute_map:
+                py_code.append_line("'{}':'{}',".format(name, value))
+            py_code.decrement_level()
+            py_code.append_line('}')
+
+        return py_code
 
     ##############################################
 
@@ -276,7 +300,7 @@ class {}({}):
 
     ##############################################
 
-    def _attributes(self):
+    def attributes(self):
 
         _attrib = {name:getattr(self, name, None)
                   for name in self.__attribute_names__
@@ -288,7 +312,7 @@ class {}({}):
     def to_dom(self):
 
         attributes = {self.__attribute_map__[name]:str(value)
-                      for name, value in self._attributes().items()}
+                      for name, value in self.attributes().items()}
         return Element(self.__tag__, attributes)
 
     ##############################################
@@ -301,7 +325,7 @@ class {}({}):
 
     def attributes_to_python(self):
 
-        kwarg = self._attributes()
+        kwarg = self.attributes()
         kwarg_string = ', '.join('{}={}'.format(name, self.value_to_python_code(value))
                                  for name, value in sorted(kwarg.items(), key=lambda x: x[0]))
         return kwarg_string
@@ -327,13 +351,15 @@ class XmlObjectifierNode(XmlObjectifierAbc):
 
     _logger = _module_logger.getChild('XmlObjectifierNode')
 
+    __is_root__ = False
+
     ##############################################
 
     @staticmethod
     def populate_class(namespace):
 
         XmlObjectifierAbc.populate_class(namespace)
-        namespace['__is_root__'] = False
+        # namespace['__is_root__'] = False
         namespace['__child_names__'] = set()
 
     ##############################################
@@ -365,15 +391,16 @@ class XmlObjectifierNode(XmlObjectifierAbc):
     def class_to_python(cls):
 
         py_code = super().class_to_python()
-        _py_code = '''
-    __is_root__ = {0.__is_root__}
-    __child_names__ = {1}
-'''
+        if cls.__is_root__:
+            py_code.append_line('__is_root__ = True')
+        py_code.append_line('__child_names__ = (')
+        py_code.increment_level()
+        for name in sorted(cls.__child_names__):
+            py_code.append_line("'{}',".format(name))
+        py_code.decrement_level()
+        py_code.append_line(')')
 
-        return py_code + _py_code.rstrip().format(
-            cls,
-            '{' + ', '.join("'{}'".format(name) for name in cls.__child_names__) + '}',
-        )
+        return py_code
 
     ##############################################
 
@@ -583,9 +610,11 @@ class XmlObjectifierFactory:
 
     ##############################################
 
-    def __init__(self, doctype=None):
+    def __init__(self, doctype=None, node_hints=()):
 
         self._doctype = doctype
+        self._node_hints = tuple(node_hints)
+
         self._classes = {}
         self._root_cls = None
 
@@ -594,30 +623,62 @@ class XmlObjectifierFactory:
     def _get_classe(self, element):
 
         name = element.tag
-        py_name = ''.join([part.title() for part in name.split('-')])
-        if py_name not in self._classes:
-            # Fixme:
-            # if element.text is not None:
-            if len(element):
-                base_class = XmlObjectifierNode
-            else:
-                base_class = XmlObjectifierLeaf
-            self._logger.info('Create class {} {}'.format(py_name, base_class))
-            cls = types.new_class(
-                py_name,
-                bases=(base_class,),
-                kwds=None,
-                exec_body=XmlObjectifierNode.populate_class
-            )
-            cls.__tag__ = name
-            self._classes[py_name] = cls
-            if self._root_cls is None:
-                self._root_cls = cls
-                cls.__is_root__ = True
+        class_name = ''.join([part.title() for part in name.split('-')])
+        if class_name not in self._classes:
+            is_node = len(element) > 0
+            cls = self._build_class(class_name, name, is_node)
         else:
-            cls = self._classes[py_name]
+            cls = self._classes[class_name]
 
         return cls
+
+    ##############################################
+
+    def _build_class(self, class_name, name, is_node):
+
+        # Fixme:
+        # if element.text is not None:
+
+        if is_node or class_name in self._node_hints:
+            base_class = XmlObjectifierNode
+        else:
+            base_class = XmlObjectifierLeaf
+
+        self._logger.info('Create class {} {}'.format(class_name, base_class))
+
+        cls = types.new_class(
+            class_name,
+            bases=(base_class,),
+            kwds=None,
+            exec_body=XmlObjectifierNode.populate_class
+        )
+        cls.__tag__ = name
+
+        self._classes[class_name] = cls
+
+        if self._root_cls is None:
+            self._root_cls = cls
+            cls.__is_root__ = True
+
+        return cls
+
+    ##############################################
+
+    def _cast_to_node(self, py_element):
+
+        # Fixme: hack !
+        #  old element are not recasted !!!
+
+        cls = py_element.__class__
+        class_name = cls.__name__
+        self._logger.warning('{} must be reacasted to Node'.format(class_name))
+        del self._classes[class_name]
+
+        new_cls = self._build_class(class_name, cls.__tag__, True)
+        new_cls.__attribute_names__ = cls.__attribute_names__
+        new_cls.__attribute_map__ = cls.__attribute_map__
+
+        return new_cls(** py_element.attributes())
 
     ##############################################
 
@@ -653,6 +714,8 @@ class XmlObjectifierFactory:
             py_element.text = XmlObjectifierAbc.to_python_value(element.text)
         for subelement in element:
             py_subelement = self._process_element(subelement)
+            if not hasattr(py_element, 'append'):
+                py_element = self._cast_to_node(py_element)
             py_element.append(py_subelement)
 
         return py_element

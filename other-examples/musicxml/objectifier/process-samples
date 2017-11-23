@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 ####################################################################################################
 #
 # Musica - A Music Theory Package for Python
@@ -20,33 +22,37 @@
 
 ####################################################################################################
 
+from os import path
+import os
+
 from Musica.Xml.Objectifier import XmlObjectifierFactory
 
 ####################################################################################################
 
+def walk_on_samples(samples_path):
+
+    for root, dirs, files in os.walk(samples_path):
+        for filename in files:
+            if filename.endswith('.xml'):
+                yield os.path.join(root, filename)
+
+####################################################################################################
+
+musica_path = os.path.realpath(os.path.join(path.dirname(__file__), '..', '..', '..'))
+samples_path = os.path.join(musica_path, 'data', 'musicxml-samples', 'musescore-samples')
+print(samples_path)
+
 doctype = '<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">'
 factory = XmlObjectifierFactory(doctype=doctype, node_hints=('Print', 'Rest'))
 
-####################################################################################################
-
-# .mxl is a zip azchive
-
-file_path = 'musicxml-samples/samples/example1.xml'
-root = factory.parse(file_path)
-
-####################################################################################################
-
-root.write_xml('out.xml', doctype=doctype)
-
-####################################################################################################
+for path in walk_on_samples(samples_path):
+    print(path)
+    factory.parse(path)
 
 with open('MusicXML.py', 'w') as output:
     output.write('from Musica.Xml.Objectifier import XmlObjectifierNode, XmlObjectifierLeaf\n')
     for cls in sorted(factory, key=lambda cls: cls.__name__):
-        output.write(str(cls.class_to_python()) + '\n')
-
-with open('musicxml-example.py', 'w') as output:
-    output.write('from MusicXML import *\n\n')
-    output.write(root.to_python() + '\n')
-    output.write('\n')
-    output.write("score_partwise_0.write_xml('out2.xml', doctype='{}')\n".format(doctype))
+        output.write('\n')
+        output.write('#'*100)
+        output.write('\n\n')
+        output.write(str(cls.class_to_python()))
