@@ -115,8 +115,6 @@ class XmlObjectifierMetaclass(type):
 
     def __new__(meta_cls, class_name, base_classes, namespace):
 
-        print(meta_cls, class_name, base_classes, namespace)
-
         cls = super().__new__(meta_cls, class_name, base_classes, namespace)
         meta_cls.register(cls)
 
@@ -124,11 +122,9 @@ class XmlObjectifierMetaclass(type):
 
     ##############################################
 
-    def __init__(cls, class_name, base_classes, namespace):
+    # def __init__(cls, class_name, base_classes, namespace):
 
-        print(cls, class_name, base_classes, namespace)
-
-        type.__init__(cls, class_name, base_classes, namespace)
+    #     type.__init__(cls, class_name, base_classes, namespace)
 
     ##############################################
 
@@ -152,6 +148,8 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
 
     _logger = _module_logger.getChild('XmlObjectifierAbc')
 
+    __attribute_map__ = {}
+    __attribute_names__ = ()
     __register_schema__ = False
 
     ##############################################
@@ -159,11 +157,11 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
     @staticmethod
     def populate_class(namespace):
 
-        namespace['__register_schema__'] = True
-        # namespace['__id__'] = 0
         # we must instantiate here so as to update the class and not the base class
         namespace['__attribute_names__'] = set()
         namespace['__attribute_map__'] = {}
+
+        namespace['__register_schema__'] = True
 
     ##############################################
 
@@ -191,6 +189,16 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
         cls.__attribute_map__[py_name] = name
 
         return py_name
+
+    ##############################################
+
+    def init_reverse_attribute_map(cls):
+
+        if not hasattr(cls, '__reverse_attribute_map__'):
+            cls.__reverse_attribute_map__ = {
+                python_name:xml_name
+                for xml_name, python_name in cls.__attribute_map__.items()
+            }
 
     ##############################################
 
@@ -302,16 +310,33 @@ class XmlObjectifierAbc(metaclass=XmlObjectifierMetaclass):
 
     def attributes(self):
 
-        _attrib = {name:getattr(self, name, None)
-                  for name in self.__attribute_names__
-                  if hasattr(self, name)}
-        return {name:value for name, value in _attrib.items() if value is not None}
+        # _attributes = {name:getattr(self, name, None)
+        #                for name in self.__attribute_names__
+        #                if hasattr(self, name)}
+        # return {name:value for name, value in _attributes.items() if value is not None}
+
+        attrs = {}
+        for name in self.__attribute_names__:
+            if hasattr(self, name):
+                value = getattr(self, name, None)
+                if value is not None:
+                    attrs[name] = value
+
+        return attrs
+
+    ##############################################
+
+    def attribute_to_xml(self, name):
+
+        # Fixme: optimise / for xml -> xml
+        self.init_reverse_attribute_map()
+        return self.__reverse_attribute_map__.get(name, name)
 
     ##############################################
 
     def to_dom(self):
 
-        attributes = {self.__attribute_map__[name]:str(value)
+        attributes = {self.attribute_to_xml(name):str(value)
                       for name, value in self.attributes().items()}
         return Element(self.__tag__, attributes)
 

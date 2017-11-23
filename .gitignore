@@ -78,9 +78,8 @@ test.log
 test.pdf
 test.tex
 #
-other-examples/musicxml/objectifier/MusicXML.py
-other-examples/musicxml/objectifier/musicxml-example.py
 other-examples/musicxml/objectifier/out.xml
-other-examples/musicxml/objectifier/out2.xml
+other-examples/musicxml/objectifier/out-ref.xml
+other-examples/musicxml/objectifier/out.py
 other-examples/musicxml/pyxb/bootstrap.xml
 other-examples/musicxml/pyxb/out.xml

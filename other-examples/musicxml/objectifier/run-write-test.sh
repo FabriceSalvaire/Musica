@@ -1,4 +1,4 @@
-python write-test.py
-xmllint ${option} --format out2.xml -o out2.xml
-diff -Naur out.xml out2.xml | less
-musescore out2.xml
+python musicxml-example.py
+xmllint ${option} --format out.xml -o out.xml
+diff -Naur out-ref.xml out.xml | less
+musescore out.xml

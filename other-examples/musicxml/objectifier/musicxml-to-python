@@ -22,37 +22,42 @@
 
 ####################################################################################################
 
-from os import path
+import argparse
 import os
 
 from Musica.Xml.Objectifier import XmlObjectifierFactory
 
 ####################################################################################################
 
-def walk_on_samples(samples_path):
+parser = argparse.ArgumentParser(description='Convert MusicXML to Python')
+parser.add_argument('input', metavar='InputFile',
+                   help='input filename')
+parser.add_argument('output', metavar='OutputFile',
+                   help='output filename')
+parser.add_argument('--add-write-xml',
+                    action='store_true', default=False,
+                    help='add code to write an xml file')
 
-    for root, dirs, files in os.walk(samples_path):
-        for filename in files:
-            if filename.endswith('.xml'):
-                yield os.path.join(root, filename)
+args = parser.parse_args()
 
 ####################################################################################################
 
-musica_path = os.path.realpath(os.path.join(path.dirname(__file__), '..', '..', '..'))
-samples_path = os.path.join(musica_path, 'data', 'musicxml-samples')
-print(samples_path)
+# .mxl is a zip azchive
 
 doctype = '<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">'
 factory = XmlObjectifierFactory(doctype=doctype, node_hints=('Print', 'Rest'))
 
-for path in walk_on_samples(samples_path):
-    print(path)
-    factory.parse(path)
+root = factory.parse(args.input)
 
-with open('MusicXML.py', 'w') as output:
-    output.write('from Musica.Xml.Objectifier import XmlObjectifierNode, XmlObjectifierLeaf\n')
-    for cls in sorted(factory, key=lambda cls: cls.__name__):
-        output.write('\n')
-        output.write('#'*100)
-        output.write('\n\n')
-        output.write(str(cls.class_to_python()))
+basename, extension = os.path.splitext(args.output)
+
+if extension == '.xml':
+    root.write_xml(args.output, doctype=doctype)
+elif extension == '.py':
+    with open(args.output, 'w') as output:
+        output.write('from MusicXML import *\n\n')
+        output.write(root.to_python() + '\n')
+        if args.add_write_xml:
+            output.write('\n')
+            template = "score_partwise_0.write_xml('{}', doctype='{}')\n"
+            output.write(template.format(basename + '.xml', doctype))

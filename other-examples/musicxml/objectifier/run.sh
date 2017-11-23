@@ -1,10 +1,12 @@
-python objectifier-test.py
-python musicxml-example.py
+input=musicxml-samples/samples/example1.xml
+musicxml-to-python ${input} out-ref.xml
+musicxml-to-python --add-write-xml ${input} out.py
+python out.py
 
 option='--schema musicxml.xsd'
-for i in out.xml out2.xml; do
+for i in out-ref.xml out.xml; do
   xmllint ${option} --format $i -o $i
 done
 
-diff -Naur musicxml-samples/example1.xml out.xml | less
-diff -Naur out.xml out2.xml | less
+diff -Naur ${input} out-ref.xml | less
+diff -Naur out-ref.xml out.xml | less

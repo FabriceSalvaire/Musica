@@ -832,4 +832,4 @@ score_partwise_0.append(part_0)
 ####################################################################################################
 
 doctype='<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">'
-score_partwise_0.write_xml('out2.xml', doctype=doctype)
+score_partwise_0.write_xml('out.xml', doctype=doctype)
