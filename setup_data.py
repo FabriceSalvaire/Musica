@@ -69,3 +69,17 @@ if not __file__.endswith('conf.py'):
     long_description = read_readme('README.txt')
 else:
     long_description = ''
+
+####################################################################################################
+
+setup_dict = dict(
+    name='musica-toolkit',
+    version='0.1.0',
+    author='Fabrice Salvaire',
+    author_email='fabrice.salvaire@orange.fr',
+    description='Musica is a free and open source computational music toolkit written in Python covering several topics from music theory, audio analysis to high quality figure generation',
+    # long_description=long_description,
+    license='GPLv3',
+    keywords= 'music computational theory computer aided musical analysis',
+    url='https://musica.fabrice-salvaire.fr',
+)
