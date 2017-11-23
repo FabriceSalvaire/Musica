@@ -74,6 +74,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinxcontrib.getthecode',
               'sphinxcontrib.lilypond',
               'sphinxcontrib.musica',
+              'sphinx_sitemap',
               ]
 
 # Add any paths that contain templates here, relative to this directory.
