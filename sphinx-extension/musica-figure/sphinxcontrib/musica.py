@@ -25,13 +25,18 @@
 ####################################################################################################
 
 # from hashlib import sha1 as sha
-import os
 from os import path
+import logging
+import os
 
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
 
 from Musica.Figure.Render import render_figure as _render_figure
+
+####################################################################################################
+
+_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
@@ -51,9 +56,10 @@ def render_figure(self, figure_cls, kwargs, figure_name, extensions):
 
     dst_directory = path.dirname(absolute_filename)
     if not path.exists(dst_directory):
-        os.mkdir(dst_directory)
+        os.makedirs(dst_directory)
 
     if not path.exists(absolute_filename):
+        _logger.info('Render figure {}'.format(absolute_filename))
         absolute_filename_base, ext = path.splitext(absolute_filename)
         # print(absolute_filename_base)
         for extension in extensions:
