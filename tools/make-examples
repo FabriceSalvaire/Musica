@@ -7,7 +7,7 @@
 echo
 echo Generate RST examples files
 # generate-rst-examples --skip-external-figure --skip-figure
-MusicaLogLevel=WARNING generate-rst-examples # --force
+MusicaLogLevel=WARNING pyterate # --force
 
 echo
 echo Run Sphinx

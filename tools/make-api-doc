@@ -1,13 +1,10 @@
 #! /usr/bin/bash
 
-find Musica -name "flycheck*.py" -exec rm {} \;
-find Musica -name "parsetab.py" -exec rm {} \;
-
 api=doc/sphinx/source/api
 
 echo
 echo Generate RST API files
-generate-rst-api Musica
+pyterate-rst-api --exclude=MusicXML/Pyxb Musica
 
 echo
 echo Run Sphinx
