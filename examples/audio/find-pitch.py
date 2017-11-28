@@ -53,7 +53,7 @@ axe.set_ylabel('Amplitude')
 
 spectrum = audio.spectrum(0, number_of_samples=2**16)
 
-figure2 = plt.figure(1, (20, 10))
+figure2 = plt.figure(2, (20, 10))
 axe = plt.subplot(111)
 axe.grid()
 #? axe.plot(spectrum.values)
@@ -66,7 +66,7 @@ axe.set_ylabel('Power [db]')
 
 #fig# save_figure(figure2, 'spectrum.png')
 
-figure3 = plt.figure(1, (20, 10))
+figure3 = plt.figure(3, (20, 10))
 axe = plt.subplot(111)
 frequencies, hfs = spectrum.hfs(5)
 axe.semilogx(frequencies, hfs, 'o-')
