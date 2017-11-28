@@ -83,3 +83,9 @@ other-examples/musicxml/objectifier/out-ref.xml
 other-examples/musicxml/objectifier/out.py
 other-examples/musicxml/pyxb/bootstrap.xml
 other-examples/musicxml/pyxb/out.xml
+#
+Musica/MusicXML/Pyxb/old.sh
+doc-test/
+doc/sphinx/source/examples/
+doc/sphinx/source/notes.txt
+notes/
