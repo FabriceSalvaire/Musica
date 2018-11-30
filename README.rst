@@ -122,7 +122,7 @@ What are the main features ?
 
 * Score Format
 
-  * read/write `MusiXML <http://www.musicxml.com/>`_, automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
+  * read/write `MusicXML <http://www.musicxml.com/>`_, automatically generated from XML schema (thanks to `PyXB <http://pyxb.sourceforge.net>`_)
 
 * High Quality Figures : piano keyboard, fretboard etc.
 
