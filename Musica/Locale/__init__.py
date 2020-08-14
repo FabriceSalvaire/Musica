@@ -22,7 +22,7 @@
 
 __all__ = [
     'gettext',
-    ]
+]
 
 ####################################################################################################
 
@@ -48,10 +48,10 @@ _locale_path = os.path.join(_module_path, 'locale')
 
 _translations = {}
 
+
 ####################################################################################################
 
 def load_translation(language=None):
-
     if language in _translations:
         return _translations[language]
     else:
@@ -60,17 +60,18 @@ def load_translation(language=None):
         else:
             languages = None
 
-        translation = _gettext.translation('Musica', localedir=_locale_path, languages=languages)
+        translation = _gettext.translation('Musica', localedir=_locale_path, languages=languages, fallback=True)
         _translations[language] = translation
 
         return translation
 
+
 ####################################################################################################
 
 def translate(message, language=None):
-
     translation = load_translation(language)
     return translation.gettext(message)
+
 
 ####################################################################################################
 
