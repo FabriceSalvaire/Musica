@@ -29,13 +29,13 @@ import os
 
 import Musica.Config.ConfigInstall as ConfigInstall
 
+
 ####################################################################################################
 
 def setup_logging(application_name='Musica',
                   config_file=ConfigInstall.Logging.default_config_file):
-
     logging_config_file_name = ConfigInstall.Logging.find(config_file)
-    logging_config = yaml.load(open(logging_config_file_name, 'r'))
+    logging_config = yaml.load(open(logging_config_file_name, 'r'), Loader=yaml.FullLoader)
 
     if ConfigInstall.OS.on_linux:
         # Fixme: \033 is not interpreted in YAML
